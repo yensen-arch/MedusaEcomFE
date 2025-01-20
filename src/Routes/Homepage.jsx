@@ -1,9 +1,6 @@
 import "swiper/css";
 import "swiper/css/pagination"
 import styled from "styled-components";
-import jeansvideos from '../Resources/videos/jeans.mp4';
-import menvideos from '../Resources/videos/menVid.mp4';
-import kidsVideo from '../Resources/videos/kids.mp4';
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Mousewheel, Pagination } from 'swiper';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -19,11 +16,11 @@ const Homepage = () => {
             img: 'https://static.zara.net/photos///contents/mkt/spots/aw22-north-woman-new/subhome-xmedia-38-3//w/1922/IMAGE-landscape-default-fill-3826ba34-9fad-4264-9ecd-6d2bc9295d9c-default_0.jpg?ts=1663773455159'
         },
         {
-            video: jeansvideos
+            video: 'https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381505/jeans_mzvwwq.mp4'
         },
         {
             path: 'women1',
-            img: 'https://static.zara.net/photos///contents/mkt/spots/aw22-north-woman-y2k-collection/subhome-xmedia-38//w/1922/IMAGE-landscape-fill-8ffe5012-f7c5-486e-a66a-9c017f1c4ddc-default_0.jpg?ts=1663790133732'
+            img: 'https://img.freepik.com/free-photo/three-young-beautiful-smiling-girls-trendy-summer-casual-jeans-clothes-sexy-carefree-women-posing-positive-models-sunglasses_158538-4730.jpg'
         },
         {
             path: 'women1',
@@ -49,10 +46,10 @@ const Homepage = () => {
         },
         {
             path: 'men1',
-            img: 'https://static.zara.net/photos///contents/mkt/spots/aw22-north-man-new/subhome-xmedia-39//w/1922/IMAGE-landscape-fill-fbb20929-1e45-4d24-8139-c6351a17419b-default_0.jpg?ts=1664208804884'
+            img: 'https://media.istockphoto.com/id/1733124463/photo/stylish-dark-skinned-man-wearing-a-yellow-blazer.jpg?s=612x612&w=0&k=20&c=Cym3apJurmcvuBIE-Hrwg0J_7p32V3I2XncZcYuw7i4='
         },
         {
-            video: menvideos
+            video: 'https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381500/menVid_kvf9vo.mp4'
         },
         {
             path: 'men1',
@@ -61,7 +58,7 @@ const Homepage = () => {
     ];
     const Kids = [
         {
-            video: kidsVideo,
+            video: 'https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381101/gett0nihpxj7tgkg4tg3.mp4',
             cat: 'kids'
         },
         {
