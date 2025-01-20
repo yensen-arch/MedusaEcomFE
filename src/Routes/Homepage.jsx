@@ -46,7 +46,7 @@ const Homepage = () => {
         },
         {
             path: 'men1',
-            img: 'https://static.zara.net/photos///contents/mkt/spots/aw22-north-man-new/subhome-xmedia-39//w/1922/IMAGE-landscape-fill-fbb20929-1e45-4d24-8139-c6351a17419b-default_0.jpg?ts=1664208804884'
+            img: 'https://media.istockphoto.com/id/1733124463/photo/stylish-dark-skinned-man-wearing-a-yellow-blazer.jpg?s=612x612&w=0&k=20&c=Cym3apJurmcvuBIE-Hrwg0J_7p32V3I2XncZcYuw7i4='
         },
         {
             video: 'https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381500/menVid_kvf9vo.mp4'
