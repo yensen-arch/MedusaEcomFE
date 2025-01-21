@@ -97,26 +97,6 @@
 }
 
 /* helpPage  */
-
-.helppage1{
-    display: grid;
-    width: 100%;
-    margin: auto;
-    grid-template-columns: repeat(5,1fr);
-    gap: 25px;
-}
-.helppage2{
-    height: 100px;
-    width: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    /* border: 1px solid black; */
-    font-size: 14px;
-    margin: 20px;
-}
 .helppage2>img{
     width: 50%;
 }

@@ -1,60 +1,54 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Footer from './Footer'
+import { faqs, faqs2 } from '../utils/constants'
 
 const Help = () => {
   return (
     <>
-      <div style={{ width: "75%", margin: "auto", paddingTop: "150px", cursor: 'pointer' }}>
-        <h3>HELP</h3>
-        <div className="helppage1">
-          <Link to="/" style={{textDecoration:"none",color:"black"}}>
-            <div className="helppage2">
-              <img src="https://static.zara.net/photos///contents/mkt/misc/help/icons//icon-80-help-bag.svg?ts=1550654368093" alt="" />
-              <h4>SHOP AT ZARA.COM</h4>
-            </div>
-          </Link>
-          <Link to="/checkout" style={{textDecoration:"none",color:"black"}}>
-            <div className="helppage2">
-              <img src="https://static.zara.net/photos///contents/mkt/misc/help/icons//icon-80-help-shipping.svg?ts=1550654368093" alt="" />
-              <h4>SHIPPING AND ORDER STATUS</h4>
-            </div>
-          </Link>
-          <Link to="/" style={{textDecoration:"none",color:"black"}}>
-            <div className="helppage2">
-              <img src="https://static.zara.net/photos///contents/mkt/misc/help/icons//icon-80-help-returns.svg?ts=1550654368093" alt="" />
-              <h4>EXCHANGES AND RETURNS</h4>
-            </div>
-          </Link>
-          <Link to="/paymentMethod" style={{textDecoration:"none",color:"black"}}>
-            <div className="helppage2">
-              <img src="https://static.zara.net/photos///contents/mkt/misc/help/icons//icon-80-help-payment.svg?ts=1550654368093" alt="" />
-              <h4>PAYMENT</h4>
-            </div>
-          </Link>
-          <Link to="/products" style={{textDecoration:"none",color:"black"}}>
-            <div className="helppage2">
-              <img src="https://static.zara.net/photos///contents/mkt/misc/help/icons//icon-80-help-product.svg?ts=1550654368093" alt="" />
-              <h4>PRODUCT</h4>
-            </div>
-          </Link>
-          <Link to="/checkout" style={{textDecoration:"none",color:"black"}}>
-            <div className="helppage2">
-              <img src="https://static.zara.net/photos///contents/mkt/misc/help/icons//icon-80-help-gift-card.svg?ts=1591250800807" alt="" />
-              <h4>GIFT CARD</h4>
-            </div>
-          </Link>
-          <Link to="/checkout" style={{textDecoration:"none",color:"black"}}>
-            <div className="helppage2">
-              <img src="https://static.zara.net/photos///contents/mkt/misc/help/icons//icon-80-help-stores-and-company.svg?ts=1550654368093" alt="" />
-              <h4>SHOPS AND COMPANY</h4>
-            </div>
-          </Link>
-          <div className="helppage2">
-            <img src="https://static.zara.net/photos///contents/mkt/misc/help/icons//icon-80-help-zara-id.svg?ts=1629805802513" alt="" />
-            <h4>ZARA QR</h4>
-          </div>
+      <img className='w-[100%] mx-auto mt-40' src='https://static.zara.net/assets/public/96b3/0302/e44e4e019db2/65a192e9968c/image-landscape-web-60c40758-6e66-4050-a5e5-7a09d0374901-default_0/image-landscape-web-60c40758-6e66-4050-a5e5-7a09d0374901-default_0.jpg?ts=1737021733464&w=1263'></img>
+      <div className="flex flex-col my-20 mx-auto w-[76%] gap-10">
+        <div className='font-bold'>
+          FREQUENTLY ASKED QUESTIONS
+        </div>
+        <div className='help-favourites-content'>
+          <nav className="flex flex-wrap gap-3">
+            {
+              faqs.map((faq, index) => {
+                return (
+                  <a href={faq.link} className='border border-black text-[0.625rem] mr-10 px-2 py-1'>{faq.text}</a>
+                )
+            })
+          }
+          </nav>
         </div>
       </div>
+      <div style={{ width: "76%", margin: "auto", cursor: 'pointer' }}>
+        <h3 className='mb-5 font-bold'>ALL HELP TOPICS</h3>
+        <div className="grid gap-5 grid-cols-[repeat(auto-fit,_minmax(270px,_1fr))] max-w-[1440px]">
+          {
+            faqs2.map((faq, index) => {
+              return (
+                <div key={index} className='flex flex-col border border-black p-8'>
+                  <h3 className='mb-5'>{faq.title}</h3>
+                  <ul>
+                    {
+                      faq.pointers.map((pointer, index) => {
+                        return (
+                          <li key={index} className='text-[0.625rem] mb-2 hover:cursor-pointer hover:underline'>
+                            {pointer}
+                          </li>
+                        )
+                      })
+                    }
+                  </ul>
+                </div>
+              )
+            })
+          }
+        </div>
+      </div>
+      <Footer/>
     </>
   )
 }

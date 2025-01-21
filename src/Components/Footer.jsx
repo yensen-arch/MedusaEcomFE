@@ -66,7 +66,7 @@ const Container = styled.div`
     .footer_display{
         display:flex;
         align-items:flex-start;
-        justify-content:space-between;
+        gap: 5rem;
     }
 
     .english_cookies_setting{
