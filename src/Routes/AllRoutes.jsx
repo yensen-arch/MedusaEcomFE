@@ -12,6 +12,7 @@ import Companylogin from './Company'
 import PaymentMethod from '../Components/PaymentMethod'
 import Search from '../Components/Search'
 import CardDetail from '../Routes/CardDetail'
+import AboutUs from './AboutUs'
 import OTP from './OTP'
 import ProtectedRoute from '../Components/ProtectedRoute'
 const AllRoutes = () => {
@@ -19,6 +20,7 @@ const AllRoutes = () => {
     <Routes>
       <Route path='/' element={<Homepage />}></Route>
       <Route path='/product/:id' element={<SinglePage />}></Route>
+      <Route path='about' element={<AboutUs />}></Route>
       <Route path='/help' element={<Help />}></Route>
       <Route path='/company' element={<Companylogin/>}></Route>
       <Route path='/login' element={<LogIn />} />

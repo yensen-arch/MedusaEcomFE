@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Footer = () => {
@@ -29,7 +30,7 @@ const Footer = () => {
                 </div>
                 <div className='footer_rows'>
                     <h4>COMPANY</h4>
-                    <div>ABOUT US</div>
+                    <div><Link to={'/about'}>ABOUT US</Link></div>
                     <div>JOIN US</div>
                     <div>OFFICES</div>
                     <div>STORES</div>
