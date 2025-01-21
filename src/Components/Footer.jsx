@@ -5,7 +5,8 @@ const Footer = () => {
     return (
         <Container className='footer'>
             <div className='footer_display'>
-                <div><h4>HELP</h4>
+                <div className='footer_rows'>
+                    <h4>HELP</h4>
                     <div>SHOP AT ZARA.COM</div>
                     <div>PRODUCT</div>
                     <div>GIFT CARD</div>
@@ -17,7 +18,8 @@ const Footer = () => {
                     <div>PROGRAMME</div>
                     <div>MY ACCOUNT</div>
                 </div>
-                <div><h4>FOLLOW US</h4>
+                <div className='footer_rows'>
+                    <h4>FOLLOW US</h4>
                     <div>NEWSLETTER</div>
                     <div>INSTAGRAM</div>
                     <div>FACEBOOK</div>
@@ -25,14 +27,16 @@ const Footer = () => {
                     <div>PINTEREST</div>
                     <div>YOUTUBE</div>
                 </div>
-                <div><h4>COMPANY</h4>
+                <div className='footer_rows'>
+                    <h4>COMPANY</h4>
                     <div>ABOUT US</div>
                     <div>JOIN US</div>
                     <div>OFFICES</div>
                     <div>STORES</div>
                     <div>WORK WITH US</div>
                 </div>
-                <div><h4>POLICIES</h4>
+                <div className='footer_rows'>
+                    <h4>POLICIES</h4>
                     <div>PRIVACY POLICY</div>
                     <div>PURCHASE CONDITIONS</div>
                     <div>GIFT CARD CONDITIONS</div>
@@ -40,14 +44,9 @@ const Footer = () => {
                 </div>
             </div>
 
-            <div className='english_cookies_setting'>
-                <div>INDIA</div>
-                <div>ENGLISH </div>
-            </div>
-
             <div className='footer_bottom'>
                 <div>
-                    <div>NAME AND ADDRESS OF THE MANUFACTURER:</div>
+                    <div>NAME AND ADDRESS OF THE MANUFACTURER :</div>
                     <div>INDUSTRIA DE DISEÑO TEXTIL, S.A. (INDITEX, S.A.)</div>
                     <div>AVENIDA DE LA DIPUTACIÓN, EDIFICIO INDITEX, 15143, ARTEIXO (A CORUÑA), SPAIN</div>
                 </div>
@@ -60,21 +59,31 @@ const Container = styled.div`
     margin:auto;
     display:flex;
     flex-direction:column;
-    gap:20px;
+    gap:3rem;
     font-size:11px;
-    margin-bottom:50px;
+    margin: 8rem auto 4rem auto;
     line-height:20px;
-    margin-top:50px;
     .footer_display{
         display:flex;
         align-items:flex-start;
-        gap:30px;
-
+        justify-content:space-between;
     }
 
     .english_cookies_setting{
         display:flex;
         gap:20px;
+    }
+
+    .footer_bottom{
+        display:flex;
+        justify-content:flex-start;
+        font-size:9px;
+    }
+
+    .footer_rows{
+        display:flex;
+        flex-direction:column;
+        gap:0.5rem;
     }
 `
 
