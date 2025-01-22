@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const DynamicRenderMap = ({ items }) => {
+const DynamicRenderMap = ({ items, imgSrc }) => {
   const renderHTML = (content) => {
     if (typeof content === "string") {
       return <div dangerouslySetInnerHTML={{ __html: content }} />
@@ -32,7 +32,9 @@ const DynamicRenderMap = ({ items }) => {
         </div>
         <div className="rightDiv flex flex-col w-3/5 gap-10">
           <h2 className="text-xl">{selectedKey}</h2>
-          <img src={'https://static.zara.net/photos///contents/mkt/spots/aw22-help-customer/subhome-xmedia-items-sizes//w/725/landscape-96355a30-52cc-4411-86f6-4fcada393076_0.jpg?ts=1672218637303'}/>
+          {imgSrc ? (
+            <img src={imgSrc}/>
+          ) : null}
           {selectedKey ? (
             renderHTML(items[selectedKey])
           ) : (

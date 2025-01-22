@@ -10,7 +10,7 @@ const Footer = () => {
                     <h4>HELP</h4>
                     <div>SHOP AT ZARA.COM</div>
                     <div><Link to={'/help/items-and-sizes'}>ITEMS AND SIZES</Link></div>
-                    <div>GIFT CARD</div>
+                    <div><Link to={'/help/gift-card'}>GIFT CARD</Link></div>
                     <div>PAYMENT</div>
                     <div>SHIPPING</div>
                     <div>EXCHANGE AND RETURNS</div>
