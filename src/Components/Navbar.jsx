@@ -36,13 +36,17 @@ const Navbar = () => {
         {/* Left section: Hamburger and Logo */}
         <div className="flex gap-4">
           <button onClick={toggleMenu} className="py-2 mb-auto">
-            {isMenuOpen ? <RiCloseLine className="w-6 h-6" /> : <RiMenuLine className="w-6 h-6" />}
+            {isMenuOpen ? (
+              <RiCloseLine className="w-6 h-6" />
+            ) : (
+              <RiMenuLine className="w-6 h-6" />
+            )}
           </button>
 
           <div className="flex flex-col justify-center pl-20 relative">
             <Link to="/" className="mb-auto py-2 ">
               <img
-                src="	https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876"
+                src="https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876"
                 alt="ZARA"
                 className={`transition-all duration-700 ${logoSize}`}
               />
