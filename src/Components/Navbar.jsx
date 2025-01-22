@@ -40,9 +40,9 @@ const Navbar = () => {
           </button>
 
           <div className="flex flex-col justify-center pl-20 relative">
-            <Link to="/" className="mb-auto py-2">
+            <Link to="/" className="mb-auto py-2 ">
               <img
-                src="https://static.zara.net/photos///contents/cm/assets/logos/default-dark_0.svg?ts=1690441478954"
+                src="	https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876"
                 alt="ZARA"
                 className={`transition-all duration-700 ${logoSize}`}
               />
