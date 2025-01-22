@@ -14,6 +14,8 @@ import Search from '../Components/Search'
 import CardDetail from '../Routes/CardDetail'
 import AboutUs from './AboutUs'
 import OTP from './OTP'
+import Careers from './Careers'
+import NewsLetter from './NewsLetter'
 import ProtectedRoute from '../Components/ProtectedRoute'
 const AllRoutes = () => {
   return (
@@ -23,8 +25,10 @@ const AllRoutes = () => {
       <Route path='about' element={<AboutUs />}></Route>
       <Route path='/help' element={<Help />}></Route>
       <Route path='/company' element={<Companylogin/>}></Route>
+      <Route path='newsletter' element={<NewsLetter />}></Route>
       <Route path='/login' element={<LogIn />} />
       <Route path='/signin' element={<SignIn />} />
+      <Route path='career' element={<Careers />}></Route>
       <Route path='/cart' element={<ProtectedRoute><Cart /></ProtectedRoute>}></Route>
       <Route path='/checkout' element={<ProtectedRoute><Checkout /></ProtectedRoute>}></Route>
       <Route path='/paymentMethod' element={ <ProtectedRoute><PaymentMethod /></ProtectedRoute>}></Route>
