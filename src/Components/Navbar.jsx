@@ -4,10 +4,15 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // React Router's Link
 import { useSelector, useDispatch } from "react-redux";
 import { getCart } from "../Redux/App/action";
-import { RiMenuLine, RiCloseLine, RiSearchLine, RiShoppingBag2Line } from "react-icons/ri";
+import {
+  RiMenuLine,
+  RiCloseLine,
+  RiSearchLine,
+  RiShoppingBag2Line,
+} from "react-icons/ri";
 import NavMenu from "./NavMenu";
 
-const Navbar = () => {
+const Navbar = ({ activeCategory, setActiveCategory }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [logoSize, setLogoSize] = useState("h-40");
@@ -51,9 +56,13 @@ const Navbar = () => {
                 className={`transition-all duration-700 ${logoSize}`}
               />
             </Link>
-
             {/* NavMenu component */}
-            {isMenuOpen && <NavMenu />}
+            {isMenuOpen && (
+              <NavMenu
+                activeCategory={activeCategory}
+                setActiveCategory={setActiveCategory}
+              />
+            )}{" "}
           </div>
         </div>
 
