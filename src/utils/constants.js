@@ -1,3 +1,16 @@
+import itemsAvailability from './templates/items-availability.js';
+import whatsMySize from './templates/what-my-size.js';
+import compositionAndCare from './templates/composition-and-care.js';
+import itemsWarranty from './templates/items-warranty.js';
+import pricingPolicy from './templates/pricing-policy.js';
+import giftCard from './templates/gift-card.js';
+import giftPackaging from './templates/gift-packaging.js';
+import shippingMethods from './templates/shipping-and-cost.js';
+import OrderInServeralDeliveries from './templates/order-in-several-orders.js';
+import WhereDoWeShip from './templates/where-do-we-ship.js';
+import PaymentMethods from './templates/payment-methods.js';
+import PaymentSecurity from './templates/payment-security.js';
+
 export const faqs =[
   {
     text: 'HOW TO RETURN',
@@ -99,17 +112,25 @@ export const faqs2 =[
 ]
 
 export const items_availability_map = {
-  "Item1": "This is content for item 1",
-  "Item2": "This is content for item 2",
-  "Item3": "This is content for item 3",
-  "Item4": "This is content for item 4",
-  "Item5": "This is content for item 5"
+  "ITEMS AVAILABILITY": itemsAvailability,
+  "WHAT'S MY SIZE?": whatsMySize,
+  "COMPOSITION AND CARE": compositionAndCare,
+  "ITEMS WARRANTY": itemsWarranty,
+  "PRICING POLICY": pricingPolicy
 }
 
 export const gift_card_help = {
-  "Item1": "This is content for item 1",
-  "Item2": "This is content for item 2",
-  "Item3": "This is content for item 3",
-  "Item4": "This is content for item 4",
-  "Item5": "This is content for item 5"
+  "GIFT CARD": giftCard,
+  "GIFT PACKAGING": giftPackaging,
+}
+
+export const shipping_map = {
+  "SHIPPING METHODS, TIMES AND COSTS": shippingMethods,
+  "ORDERS IN SEVERAL DELIVERIES": OrderInServeralDeliveries,
+  "WHERE DO WE SHIP?": WhereDoWeShip
+}
+
+export const payment_invoice_map = {
+  "PAYMENT METHODS": PaymentMethods,
+  "PAYMENT SECURITY": PaymentSecurity
 }

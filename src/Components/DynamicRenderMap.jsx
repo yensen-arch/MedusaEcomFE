@@ -11,14 +11,14 @@ const DynamicRenderMap = ({ items, imgSrc }) => {
   return (
     <>
       <div className='flex gap-32'>
-        <div className='leftDiv w-2/5 flex flex-col gap-10'>
+        <div className='leftDiv w-[25%] flex flex-col gap-10'>
           <div className="upperLeft border-black border-[0.5px] p-10">
             <h2 className="mb-4 text-sm">ITEMS AND SIZES</h2>
             <ul>
               {Object.keys(items).map((key) => (
                 <li
                   key={key}
-                  className={`cursor-pointer py-2 text-xs rounded ${selectedKey === key ? "font-semibold" : ""} hover:underline`}
+                  className={`cursor-pointer py-2 text-[0.625rem] leading-[1.5] tracking-wider rounded ${selectedKey === key ? "font-semibold" : ""} hover:underline`}
                   onClick={() => setSelectedKey(key)}
                 >
                   {key}
@@ -30,8 +30,8 @@ const DynamicRenderMap = ({ items, imgSrc }) => {
               <input type='text' className='border-none w-full focus:border-none' placeholder='SEARCH IN THE SHOPPING GUIDE'/>
           </div>
         </div>
-        <div className="rightDiv flex flex-col w-3/5 gap-10">
-          <h2 className="text-xl">{selectedKey}</h2>
+        <div className="rightDiv flex flex-col w-[50%] gap-10">
+          <h2 className="text-xl leading-[1.5] tracking-wider">{selectedKey}</h2>
           {imgSrc ? (
             <img src={imgSrc}/>
           ) : null}

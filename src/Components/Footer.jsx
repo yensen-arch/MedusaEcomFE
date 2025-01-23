@@ -12,7 +12,7 @@ const Footer = () => {
                     <div><Link to={'/help/items-and-sizes'}>ITEMS AND SIZES</Link></div>
                     <div><Link to={'/help/gift-card'}>GIFT CARD</Link></div>
                     <div>PAYMENT</div>
-                    <div>SHIPPING</div>
+                    <div><Link to={'/help/shipping'}>SHIPPING</Link></div>
                     <div>EXCHANGE AND RETURNS</div>
                     <div>SHOPS AND COMPANY</div>
                     <div>CLOTHES COLLECTION</div>
