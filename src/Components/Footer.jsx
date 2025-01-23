@@ -9,8 +9,8 @@ const Footer = () => {
                 <div className='footer_rows'>
                     <h4>HELP</h4>
                     <div>SHOP AT ZARA.COM</div>
-                    <div>PRODUCT</div>
-                    <div>GIFT CARD</div>
+                    <div><Link to={'/help/items-and-sizes'}>ITEMS AND SIZES</Link></div>
+                    <div><Link to={'/help/gift-card'}>GIFT CARD</Link></div>
                     <div>PAYMENT</div>
                     <div>SHIPPING</div>
                     <div>EXCHANGE AND RETURNS</div>
@@ -21,7 +21,7 @@ const Footer = () => {
                 </div>
                 <div className='footer_rows'>
                     <h4>FOLLOW US</h4>
-                    <div>NEWSLETTER</div>
+                    <div><Link to={"/newsletter"}>NEWSLETTER</Link></div>
                     <div>INSTAGRAM</div>
                     <div>FACEBOOK</div>
                     <div>TWITTER</div>
@@ -34,7 +34,7 @@ const Footer = () => {
                     <div>JOIN US</div>
                     <div>OFFICES</div>
                     <div>STORES</div>
-                    <div>WORK WITH US</div>
+                    <div><Link to={'/career'}>WORK WITH US</Link></div>
                 </div>
                 <div className='footer_rows'>
                     <h4>POLICIES</h4>

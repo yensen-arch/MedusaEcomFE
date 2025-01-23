@@ -17,6 +17,8 @@ import OTP from './OTP'
 import Careers from './Careers'
 import NewsLetter from './NewsLetter'
 import ProtectedRoute from '../Components/ProtectedRoute'
+import ItemsAvailabilityHelp from './ItemsAvailabilityHelp'
+import GiftCardHelp from './GiftCardHelp'
 const AllRoutes = () => {
   return (
     <Routes>
@@ -27,6 +29,8 @@ const AllRoutes = () => {
       <Route path='/company' element={<Companylogin/>}></Route>
       <Route path='newsletter' element={<NewsLetter />}></Route>
       <Route path='/login' element={<LogIn />} />
+      <Route path='/help/items-and-sizes' element={<ItemsAvailabilityHelp />}></Route>
+      <Route path='/help/gift-card' element={<GiftCardHelp />}></Route>
       <Route path='/signin' element={<SignIn />} />
       <Route path='career' element={<Careers />}></Route>
       <Route path='/cart' element={<ProtectedRoute><Cart /></ProtectedRoute>}></Route>

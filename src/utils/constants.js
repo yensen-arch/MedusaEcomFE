@@ -97,3 +97,19 @@ export const faqs2 =[
     ]
   }
 ]
+
+export const items_availability_map = {
+  "Item1": "This is content for item 1",
+  "Item2": "This is content for item 2",
+  "Item3": "This is content for item 3",
+  "Item4": "This is content for item 4",
+  "Item5": "This is content for item 5"
+}
+
+export const gift_card_help = {
+  "Item1": "This is content for item 1",
+  "Item2": "This is content for item 2",
+  "Item3": "This is content for item 3",
+  "Item4": "This is content for item 4",
+  "Item5": "This is content for item 5"
+}
