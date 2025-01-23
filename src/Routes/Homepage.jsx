@@ -203,7 +203,6 @@ const Homepage = () => {
             }`}
           >
             <ArrowBackIosIcon fontSize="small" />
-            <span>{categoryNames[indexNo - 1]}</span>
           </button>
         )}
         {indexNo < categoryNames.length - 1 && (
@@ -213,7 +212,6 @@ const Homepage = () => {
               activeIndex % 2 === 0 ? "text-white" : "text-black"
             }`}
           >
-            <span>{categoryNames[indexNo + 1]}</span>
             <ArrowForwardIosIcon fontSize="small" />
           </button>
         )}

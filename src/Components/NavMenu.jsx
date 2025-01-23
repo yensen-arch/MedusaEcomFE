@@ -70,13 +70,17 @@ const menuItems = {
 
 export default function NavMenu({ activeCategory, setActiveCategory }) {
   return (
-    <div className="absolute top-0 left-12 bg-white z-10 w-[400px] h-[80vh] border-black border-[1px] overflow-hidden">
+    <div
+      className={`absolute top-0 left-12 bg-white z-10 w-[400px] h-[80vh] border-black border-[1px] overflow-hidden transition-transform duration-300 ease-in-out ${
+        activeCategory ? "translate-x-0" : "-translate-x-full"
+      }`}
+    >
       {/* Logo */}
       <div className="flex justify-center pt-2 pb-16">
         <img
           src="https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876"
           alt="ZARA"
-          className="h-28 mr-auto px-8"
+          className="h-28 mr-auto px-8 transition-opacity duration-300 ease-in-out opacity-100"
         />
       </div>
 
@@ -85,11 +89,11 @@ export default function NavMenu({ activeCategory, setActiveCategory }) {
         {Object.keys(menuItems).map((category) => (
           <button
             key={category}
-            className={`text-sm ${
+            className={`text-sm transition-all duration-300 ease-in-out ${
               activeCategory === category
-                ? "font-bold text-black"
-                : "text-black"
-            } hover:text-black transition-colors`}
+                ? "font-bold text-black scale-110"
+                : "text-gray-600 hover:text-black"
+            }`}
             onClick={() => {
               setActiveCategory(category);
             }}
@@ -127,7 +131,10 @@ export default function NavMenu({ activeCategory, setActiveCategory }) {
       >
         <ul className="flex flex-col gap-4 px-8">
           {menuItems[activeCategory].map((item, index) => (
-            <li key={index}>
+            <li
+              key={index}
+              className="transition-transform duration-300 ease-in-out hover:translate-x-2"
+            >
               <Link to={item.link} className="text-sm hover:underline">
                 {item.label}
               </Link>
@@ -138,3 +145,4 @@ export default function NavMenu({ activeCategory, setActiveCategory }) {
     </div>
   );
 }
+
