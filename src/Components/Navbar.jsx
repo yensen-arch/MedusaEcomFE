@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // React Router's Link
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getCart } from "../Redux/App/action";
 import {
   RiMenuLine,
   RiCloseLine,
-  RiSearchLine,
-  RiShoppingBag2Line,
+  
 } from "react-icons/ri";
 import NavMenu from "./NavMenu";
 
@@ -39,7 +38,7 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
     <nav className="fixed top-0 left-0 w-full z-50 bg-transparent">
       <div className="w-full flex justify-between items-center px-4 py-2 gap-6">
         {/* Left section: Hamburger and Logo */}
-        <div className="flex gap-4">
+        <div >
           <button onClick={toggleMenu} className="py-2 mb-auto">
             {isMenuOpen ? (
               <RiCloseLine className="w-6 h-6" />
@@ -49,20 +48,37 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
           </button>
 
           <div className="flex flex-col justify-center pl-20 relative">
-            <Link to="/" className="mb-auto py-2 ">
+            <Link to="/" className="mb-auto py-2">
               <img
                 src="https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876"
                 alt="ZARA"
                 className={`transition-all duration-700 ${logoSize}`}
               />
             </Link>
+
+            {/* Categories row */}
+            <div className="flex items-center space-x-8 py-2">
+              {["WOMAN", "MAN", "KIDS", "BEAUTY"].map((category) => (
+                <button
+                  key={category}
+                  className={"text-sm"}
+                  onClick={() => {
+                    setActiveCategory(category);
+                    setIsMenuOpen(true);
+                  }}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+
             {/* NavMenu component */}
             {isMenuOpen && (
               <NavMenu
                 activeCategory={activeCategory}
                 setActiveCategory={setActiveCategory}
               />
-            )}{" "}
+            )}
           </div>
         </div>
 
