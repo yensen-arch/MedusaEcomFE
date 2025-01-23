@@ -24,6 +24,7 @@ const Homepage = () => {
         video:
           "https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381505/jeans_mzvwwq.mp4",
       },
+      { type: "footer" },
     ],
     MAN: [
       {
@@ -42,6 +43,7 @@ const Homepage = () => {
         path: "men3",
         img: "https://static.zara.net/assets/public/9bc7/a9a5/319340e6906f/029055b12a04/image-landscape-default-fill-da20bbac-05ba-467c-83f9-396121a29f7b-default_0/image-landscape-default-fill-da20bbac-05ba-467c-83f9-396121a29f7b-default_0.jpg?ts=1736429615385&w=1384",
       },
+      { type: "footer" },
     ],
     KIDS: [
       {
@@ -49,6 +51,7 @@ const Homepage = () => {
           "https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381101/gett0nihpxj7tgkg4tg3.mp4",
         cat: "kids",
       },
+      { type: "footer" },
     ],
     BEAUTY: [
       {
@@ -56,6 +59,7 @@ const Homepage = () => {
           "https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381101/gett0nihpxj7tgkg4tg3.mp4",
         cat: "beauty",
       },
+      { type: "footer" },
     ],
   };
 
@@ -99,11 +103,6 @@ const Homepage = () => {
 
   const handleSlideChange = (swiper) => {
     setActiveIndex(swiper.activeIndex);
-    if (swiper.isEnd && indexNo === categoryNames.length - 1) {
-      setShowFooter(true);
-    } else {
-      setShowFooter(false);
-    }
   };
 
   const handleCategoryChange = (category) => {
@@ -165,25 +164,31 @@ const Homepage = () => {
           >
             {categories[activeCategory]?.map((ele, index) => (
               <SwiperSlide key={index} className="w-full h-screen">
-                <Link to={`/products`} state={{ query: ele.path }}>
-                  {ele.img ? (
-                    <img
-                      src={ele.img || "/placeholder.svg"}
-                      alt="Slide"
-                      className="w-full h-screen object-cover"
-                    />
-                  ) : ele.video ? (
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      controls={ele.cat !== "kids"}
-                      className="w-full h-screen object-cover"
-                    >
-                      <source src={ele.video} type="video/mp4" />
-                    </video>
-                  ) : null}
-                </Link>
+                {ele.type === "footer" ? (
+                  <div>
+                    <FooterLP />
+                  </div>
+                ) : (
+                  <Link to={`/products`} state={{ query: ele.path }}>
+                    {ele.img ? (
+                      <img
+                        src={ele.img || "/placeholder.svg"}
+                        alt="Slide"
+                        className="w-full h-screen object-cover"
+                      />
+                    ) : ele.video ? (
+                      <video
+                        autoPlay
+                        loop
+                        muted
+                        controls={ele.cat !== "kids"}
+                        className="w-full h-screen object-cover"
+                      >
+                        <source src={ele.video} type="video/mp4" />
+                      </video>
+                    ) : null}
+                  </Link>
+                )}
               </SwiperSlide>
             ))}
           </Swiper>
@@ -213,11 +218,6 @@ const Homepage = () => {
           </button>
         )}
       </div>
-      {showFooter && (
-        <div className="absolute bottom-0 left-0 right-0 z-20">
-          <FooterLP />
-        </div>
-      )}
     </div>
   );
 };

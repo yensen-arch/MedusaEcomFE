@@ -69,7 +69,6 @@ const menuItems = {
 };
 
 export default function NavMenu({ activeCategory, setActiveCategory }) {
-  console.log(activeCategory)
   return (
     <div className="absolute top-0 left-12 bg-white z-10 w-[400px] h-[80vh] border-black border-[1px] overflow-hidden">
       {/* Logo */}
