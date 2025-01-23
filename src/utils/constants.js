@@ -10,6 +10,15 @@ import OrderInServeralDeliveries from './templates/order-in-several-orders.js';
 import WhereDoWeShip from './templates/where-do-we-ship.js';
 import PaymentMethods from './templates/payment-methods.js';
 import PaymentSecurity from './templates/payment-security.js';
+import Invoices from './templates/invoices.js';
+import PayWithGiftCard from './templates/payment-with-giftcard.js';
+import OnlineShopping from './templates/online-shopping.js';
+import OrderStatus from './templates/order-status.js';
+import ChangeOrCancel from './templates/change-or-cancel.js';
+import IssueMyOrder from './templates/issue-my-order.js';
+import InStorePurchases from './templates/in-store-purchases.js';
+import RetreiveStoreReceipt from './templates/retreive-store-receipt.js';
+import OnlinePurchaseStore from './templates/online-purchase-from-store-device.js';
 
 export const faqs =[
   {
@@ -132,5 +141,17 @@ export const shipping_map = {
 
 export const payment_invoice_map = {
   "PAYMENT METHODS": PaymentMethods,
-  "PAYMENT SECURITY": PaymentSecurity
+  "PAYMENT SECURITY": PaymentSecurity,
+  "INVOICES": Invoices,
+  "PAYMENT WITH A GIFT CARD": PayWithGiftCard
+}
+
+export const my_purchases_help_map = {
+  "ONLINE SHOPPING": OnlineShopping,
+  "ORDER STATUS": OrderStatus,
+  "CHANGE OR CANCEL MY ONLINE ORDER": ChangeOrCancel,
+  "ISSUES WITH MY ORDER": IssueMyOrder,
+  "IN STORE PURCHASES": InStorePurchases,
+  "RETREIVE MY STORE RECEIPT": RetreiveStoreReceipt,
+  "ONLINE PURCHASE FROM A STORE DEVICE": OnlinePurchaseStore
 }

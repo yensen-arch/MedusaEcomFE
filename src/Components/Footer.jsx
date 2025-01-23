@@ -11,7 +11,7 @@ const Footer = () => {
                     <div>SHOP AT ZARA.COM</div>
                     <div><Link to={'/help/items-and-sizes'}>ITEMS AND SIZES</Link></div>
                     <div><Link to={'/help/gift-card'}>GIFT CARD</Link></div>
-                    <div>PAYMENT</div>
+                    <div><Link to={'/help/payment-invoice'}>PAYMENTS AND INVOICES</Link></div>
                     <div><Link to={'/help/shipping'}>SHIPPING</Link></div>
                     <div>EXCHANGE AND RETURNS</div>
                     <div>SHOPS AND COMPANY</div>

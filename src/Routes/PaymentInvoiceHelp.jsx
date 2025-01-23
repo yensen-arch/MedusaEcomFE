@@ -6,7 +6,7 @@ import Footer from '../Components/Footer'
 const PaymentInvoiceHelp = () => {
   return (
     <>
-      <div className='w-[80%] mt-48 mx-auto font-aboutUs'>
+      <div className='w-[80%] mt-60 mx-auto font-aboutUs'>
         <DynamicRenderMap items={payment_invoice_map} imgSrc={'https://static.zara.net/photos///contents/mkt/spots/aw22-help-customer/subhome-xmedia-payment//w/725/landscape-af9fbca9-3a2a-4fba-ba24-e80c1a950874_0.jpg?ts=1672146762412'}/>
       </div>
       <Footer/>
