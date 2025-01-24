@@ -8,7 +8,6 @@ import ProductPage from '../Routes/ProductPage'
 import Homepage from './Homepage'
 import Cart from '../Components/Cart'
 import Checkout from '../Components/Checkout'
-import Companylogin from './Company'
 import PaymentMethod from '../Components/PaymentMethod'
 import Search from '../Components/Search'
 import CardDetail from '../Routes/CardDetail'
@@ -29,7 +28,6 @@ const AllRoutes = () => {
       <Route path='/product/:id' element={<SinglePage />}></Route>
       <Route path='about' element={<AboutUs />}></Route>
       <Route path='/help' element={<Help />}></Route>
-      <Route path='/company' element={<Companylogin/>}></Route>
       <Route path='newsletter' element={<NewsLetter />}></Route>
       <Route path='/login' element={<LogIn />} />
       <Route path='/help/items-and-sizes' element={<ItemsAvailabilityHelp />}></Route>

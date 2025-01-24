@@ -1,114 +1,103 @@
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import "../CSS/Login.css"
-import { useState } from 'react';
-import { initializeApp } from "firebase/app";
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../Redux/Auth/action'
-import Footer from '../Components/Footer';
-import styled from 'styled-components';
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../Redux/Auth/action";
+import Footer from "../Components/Footer";
+
 const LogIn = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const location = useLocation()
-  const { isAuth } = useSelector((store) => (store.AuthReducer))
-  console.log(location)
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const { isAuth } = useSelector((store) => store.AuthReducer);
+  console.log(location);
   const path = location.state?.path;
   const [data, setData] = useState({
-    email: '',
-    password: ''
-  })
+    email: "",
+    password: "",
+  });
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDCHvdgABXgjtj6C3-55D2colSpVF05NTI",
-    authDomain: "zara-project-adec4.firebaseapp.com",
-    projectId: "zara-project-adec4",
-    storageBucket: "zara-project-adec4.appspot.com",
-    messagingSenderId: "1083442232261",
-    appId: "1:1083442232261:web:24d99e9bc4f6e92e49e9ac",
-    measurementId: "G-JLT9HVM9BX"
-  };
-
-  const app = initializeApp(firebaseConfig);
   const handleLogin = (e) => {
     e.preventDefault();
     if (data.email && data.password) {
       dispatch(login(data.email, data.password)).then((res) => {
-        if(!res){
-          alert("You have entered wrong credentials or please Signup first")
-        }else{
-          navigate(path)
-        } 
-      })
-    }else{
-      alert("You Have entered Wrong Credentials")
+        if (!res) {
+          alert("You have entered wrong credentials or please Signup first");
+        } else {
+          navigate(path);
+        }
+      });
+    } else {
+      alert("You Have entered Wrong Credentials");
     }
-  }
+  };
 
   if (isAuth) {
-    return <Navigate to={`/`} />
+    return <Navigate to={`/`} />;
   }
 
   return (
     <>
-      <div className='navbar_space'></div>
-      <div className='Login_main_box'>
-        <div className='Login_second_box'>
-          <div className='Login_second_box1'>
-            <h2>LOG IN</h2>
-            <form action="">
-              <label htmlFor="">E-MAIL</label><br />
-
-              <input type="email" placeholder='Enter Email' onChange={(e) => setData({ ...data, email: e.target.value })} /><br /><br />
-              <label htmlFor="">PASSWORD</label><br />
-              <input type="password" placeholder='Enter Password' onChange={(e) => setData({ ...data, password: e.target.value })} /><br /><br />
-              <button onClick={handleLogin}>LOG IN</button>
+      <div className="h-60"></div>
+      <div className="w-4/5 mx-auto text-xs">
+        <div className="w-full flex justify-between items-start">
+          <div className="w-full md:w-1/2 lg:w-2/5 pr-8">
+            <h2 className="text-lg font-bold mb-4">LOG IN</h2>
+            <form action="" className="space-y-4">
+              <div>
+                <label htmlFor="email" className="block mb-1">
+                  E-MAIL
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Enter Email"
+                  onChange={(e) => setData({ ...data, email: e.target.value })}
+                  className="w-full border-b border-gray-300 focus:outline-none focus:border-black pb-1"
+                />
+              </div>
+              <div>
+                <label htmlFor="password" className="block mb-1">
+                  PASSWORD
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Enter Password"
+                  onChange={(e) =>
+                    setData({ ...data, password: e.target.value })
+                  }
+                  className="w-full border-b border-gray-300 focus:outline-none focus:border-black pb-1"
+                />
+              </div>
+              <button
+                onClick={handleLogin}
+                className="w-full bg-black text-white px-16 py-2 text-base cursor-pointer hover:bg-slate-600"
+              >
+                LOG IN
+              </button>
             </form>
-          </div>
-          <div className='Login_second_box2'>
 
-            <h2>REGISTER</h2>
-            <p>IF YOU STILL DON'T HAVE A <span><b>ZARA.COM</b></span> ACCOUNT, USE THIS OPTION TO ACCESS THE REGISTRATION FORM.</p>
-            <p>BY GIVING US YOUR DETAILS, PURCHASING IN <b>ZARA.COM</b> WILL BE FASTER AND AN ENJOYABLE EXPERIENCE.</p>
-            <button onClick={() => {
-              navigate("/signin")
-            }} >CREATE ACCOUNT</button>
+            <div className="mt-8">
+              <button
+                onClick={() => navigate("/signin")}
+                className="w-full bg-white text-black px-4 py-2 text-base cursor-pointer border border-black hover:bg-slate-100"
+              >
+                REGISTER
+              </button>
+            </div>
           </div>
-
-          <Container classname='signbox'>
-            <p >DONT HAVE AN ACCOUNT? <Link to={`/signin`}>REGISTER</Link></p>
-          </Container>
-          <div></div>
+          <div className="hidden md:block w-full lg:w-3/5 h-full">
+            <img
+              src="https://static.zara.net/assets/public/db26/41d6/33aa45648676/89e13512dc01/image-landscape-db634aec-f379-4adf-972a-f0a121c0e167-default_0/image-landscape-db634aec-f379-4adf-972a-f0a121c0e167-default_0.jpg?ts=1728999719440&w=665"
+              alt="Zara fashion"
+              className="w-max object-fill"
+            />
+          </div>
         </div>
       </div>
       <Footer />
     </>
-  )
-}
-
-const Container = styled.div`
-  display: none;
-
-
-@media only screen and (min-width: 769px) and (max-width:845px){
-      display:block;
-}
-
-@media only screen and (min-width: 481px) and (max-width:768px){
-
-      display:block;
-
-}
-
-@media only screen and (min-width:320px) and (max-width:480px){
-
-      display:block;
-
-}
-
-@media only screen and (max-width: 320px){
-
-      display:block;
-
-`
+  );
+};
 
 export default LogIn;
