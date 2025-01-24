@@ -21,6 +21,7 @@ import GiftCardHelp from './GiftCardHelp'
 import ShippingHelp from './ShippingHelp'
 import PaymentInvoiceHelp from './PaymentInvoiceHelp'
 import MyOrdersHelp from './MyOrdersHelp'
+import ExchangesHelp from './ExchangesHelp'
 const AllRoutes = () => {
   return (
     <Routes>
@@ -34,6 +35,7 @@ const AllRoutes = () => {
       <Route path='/help/gift-card' element={<GiftCardHelp />}></Route>
       <Route path='/help/shipping' element={<ShippingHelp/>}></Route>
       <Route path='/help/payment-invoice' element={<PaymentInvoiceHelp />}></Route>
+      <Route path='/help/exchanges' element={<ExchangesHelp />}></Route>
       <Route path='/help/myOrders' element={<MyOrdersHelp />}></Route>
       <Route path='/signin' element={<SignIn />} />
       <Route path='career' element={<Careers />}></Route>

@@ -19,6 +19,11 @@ import IssueMyOrder from './templates/issue-my-order.js';
 import InStorePurchases from './templates/in-store-purchases.js';
 import RetreiveStoreReceipt from './templates/retreive-store-receipt.js';
 import OnlinePurchaseStore from './templates/online-purchase-from-store-device.js';
+import Exchanges from './templates/exchanges.js';
+import HowToReturn from './templates/how-to-return.js';
+import HowToExchange from './templates/how-to-exchange.js';
+import RefundForGiftPurchase from './templates/refund-for-gift-purchase.js';
+import SpecialReturn from './templates/special-return.js'
 
 export const faqs =[
   {
@@ -154,4 +159,12 @@ export const my_purchases_help_map = {
   "IN STORE PURCHASES": InStorePurchases,
   "RETREIVE MY STORE RECEIPT": RetreiveStoreReceipt,
   "ONLINE PURCHASE FROM A STORE DEVICE": OnlinePurchaseStore
-}
+};
+
+export const exchanges_returns_refunds_map = {
+  "HOW TO RETURN" : HowToReturn,
+  "HOW TO EXCHANGE": HowToExchange,
+  "REFUNDS": Exchanges,
+  "REFUND FOR A PURCHASE MADE WITH A GIFT CARD": RefundForGiftPurchase,
+  "SPECIAL RETURN CONDITIONS": SpecialReturn
+};
