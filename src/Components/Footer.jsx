@@ -10,13 +10,11 @@ const Footer = () => {
                     <h4>HELP</h4>
                     <div>SHOP AT ZARA.COM</div>
                     <div><Link to={'/help/items-and-sizes'}>ITEMS AND SIZES</Link></div>
-                    <div><Link to={'/help/gift-card'}>GIFT CARD</Link></div>
+                    <div><Link to={'/help/gift-card'}>GIFT OPTIONS</Link></div>
                     <div><Link to={'/help/payment-invoice'}>PAYMENTS AND INVOICES</Link></div>
                     <div><Link to={'/help/shipping'}>SHIPPING</Link></div>
-                    <div>EXCHANGE AND RETURNS</div>
-                    <div>SHOPS AND COMPANY</div>
-                    <div>CLOTHES COLLECTION</div>
-                    <div>PROGRAMME</div>
+                    <div><Link to={'/help/myOrders'}>MY PURCHASES</Link></div>
+                    <div><Link to={'/help/exchanges'}>EXCHANGES, RETURNS AND REFUNDS</Link></div>
                     <div>MY ACCOUNT</div>
                 </div>
                 <div className='footer_rows'>

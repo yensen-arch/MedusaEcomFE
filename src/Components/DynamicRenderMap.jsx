@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const DynamicRenderMap = ({ items, imgSrc }) => {
+const DynamicRenderMap = ({ items, imgSrc, heading }) => {
   const renderHTML = (content) => {
     if (typeof content === "string") {
       return <div dangerouslySetInnerHTML={{ __html: content }} />
@@ -13,7 +13,7 @@ const DynamicRenderMap = ({ items, imgSrc }) => {
       <div className='flex gap-32'>
         <div className='leftDiv w-[25%] flex flex-col gap-10'>
           <div className="upperLeft border-black border-[0.5px] p-10">
-            <h2 className="mb-4 text-sm">ITEMS AND SIZES</h2>
+            <h2 className="mb-4 text-sm">{heading}</h2>
             <ul>
               {Object.keys(items).map((key) => (
                 <li

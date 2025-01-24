@@ -24,6 +24,10 @@ import HowToReturn from './templates/how-to-return.js';
 import HowToExchange from './templates/how-to-exchange.js';
 import RefundForGiftPurchase from './templates/refund-for-gift-purchase.js';
 import SpecialReturn from './templates/special-return.js'
+import NewsLetter from './templates/newsletter.js';
+import StoreMode from './templates/store-mode-in-app.js';
+import UsedCloth from './templates/used-cloth-program.js';
+
 
 export const faqs =[
   {
@@ -168,3 +172,9 @@ export const exchanges_returns_refunds_map = {
   "REFUND FOR A PURCHASE MADE WITH A GIFT CARD": RefundForGiftPurchase,
   "SPECIAL RETURN CONDITIONS": SpecialReturn
 };
+
+export const zara_exp_map = {
+  "NEWSLETTER": NewsLetter,
+  "STORE MODE IN THE APP": StoreMode,
+  "OUR USED CLOTHING COLLECTION PROGRAMME": UsedCloth
+}

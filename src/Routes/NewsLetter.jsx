@@ -17,7 +17,7 @@ const NewsLetter = () => {
     setEmail("");
   }
   return (
-    <div className='w-[80%] mt-48 mx-auto font-aboutUs'>
+    <div className='w-[80%] mt-60 mx-auto font-aboutUs'>
       <div className='flex flex-col gap-2'>
         <h4 className="font-100">NEWSLETTER</h4>
         <p className='text-[0.7rem] leading-[1rem]'>
