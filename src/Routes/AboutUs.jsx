@@ -21,7 +21,7 @@ const AboutUs = () => {
   }
   return (
     <>
-      <div className='mt-[9rem] mx-auto w-[76%] flex flex-col gap-3'>
+      <div className='mt-80 mx-auto w-[76%] flex flex-col gap-3'>
         <h2 className='text-[15px] font-semibold tracking-[0.8px] [font-stretch:condensed] font-aboutUs'>Company</h2>
         <p className='text-[13px] font-aboutUs font-light leading-[20px]'>
           Zara is one of the largest international fashion companies. It belongs to Inditex, one of the world’s largest distribution groups.<br /><br />
