@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Footer = () => {
   return (
     <Container className="footer">
-      <div className="footer_display">
+      <div className="hidden md:flex flex-start gap-5">
         <div className="footer_rows">
           <h4 className="font-bold">HELP</h4>
           <div>
@@ -64,7 +64,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="footer_bottom">
+      <div className="mt-40 md:flex flex-start text-[9px]">
         <div>
           <div>NAME AND ADDRESS OF THE MANUFACTURER :</div>
           <div>INDUSTRIA DE DISEÑO TEXTIL, S.A. (INDITEX, S.A.)</div>

@@ -35,11 +35,11 @@ export const faqs =[
     link: '#'
   },
   {
-    text: 'ITEMS AVAILABILITY',
+    text: 'RETRIEVE MY STORE RECEIPT',
     link: '#'
   },
   {
-    text: 'RETRIEVE MY STORE RECEIPT',
+    text: 'ITEMS AVAILABILITY',
     link: '#'
   },
   {
@@ -64,67 +64,160 @@ export const faqs2 =[
   },
   {
     title: 'ITEMS AND SIZES',
+    url:'items-and-sizes',
     pointers: [
-      'ITEM AVAILABILITY',
-      'WHAT\'S MY SIZE?',
-      'COMPOSITION AND CARE',
-      'ITEMS WARRANTY',
-      'PRICING POLICY',
-      'WITHDRAWN ITEMS'
+      {
+        pointer: 'ITEM AVAILABILITY',
+        key: "item-availability"
+      },
+      {
+        pointer: 'WHAT\'S MY SIZE?',
+        key: 'my-size'
+      },
+      {
+        pointer: 'COMPOSITION AND CARE',
+        key: 'composition-and-care'
+      },
+      {
+        pointer: 'ITEMS WARRANTY',
+        key: 'warranty'
+      },
+      {
+        pointer: 'PRICING POLICY',
+        key: 'pricing'
+      }
     ]
   },
   {
     title: 'GIFT OPTIONS',
+    url: 'gift-card',
     pointers: [
-      'GIFT CARD',
-      'GIFT PACKAGING',
+      {
+        pointer: 'GIFT CARD',
+        key: 'gift-card'
+      },
+      {
+        pointer: 'GIFT PACKAGING',
+        key: 'gift-package'
+      }
     ]
   },
   {
     title: 'SHIPPING',
+    url: 'shipping',
     pointers:[
-      'SHIPPING METHODS AND COSTS',
-      'ORDERS IN SEVRAL DELIVERIES',
-      'WHERE DO WE SHIP?'
+      {
+        pointer: 'SHIPPING METHODS AND COSTS',
+        key: 'shipping-methods'
+      },
+      {
+        pointer: 'ORDERS IN SEVRAL DELIVERIES',
+        key: 'multiple-deliveries'
+      },
+      {
+        pointer: 'WHERE DO WE SHIP?',
+        key: 'shipping'
+      }
     ]
   },
   {
     title: 'PAYMENTS AND INVOICES',
+    url: 'payment-invoice',
     pointers:[
-      'PAYMENT METHODS',
-      'INVOICES',
-      'PAYMENT SECURITY',
-      'PAYMENT WITH A GIFTCARD'
+      {
+        pointer: 'PAYMENT METHODS',
+        key: 'methods'
+      },
+      {
+        pointer: 'INVOICES',
+        key: "invoices"
+      },
+      {
+        pointer: 'PAYMENT SECURITY',
+        key: "security",
+      },
+      {
+        pointer: 'PAYMENT WITH A GIFTCARD',
+        key: 'gift-card-payment'
+      }
     ]
   },
   {
     title: 'MY PURCHASES',
+    url: "myOrders",
     pointers: [
-      'ONLINE SHOPPING',
-      'ORDER STATUS',
-      'CHANGE OR CANCEL MY ONLINE ORDER',
-      'ISSUES WITH MY ORDER',
-      'IN-STORE PURCHASES',
-      'RETRIEVE MY STORE RECEIPT',
-      'ONLINE PURCHASE FROM A STORE DEVICE'
+      {
+        pointer: 'ONLINE SHOPPING',
+        key: 'online',
+      },
+      {
+        pointer: 'ORDER STATUS',
+        key: 'status',
+      },
+      {
+        pointer: 'CHANGE OR CANCEL MY ONLINE ORDER',
+        key: 'change-cancel'
+      },
+      {
+        pointer: 'ISSUES WITH MY ORDER',
+        key: "issues"
+      },
+      {
+        pointer: 'IN-STORE PURCHASES',
+        key: "in-store"
+      },
+      {
+        pointer: 'RETRIEVE MY STORE RECEIPT',
+        key: "retreive-receipt"
+      },
+      {
+        pointer: 'ONLINE PURCHASE FROM A STORE DEVICE',
+        key: 'store-device'
+      }
     ]
   },
   {
     title: 'EXCHANGES, RETURNS AND REFUNDS',
+    url: 'exchanges',
     pointers: [
-      'HOW TO RETURN',
-      'HOW TO EXCHANGE',
-      'REFUNDS',
-      'RETURN FOR A PURCHASE MADE WITH A GIFT CARD',
-      'SPECIAL RETURNS CONDITIONS',
+      {
+        pointer: 'HOW TO RETURN',
+        key: "how-to-return"
+      },
+      {
+        pointer: 'HOW TO EXCHANGE',
+        key: 'how-to-exchange',
+      },
+      {
+        pointer: 'REFUNDS',
+        key: 'refunds'
+      },
+      {
+        pointer: 'RETURN FOR A PURCHASE MADE WITH A GIFT CARD',
+        key: 'gift-card-refund'
+      },
+      {
+        pointer: 'SPECIAL RETURNS CONDITIONS',
+        key: 'special'
+      }
     ]
   },
   {
     title: 'ZARA EXPERIENCES',
+    url: 'zara-experiences',
     pointers: [
-      'OUR USED CLOTHING COLLECTION PROGRAMME',
-      'STORE MODE IN THE APP',
-      'NEWSLETTER',
+      {
+        pointer: 'OUR USED CLOTHING COLLECTION PROGRAMME',
+        key: 'programme'
+      },
+      {
+        pointer: 'STORE MODE IN THE APP',
+        key: 'store-mode'
+      },
+      {
+        pointer: 'NEWSLETTER',
+        key: 'newsletter'
+      }
     ]
   }
 ]
@@ -177,4 +270,36 @@ export const zara_exp_map = {
   "NEWSLETTER": NewsLetter,
   "STORE MODE IN THE APP": StoreMode,
   "OUR USED CLOTHING COLLECTION PROGRAMME": UsedCloth
+}
+
+export const param_key_match = {
+  "item-availablity": "ITEMS AVAILABILITY",
+  "my-size": "WHAT'S MY SIZE?",
+  "composition-and-care": "COMPOSITION AND CARE",
+  "warranty": "ITEMS WARRANTY",
+  "pricing": "PRICING POLICY",
+  "gift-card": "GIFT CARD",
+  "gift-package": "GIFT PACKAGING",
+  "shipping-methods": "SHIPPING METHODS, TIMES AND COSTS",
+  "multiple-deliveries": "ORDERS IN SEVERAL DELIVERIES",
+  "shipping": "WHERE DO WE SHIP?",
+  "methods": "PAYMENT METHODS",
+  "security": "PAYMENT SECURITY",
+  "invoices": "INVOICES",
+  "gift-card-payment": "PAYMENT WITH A GIFT CARD",
+  "online": "ONLINE SHOPPING",
+  "status": "ORDER STATUS",
+  "change-cancel": "CHANGE OR CANCEL MY ONLINE ORDER",
+  "issues": "ISSUES WITH MY ORDER",
+  "in-store": "IN STORE PURCHASES",
+  "retreive-receipt": "RETREIVE MY STORE RECEIPT",
+  "store-device": "ONLINE PURCHASE FROM A STORE DEVICE",
+  "how-to-return": "HOW TO RETURN",
+  "how-to-exchange": "HOW TO EXCHANGE",
+  "refunds": "REFUNDS",
+  "gift-card-refund": "REFUND FOR A PURCHASE MADE WITH A GIFT CARD",
+  "special": "SPECIAL RETURN CONDITIONS",
+  "newsletter": "NEWSLETTER",
+  "store-mode": "STORE MODE IN THE APP",
+  "programme": "OUR USED CLOTHING COLLECTION PROGRAMME"
 }
