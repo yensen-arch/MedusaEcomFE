@@ -95,24 +95,24 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
           </div>
 
           {/* Right section: Search and other links */}
-          <div className="flex items-center gap-6 mb-auto">
+          <div className="flex items-center gap-2 sm:gap-6 mb-auto">
             <div className="relative hidden md:block">
               <input
                 type="text"
                 placeholder="SEARCH"
-                className="bg-white mx-10 mt-4 text-right border border-black w-[400px] py-1 px-2"
+                className="bg-white mx-2 lg:mx-10 mt-4 text-right border border-black w-[200px] lg:w-[400px] py-1 px-2 text-xs lg:text-sm"
               />
             </div>
-            <Link to="/login" className="text-xs mb-auto py-2 hidden md:block">
+            <Link href="/login" className="text-xs mb-auto py-2 hidden md:block">
               LOG IN
             </Link>
-            <Link to="/help" className="text-xs mb-auto py-2 hidden md:block">
+            <Link href="/help" className="text-xs mb-auto py-2 hidden md:block">
               HELP
             </Link>
-            <Link to="/help" className="text-xs mb-auto py-2 md:hidden">
+            <Link href="/help" className="text-xs mb-auto py-2 md:hidden">
               <RiQuestionLine className="w-6 h-6" />
             </Link>
-            <Link to="/cart" className="text-xs mb-auto py-2 relative">
+            <Link href="/cart" className="text-xs mb-auto py-2 relative">
               <span className="hidden md:inline">SHOPPING BAG</span>
               <RiShoppingBagLine className="w-6 h-6 md:hidden" />
               {cart.length > 0 && (
@@ -135,9 +135,8 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
 
       {/* Responsive search bar */}
       <div
-        className={`px-4 pb-4 md:hidden fixed bottom-0 left-0 w-full bg-transparent transition-transform duration-300 ${
-          isScrolling ? "translate-y-full" : ""
-        }`}
+        className={`px-4 pb-4 md:hidden fixed bottom-0 left-0 w-full bg-transparent transition-transform duration-300 ${isScrolling ? "translate-y-full" : ""
+          }`}
       >
         <input
           type="text"
