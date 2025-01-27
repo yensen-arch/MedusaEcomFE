@@ -23,6 +23,7 @@ import PaymentInvoiceHelp from './PaymentInvoiceHelp'
 import MyOrdersHelp from './MyOrdersHelp'
 import ExchangesHelp from './ExchangesHelp'
 import ZaraExperiencesHelp from './ZaraExperiencesHelp'
+import Privacy from './Privacy'
 const AllRoutes = () => {
   return (
     <Routes>
@@ -46,6 +47,7 @@ const AllRoutes = () => {
       <Route path='/paymentMethod' element={ <ProtectedRoute><PaymentMethod /></ProtectedRoute>}></Route>
       <Route path='/products' element={<ProductPage />}></Route>
       <Route path='/search' element={<Search />}></Route>
+      <Route path='/privacy' element={<Privacy />}></Route>
       <Route path='/fillcarddetail' element={<ProtectedRoute><CardDetail /></ProtectedRoute>}></Route>
       <Route path='/otp' element={<ProtectedRoute><OTP /></ProtectedRoute>}></Route>
     </Routes>

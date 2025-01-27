@@ -56,7 +56,9 @@ const Footer = () => {
         </div>
         <div className="footer_rows">
           <h4 className="font-bold">POLICIES</h4>
-          <div>PRIVACY POLICY</div>
+          <div>
+            <Link to={"/privacy"}>PRIVACY POLICY</Link>
+          </div>
           <div>PURCHASE CONDITIONS</div>
           <div>GIFT CARD CONDITIONS</div>
         </div>

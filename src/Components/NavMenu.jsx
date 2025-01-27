@@ -76,12 +76,13 @@ export default function NavMenu({ activeCategory, setActiveCategory }) {
     >
       {/* Logo */}
       <div className="flex justify-center pt-2 pb-16">
-        <Link to="/" className="mb-auto py-2">
-          <img
-            src="https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876"
-            alt="ZARA"
-            className="h-28 mr-auto px-8 transition-opacity duration-300 ease-in-out opacity-100"
-          />
+      <Link to="/" className="mb-auto py-2">
+
+        <img
+          src="https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876"
+          alt="ZARA"
+          className="h-28 mr-auto px-8 transition-opacity duration-300 ease-in-out opacity-100"
+        />
         </Link>
       </div>
 
@@ -146,3 +147,4 @@ export default function NavMenu({ activeCategory, setActiveCategory }) {
     </div>
   );
 }
+
