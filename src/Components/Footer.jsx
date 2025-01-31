@@ -36,11 +36,12 @@ const Footer = () => {
           <div>
             <Link to={"/newsletter"}>NEWSLETTER</Link>
           </div>
-          <div>INSTAGRAM</div>
-          <div>FACEBOOK</div>
-          <div>X</div>
-          <div>PINTEREST</div>
-          <div>YOUTUBE</div>
+          {/* REPLACE WITH YOUR ACCOUNTS*/}
+          <div><a href="https://www.instagram.com/zara">INSTAGRAM</a></div>
+          <div><a href="https://www.facebook.com/zara">FACEBOOK</a></div>
+          <div><a href="https://www.x.com/zara">X</a></div>
+          <div><a href="http://pinterest.com/zaraofficial/">PINTEREST</a></div>
+          <div><a href="https://www.youtube.com/@zara">YOUTUBE</a></div>
         </div>
         <div className="footer_rows">
           <h4 className="font-bold">COMPANY</h4>
@@ -48,8 +49,6 @@ const Footer = () => {
             <Link to={"/about"}>ABOUT US</Link>
           </div>
           <div>JOIN LIFE</div>
-          <div>OFFICES</div>
-          <div>STORES</div>
           <div>
             <Link to={"/career"}>WORK WITH US</Link>
           </div>
