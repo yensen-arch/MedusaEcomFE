@@ -94,18 +94,18 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
               />
             </div>
             <Link
-              href="/login"
+              to="/login"
               className="text-xs mb-auto py-2 hidden md:block"
             >
               LOG IN
             </Link>
-            <Link href="/help" className="text-xs mb-auto py-2 hidden md:block">
+            <Link to="/help" className="text-xs mb-auto py-2 hidden md:block">
               HELP
             </Link>
-            <Link href="/help" className="text-xs mb-auto py-2 md:hidden">
+            <Link to="/help" className="text-xs mb-auto py-2 md:hidden">
               <RiQuestionLine className="w-6 h-6" />
             </Link>
-            <Link href="/" className="text-xs mb-auto py-2 relative">
+            <Link to="/" className="text-xs mb-auto py-2 relative">
               <span className="hidden md:inline">SHOPPING BAG</span>
               <RiShoppingBagLine className="w-6 h-6 md:hidden" />
             </Link>
