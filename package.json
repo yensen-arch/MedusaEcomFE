@@ -1,48 +1,29 @@
 {
-  "homepage": ".",
-  "name": "green-value-83",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@cloudinary/react": "^1.13.1",
-    "@cloudinary/url-gen": "^1.21.0",
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
-    "@mui/icons-material": "^5.10.6",
-    "@mui/material": "^5.10.7",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^0.27.2",
-    "esbuild": "^0.24.2",
-    "firebase": "^9.10.0",
-    "framer-motion": "^12.0.1",
-    "netlify-cli": "^12.0.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-icons": "^5.4.0",
-    "react-redux": "^8.0.4",
-    "react-router-dom": "^6.4.1",
-    "react-scripts": "5.0.1",
-    "react-scroll": "^1.8.7",
-    "react-scrollbars-custom": "^4.1.1",
-    "redux": "^4.2.0",
-    "redux-thunk": "^2.4.1",
-    "styled-components": "^5.3.6",
-    "swiper": "^8.4.2",
-    "web-vitals": "^2.1.4"
-  },
+  "name": "medusaecomfe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tailwind.config.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "react-scripts start",
+    "build": "react-scripts build"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.2",
+    "@mui/system": "^6.4.2",
+    "framer-motion": "^12.0.6",
+    "react-icons": "^5.4.0",
+    "react-router-dom": "^7.1.4",
+    "react-scripts": "^5.0.1",
+    "react-scrollbars-custom": "^4.1.1",
+    "styled-components": "^6.1.14",
+    "swiper": "^11.2.1",
+    "web-vitals": "^4.2.4"
   },
   "browserslist": {
     "production": [
@@ -55,11 +36,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "html-loader": "^5.1.0",
-    "postcss": "^8.5.1",
-    "tailwindcss": "^3.4.17"
   }
 }

@@ -154,10 +154,11 @@ const Homepage = () => {
           className="w-full h-full absolute"
         >
           <Swiper
+            modules={[Mousewheel]}
             direction="vertical"
             ref={swiperRef}
             slidesPerView={1}
-            mousewheel
+            mousewheel={true}
             speed={800}
             onSlideChange={handleSlideChange}
             className="w-full h-full"
