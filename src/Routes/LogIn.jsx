@@ -1,15 +1,10 @@
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../Redux/Auth/action";
 import Footer from "../Components/Footer";
 
 const LogIn = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const location = useLocation();
-  const { isAuth } = useSelector((store) => store.AuthReducer);
-  console.log(location);
   const path = location.state?.path;
   const [data, setData] = useState({
     email: "",
@@ -18,22 +13,8 @@ const LogIn = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (data.email && data.password) {
-      dispatch(login(data.email, data.password)).then((res) => {
-        if (!res) {
-          alert("You have entered wrong credentials or please Signup first");
-        } else {
-          navigate(path);
-        }
-      });
-    } else {
-      alert("You Have entered Wrong Credentials");
-    }
+    console.log(data);
   };
-
-  if (isAuth) {
-    return <Navigate to={`/`} />;
-  }
 
   return (
     <>

@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { getCart } from "../Redux/App/action";
 import {
   RiMenuLine,
   RiCloseLine,
@@ -17,14 +15,6 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [logoSize, setLogoSize] = useState("h-40");
   const [isScrolling, setIsScrolling] = useState(false);
-  const dispatch = useDispatch();
-  const { cart } = useSelector((store) => store.AppReducer);
-
-  useEffect(() => {
-    if (cart.length === 0) {
-      dispatch(getCart());
-    }
-  }, [cart, dispatch]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -103,7 +93,10 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
                 className="bg-white mx-2 lg:mx-10 mt-4 text-right border border-black w-[200px] lg:w-[400px] py-1 px-2 text-xs lg:text-sm"
               />
             </div>
-            <Link href="/login" className="text-xs mb-auto py-2 hidden md:block">
+            <Link
+              href="/login"
+              className="text-xs mb-auto py-2 hidden md:block"
+            >
               LOG IN
             </Link>
             <Link href="/help" className="text-xs mb-auto py-2 hidden md:block">
@@ -112,14 +105,9 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
             <Link href="/help" className="text-xs mb-auto py-2 md:hidden">
               <RiQuestionLine className="w-6 h-6" />
             </Link>
-            <Link href="/cart" className="text-xs mb-auto py-2 relative">
+            <Link href="/" className="text-xs mb-auto py-2 relative">
               <span className="hidden md:inline">SHOPPING BAG</span>
               <RiShoppingBagLine className="w-6 h-6 md:hidden" />
-              {cart.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {cart.length}
-                </span>
-              )}
             </Link>
           </div>
         </div>
@@ -135,8 +123,9 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
 
       {/* Responsive search bar */}
       <div
-        className={`px-4 pb-4 md:hidden fixed bottom-0 left-0 w-full bg-transparent transition-transform duration-300 ${isScrolling ? "translate-y-full" : ""
-          }`}
+        className={`px-4 pb-4 md:hidden fixed bottom-0 left-0 w-full bg-transparent transition-transform duration-300 ${
+          isScrolling ? "translate-y-full" : ""
+        }`}
       >
         <input
           type="text"
