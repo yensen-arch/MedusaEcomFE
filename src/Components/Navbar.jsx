@@ -10,10 +10,20 @@ import {
 } from "react-icons/ri";
 import NavMenu from "./NavMenu";
 
-const Navbar = ({ activeCategory, setActiveCategory }) => {
+const Navbar = ({
+  activeCategory,
+  setActiveCategory,
+  activeIndex,
+  categories,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [logoSize, setLogoSize] = useState("h-40");
   const [isScrolling, setIsScrolling] = useState(false);
+
+  //change the logo based on the bg
+  const logoUrl = categories[activeCategory]?.[activeIndex]?.video 
+    ? "https://static.zara.net/assets/public/ae9d/d9bd/51f24d7eaf0c/0c9ae293a60b/default-light-green-0.svg?ts=1728680676189"
+    : "https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876";
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -60,11 +70,11 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
             </button>
 
             <div className="flex flex-col justify-center pl-20 relative">
-              <Link to="/" className="mb-auto py-2 hidden md:block">
+              <Link to="/" className="mb-auto py-2 hidden md:block ">
                 <img
-                  src="https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876"
+                  src={logoUrl}
                   alt="ZARA"
-                  className={`transition-all duration-700 ${logoSize}`}
+                  className={`transition-all duration-700 ease-in-out ${logoSize}`}
                 />
               </Link>
 

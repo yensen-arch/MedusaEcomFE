@@ -106,7 +106,7 @@ const Homepage = () => {
     if (categories[activeCategory][swiper.activeIndex]?.type === "footer") {
       setTimeout(() => {
         swiper.slideTo(0);
-      }, 3000); // Adjust delay if needed
+      }, 5000); // Adjust delay
     }
   };
   
@@ -144,6 +144,8 @@ const Homepage = () => {
         activeCategory={activeCategory}
         setActiveCategory={handleCategoryChange}
         categoryNames={categoryNames}
+        activeIndex={activeIndex}
+        categories={categories}
       />
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
@@ -165,7 +167,7 @@ const Homepage = () => {
             ref={swiperRef}
             slidesPerView={1}
             mousewheel={true}
-            speed={1500}
+            speed={800}
             onSlideChange={handleSlideChange}
             className="w-full h-full"
           >
