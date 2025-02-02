@@ -103,7 +103,13 @@ const Homepage = () => {
 
   const handleSlideChange = (swiper) => {
     setActiveIndex(swiper.activeIndex);
+    if (categories[activeCategory][swiper.activeIndex]?.type === "footer") {
+      setTimeout(() => {
+        swiper.slideTo(0);
+      }, 3000); // Adjust delay if needed
+    }
   };
+  
 
   const handleCategoryChange = (category) => {
     const newIndex = categoryNames.indexOf(category);
@@ -159,7 +165,7 @@ const Homepage = () => {
             ref={swiperRef}
             slidesPerView={1}
             mousewheel={true}
-            speed={800}
+            speed={1500}
             onSlideChange={handleSlideChange}
             className="w-full h-full"
           >
