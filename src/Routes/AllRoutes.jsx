@@ -14,6 +14,7 @@ import PaymentInvoiceHelp from './PaymentInvoiceHelp'
 import ExchangesHelp from './ExchangesHelp'
 import ZaraExperiencesHelp from './ZaraExperiencesHelp'
 import Privacy from './Privacy'
+import NotFound from './NotFound'
 const AllRoutes = () => {
   return (
     <Routes>
@@ -31,6 +32,7 @@ const AllRoutes = () => {
       <Route path='/signin' element={<SignIn />} />
       <Route path='career' element={<Careers />}></Route>
       <Route path='/privacy' element={<Privacy />}></Route>
+      <Route path='*' element={<NotFound />}></Route>
     </Routes>
   )
 }
