@@ -12,12 +12,12 @@ import NavMenu from "./NavMenu";
 
 const Navbar = ({ activeCategory, setActiveCategory }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [logoSize, setLogoSize] = useState("h-40");
   const [isScrolling, setIsScrolling] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      //the logo animation upon page load
       setLogoSize("h-28");
     }, 100);
     return () => clearTimeout(timer);
@@ -39,9 +39,11 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
       clearTimeout(scrollTimer);
     };
   }, []);
+  const handleSearch = () => {
+    return;
+  };
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
 
   return (
     <>
@@ -93,10 +95,7 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
                 className="bg-white mx-2 lg:mx-10 mt-4 text-right border border-black w-[200px] lg:w-[400px] py-1 px-2 text-xs lg:text-sm"
               />
             </div>
-            <Link
-              to="/login"
-              className="text-xs mb-auto py-2 hidden md:block"
-            >
+            <Link to="/login" className="text-xs mb-auto py-2 hidden md:block">
               LOG IN
             </Link>
             <Link to="/help" className="text-xs mb-auto py-2 hidden md:block">
@@ -122,17 +121,20 @@ const Navbar = ({ activeCategory, setActiveCategory }) => {
       />
 
       {/* Responsive search bar */}
-      <div
-        className={`px-4 pb-4 md:hidden fixed bottom-0 left-0 w-full bg-transparent transition-transform duration-300 ${
-          isScrolling ? "translate-y-full" : ""
-        }`}
-      >
-        <input
-          type="text"
-          placeholder="SEARCH"
-          className="z-50 w-full bg-transparent border border-black py-1 text-sm text-black px-4 text-right"
-        />
-      </div>
+      {!isMenuOpen && (
+        <div
+          className={`px-4 z-50 pb-4 md:hidden fixed bottom-0 left-0 w-full bg-transparent transition-transform duration-300 ${
+            isScrolling ? "translate-y-full" : ""
+          }`}
+        >
+          <input
+            type="text"
+            placeholder="SEARCH"
+            onChange={handleSearch}
+            className="w-full bg-transparent border border-black py-1 text-sm text-black px-4 text-right"
+          />
+        </div>
+      )}
     </>
   );
 };

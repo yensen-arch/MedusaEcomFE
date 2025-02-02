@@ -172,15 +172,6 @@ export default function NavMenu({
           ))}
         </ul>
       </Scrollbar>
-
-      {/* Mobile Search Bar */}
-      <div className="absolute bottom-0 left-0 w-full md:hidden border-t border-gray-200">
-        <input
-          type="text"
-          placeholder="SEARCH"
-          className="w-full p-4 bg-transparent text-sm"
-        />
-      </div>
     </div>
   );
 }
