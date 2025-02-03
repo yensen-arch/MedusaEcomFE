@@ -21,8 +21,7 @@ const Navbar = ({
   const [isScrolling, setIsScrolling] = useState(false);
 
   //change the logo based on the bg
-  const logoUrl =
-  categories?.[activeCategory]?.[activeIndex]?.video
+  const logoUrl = categories?.[activeCategory]?.[activeIndex]?.video
     ? "https://static.zara.net/assets/public/ae9d/d9bd/51f24d7eaf0c/0c9ae293a60b/default-light-green-0.svg?ts=1728680676189"
     : "https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876";
 
@@ -81,7 +80,7 @@ const Navbar = ({
 
               {/* Categories row - desktop only */}
               <div className="hidden md:flex items-center space-x-8 py-2">
-                {["WOMAN", "MAN", "KIDS", "BEAUTY"].map((category) => (
+                {["V00", "WOMAN", "MAN", "KIDS", "ARCHIVE"].map((category) => (
                   <button
                     key={category}
                     className={"text-sm"}

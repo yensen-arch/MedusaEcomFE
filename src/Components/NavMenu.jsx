@@ -10,6 +10,23 @@ import {
 } from "react-icons/ri";
 
 const menuItems = {
+  V00: [
+    { label: "TODAY'S DEALS", link: "" },
+    { label: "FEB 3", link: "" },
+    { label: "JEANS", link: "" },
+    { label: "OUTWEAR", link: "" },
+    { label: "SHOES", link: "" },
+    { label: "T-SHIRTS", link: "" },
+    { label: "SHIRTS", link: "" },
+    { label: "JEANS", link: "" },
+    { label: "JACKETS", link: "" },
+    { label: "SHOES", link: "" },
+    { label: "DRESSES", link: "" },
+    { label: "TOPS", link: "" },
+    { label: "JEANS", link: "" },
+    { label: "OUTWEAR", link: "" },
+    { label: "SHOES", link: "" },
+  ],
   WOMAN: [
     { label: "DRESSES", link: "" },
     { label: "TOPS", link: "" },
@@ -61,7 +78,7 @@ const menuItems = {
     { label: "OUTWEAR", link: "" },
     { label: "ACCESSORIES", link: "" },
   ],
-  BEAUTY: [
+  ARCHIVE: [
     { label: "MAKEUP", link: "" },
     { label: "SKIN CARE", link: "" },
     { label: "FRAGRANCES", link: "" },
