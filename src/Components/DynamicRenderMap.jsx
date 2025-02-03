@@ -27,7 +27,7 @@ const DynamicRenderMap = ({ items, imgSrc, heading }) => {
     <>
       <div className='flex justify-center md:gap-32'>
         <div className='leftDiv hidden w-[25%] md:flex flex-col gap-10'>
-          <div className="text-[0.6rem] underline">
+          <div className="text-[1rem] underline">
             <Link to={'/help'}>Back to Help</Link>
           </div>
           <div className="upperLeft border-black border-[0.5px] p-10">

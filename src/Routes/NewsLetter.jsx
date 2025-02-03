@@ -33,7 +33,7 @@ const NewsLetter = () => {
               placeholder="Enter your email"
               value={email}
               onChange={handleEmailChange}
-              className="w-full max-w-md px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+              className="w-full max-w-md px-3 py-2 border border-gray-300  focus:outline-none"
             />
             <div className="flex items-center space-x-2 font-aboutUs font-light mt-8">
               <input type="checkbox" id="terms" className="rounded text-blue-600 focus:ring-blue-500" />
@@ -61,13 +61,13 @@ const NewsLetter = () => {
             <div className='my-16 flex flex-col gap-8 w-[50%]'>
               <button
                 onClick={handleSubscribe}
-                className="text-black px-6 py-2 rounded-md border-[0.5px] border-black focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                className="text-black px-6 py-2  border-[0.5px] border-black focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
               >
                 Subscribe
               </button>
               <button
                 onClick={handleUnsubscribe}
-                className="bg-white text-black px-6 py-2 rounded-md border-[0.5px] border-black focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                className="bg-white text-black px-6 py-2  border-[0.5px] border-black focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
               >
                 Unsubscribe
               </button>

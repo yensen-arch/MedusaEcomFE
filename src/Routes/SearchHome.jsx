@@ -1,60 +1,92 @@
-import React, { useState } from 'react'
-import Footer from '../Components/Footer'
-import Navbar from '../Components/Navbar'
+import { useState, useRef, useEffect } from "react";
+import Footer from "../Components/Footer";
+import Navbar from "../Components/Navbar";
 
 const SearchHome = () => {
   const [activeCategory, setActiveCategory] = useState("WOMAN");
   const categoryNames = ["WOMAN", "MAN", "KIDS", "BEAUTY"];
   const items = [
-    "Dresses",
-    "Shoes",
-    "Accessories",
-    "Tops",
-    "Jeans",
-    "Skirts",
-    "Jackets",
-    "Bags",
-    "Jewelry",
-    "Swimwear",
-    "Activewear",
-    "Lingerie",
-  ]
+    "Dresses", "Shoes", "Accessories", "Tops", "Jeans", "Skirts", "Jackets", "Bags", "Jewelry", "Swimwear", "Activewear", "Lingerie"
+  ];
 
-  const handleCategoryChange = (category) => {
-    setActiveCategory(category);
+  const scrollRef = useRef(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+  const animationRef = useRef(null);
+
+  // Auto-scroll function
+  const autoScroll = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft += 1; // Adjust speed
+      if (scrollRef.current.scrollLeft >= scrollRef.current.scrollWidth / 2) {
+        scrollRef.current.scrollLeft = 0;
+      }
+      animationRef.current = requestAnimationFrame(autoScroll);
+    }
   };
+
+  useEffect(() => {
+    animationRef.current = requestAnimationFrame(autoScroll);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, []);
+
+  const handleMouseDown = (e) => {
+    isDragging.current = true;
+    startX.current = e.pageX - (scrollRef.current?.offsetLeft || 0);
+    scrollLeft.current = scrollRef.current?.scrollLeft || 0;
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging.current) return;
+    e.preventDefault();
+    const x = e.pageX - (scrollRef.current?.offsetLeft || 0);
+    const walk = (x - startX.current) * 1;
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollLeft.current - walk;
+    }
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+  };
+
   return (
     <>
-      <Navbar
-        activeCategory={activeCategory}
-        setActiveCategory={handleCategoryChange}
-        categoryNames={categoryNames} ś
-      />
-      <div className='mx-auto mt-60 flex flex-col'>
-        <div className='flex flex-col justify-center items-center'>
-          <p>WHAT ARE YOU LOOKING FOR?</p>
-          <div className="overflow-hidden whitespace-nowrap mt-10">
-            <div className="animate-scroll">
-              {[...items, ...items, ...items].map((item, index) => (
-                <span key={index} className="mx-4 py-1 px-2 text-sm font-semibold border border-black ">
-                  {item}
-                </span>
-              ))}
-            </div>
+      <Navbar activeCategory={activeCategory} setActiveCategory={setActiveCategory} categoryNames={categoryNames} />
+      <div className="mx-auto mt-60 flex flex-col min-h-screen">
+        <div className="flex flex-col justify-center items-center">
+          <p className="text-lg font-semibold">WHAT ARE YOU LOOKING FOR?</p>
+          <div
+            ref={scrollRef}
+            className="overflow-hidden mt-10 w-full max-w-4xl flex space-x-4 cursor-grab"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseUp}
+            onMouseUp={handleMouseUp}
+          >
+            {[...items, ...items].map((item, index) => (
+              <span
+                key={index}
+                className="mx-2 py-1 px-3 text-sm  border border-black hover:bg-gray-300 cursor-pointer whitespace-nowrap"
+              >
+                {item}
+              </span>
+            ))}
           </div>
           <input
-            type='text'
-            placeholder='Search here...'
-            className='border-b border-black my-7 outline-none px-2 py-1 w-1/3'
+            type="text"
+            placeholder="Search..."
+            className="border-b border-black text-center text-lg my-7 outline-none px-2 py-1 w-1/3"
           />
         </div>
-        <div>
-          Products can go here.
-        </div>
+        <div>Products can go here.</div>
       </div>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default SearchHome
+export default SearchHome;
