@@ -1,59 +1,53 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import {
-  RiMenuLine,
-  RiCloseLine,
-  RiQuestionLine,
-  RiShoppingBagLine,
-} from "react-icons/ri";
-import NavMenu from "./NavMenu";
+import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { RiMenuLine, RiCloseLine, RiQuestionLine, RiShoppingBagLine } from "react-icons/ri"
+import NavMenu from "./NavMenu"
+import Cart from "./Cart"
 
-const Navbar = ({
-  activeCategory,
-  setActiveCategory,
-  activeIndex,
-  categories,
-}) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [logoSize, setLogoSize] = useState("h-40");
-  const [isScrolling, setIsScrolling] = useState(false);
+const Navbar = ({ activeCategory, setActiveCategory, activeIndex, categories }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [logoSize, setLogoSize] = useState("h-40")
+  const [isScrolling, setIsScrolling] = useState(false)
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
   //change the logo based on the bg
   const logoUrl = categories?.[activeCategory]?.[activeIndex]?.video
     ? "https://static.zara.net/assets/public/ae9d/d9bd/51f24d7eaf0c/0c9ae293a60b/default-light-green-0.svg?ts=1728680676189"
-    : "https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876";
+    : "https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876"
 
   useEffect(() => {
     const timer = setTimeout(() => {
       //the logo animation upon page load
-      setLogoSize("h-28");
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
+      setLogoSize("h-28")
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
-    let scrollTimer: NodeJS.Timeout;
+    let scrollTimer;
     const handleScroll = () => {
-      setIsScrolling(true);
-      clearTimeout(scrollTimer);
+      setIsScrolling(true)
+      clearTimeout(scrollTimer)
       scrollTimer = setTimeout(() => {
-        setIsScrolling(false);
-      }, 150);
-    };
+        setIsScrolling(false)
+      }, 150)
+    }
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll)
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(scrollTimer);
-    };
-  }, []);
-  const handleSearch = () => {
-    return;
-  };
+      window.removeEventListener("scroll", handleScroll)
+      clearTimeout(scrollTimer)
+    }
+  }, [])
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const handleSearch = () => {
+    return
+  }
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
+  const toggleCart = () => setIsCartOpen(!isCartOpen)
 
   return (
     <>
@@ -62,17 +56,13 @@ const Navbar = ({
           {/* Left section: Hamburger and Logo */}
           <div>
             <button onClick={toggleMenu} className="py-2 mb-auto">
-              {isMenuOpen ? (
-                <RiCloseLine className="w-6 h-6" />
-              ) : (
-                <RiMenuLine className="w-6 h-6" />
-              )}
+              {isMenuOpen ? <RiCloseLine className="w-6 h-6" /> : <RiMenuLine className="w-6 h-6" />}
             </button>
 
             <div className="flex flex-col justify-center pl-20 relative">
               <Link to="/" className="mb-auto py-2 hidden md:block ">
                 <img
-                  src={logoUrl}
+                  src={logoUrl || "/placeholder.svg"}
                   alt="ZARA"
                   className={`transition-all duration-700 ease-in-out ${logoSize}`}
                 />
@@ -85,8 +75,8 @@ const Navbar = ({
                     key={category}
                     className={"text-sm"}
                     onClick={() => {
-                      setActiveCategory(category);
-                      setIsMenuOpen(true);
+                      setActiveCategory(category)
+                      setIsMenuOpen(true)
                     }}
                   >
                     {category}
@@ -114,10 +104,10 @@ const Navbar = ({
             <Link to="/help" className="text-xs mb-auto py-2 md:hidden">
               <RiQuestionLine className="w-6 h-6" />
             </Link>
-            <Link to="/" className="text-xs mb-auto py-2 relative">
+            <button onClick={toggleCart} className="text-xs mb-auto py-2 relative">
               <span className="hidden md:inline">SHOPPING BAG</span>
               <RiShoppingBagLine className="w-6 h-6 md:hidden" />
-            </Link>
+            </button>
           </div>
         </div>
       </nav>
@@ -129,6 +119,9 @@ const Navbar = ({
         isMenuOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
       />
+
+      {/* Cart component */}
+      <Cart isOpen={isCartOpen} />
 
       {/* Responsive search bar */}
       {!isMenuOpen && (
@@ -146,7 +139,8 @@ const Navbar = ({
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
+
