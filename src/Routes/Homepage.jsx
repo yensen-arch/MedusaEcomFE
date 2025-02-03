@@ -2,16 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Mousewheel } from "swiper";
-import "swiper/css";
+import { Mousewheel, FreeMode } from "swiper/modules";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import FooterLP from "../Components/FooterLP";
 import { motion, AnimatePresence } from "framer-motion";
-
-SwiperCore.use([Mousewheel]);
 
 const Homepage = () => {
   const categories = {
@@ -73,17 +70,17 @@ const Homepage = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (swiperRef.current) {
+      if (swiperRef.current && swiperRef.current.swiper) {
         swiperRef.current.swiper.slideNext();
       }
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
     setIndex(categoryNames.indexOf(activeCategory));
-  }, [activeCategory]);
+  }, [activeCategory, categoryNames]);
 
   const handlePrev = () => {
     if (indexNo > 0) {
@@ -106,10 +103,9 @@ const Homepage = () => {
     if (categories[activeCategory][swiper.activeIndex]?.type === "footer") {
       setTimeout(() => {
         swiper.slideTo(0);
-      }, 5000); // Adjust delay
+      }, 10000); // Adjust delay
     }
   };
-  
 
   const handleCategoryChange = (category) => {
     const newIndex = categoryNames.indexOf(category);
@@ -162,11 +158,12 @@ const Homepage = () => {
           className="w-full h-full absolute"
         >
           <Swiper
-            modules={[Mousewheel]}
+            modules={[Mousewheel, FreeMode]}
             direction="vertical"
             ref={swiperRef}
             slidesPerView={1}
             mousewheel={true}
+            freeMode={true}
             speed={800}
             onSlideChange={handleSlideChange}
             className="w-full h-full"
