@@ -7,17 +7,19 @@ function App() {
   const [activeCategory, setActiveCategory] = useState("WOMAN");
   const categoryNames = ["WOMAN", "MAN", "KIDS", "BEAUTY"];
   const location = useLocation();
+  const randomSearchbarPages = ['/', '/search/home'];
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
   };
   return (
     <div className="App">
-      {location.pathname !== "/" && (
+      {!randomSearchbarPages.includes(location.pathname) && (
         <Navbar
           activeCategory={activeCategory}
           setActiveCategory={handleCategoryChange}
           categoryNames={categoryNames}
+          showSearchBar
         />
       )}
       <AllRoutes />

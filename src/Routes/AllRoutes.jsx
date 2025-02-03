@@ -15,6 +15,8 @@ import ExchangesHelp from './ExchangesHelp'
 import ZaraExperiencesHelp from './ZaraExperiencesHelp'
 import Privacy from './Privacy'
 import NotFound from './NotFound'
+import MyOrdersHelp from './MyOrdersHelp'
+import SearchHome from './SearchHome'
 const AllRoutes = () => {
   return (
     <Routes>
@@ -25,11 +27,13 @@ const AllRoutes = () => {
       <Route path='/login' element={<LogIn />} />
       <Route path='/help/items-and-sizes' element={<ItemsAvailabilityHelp />}></Route>
       <Route path='/help/gift-card' element={<GiftCardHelp />}></Route>
+      <Route path='/help/myorders' element={<MyOrdersHelp/>}></Route>
       <Route path='/help/shipping' element={<ShippingHelp/>}></Route>
       <Route path='/help/payment-invoice' element={<PaymentInvoiceHelp />}></Route>
       <Route path='/help/zara-experiences' element={<ZaraExperiencesHelp/>}></Route>
       <Route path='/help/exchanges' element={<ExchangesHelp />}></Route>
       <Route path='/signin' element={<SignIn />} />
+      <Route path='/search/home' element={<SearchHome/>}></Route>
       <Route path='career' element={<Careers />}></Route>
       <Route path='/privacy' element={<Privacy />}></Route>
       <Route path='*' element={<NotFound />}></Route>

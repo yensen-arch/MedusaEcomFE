@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { param_key_match } from "../utils/constants";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const DynamicRenderMap = ({ items, imgSrc, heading }) => {
   const renderHTML = (content) => {
@@ -20,12 +20,16 @@ const DynamicRenderMap = ({ items, imgSrc, heading }) => {
   useEffect(() => {
     const matchedKey = param_key_match[keyFromParams];
     setSelectedKey(matchedKey && items[matchedKey] ? matchedKey : Object.keys(items)[0]);
+    window.scrollTo(0,0);
   }, [keyFromParams, items]);
 
   return (
     <>
       <div className='flex justify-center md:gap-32'>
         <div className='leftDiv hidden w-[25%] md:flex flex-col gap-10'>
+          <div className="text-[0.6rem] underline">
+            <Link to={'/help'}>Back to Help</Link>
+          </div>
           <div className="upperLeft border-black border-[0.5px] p-10">
             <h2 className="mb-4 text-sm">{heading}</h2>
             <ul>

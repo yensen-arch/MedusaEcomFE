@@ -68,9 +68,12 @@ const LogIn = () => {
             </div>
           </div>
           <div className="hidden md:block w-full lg:w-3/5 h-full">
-            <img
-              src="https://static.zara.net/assets/public/db26/41d6/33aa45648676/89e13512dc01/image-landscape-db634aec-f379-4adf-972a-f0a121c0e167-default_0/image-landscape-db634aec-f379-4adf-972a-f0a121c0e167-default_0.jpg?ts=1728999719440&w=665"
+            <video
+              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
               alt="Zara fashion"
+              autoPlay
+              muted
+              loop
               className="w-max object-fill"
             />
           </div>

@@ -170,6 +170,7 @@ const Homepage = () => {
         categoryNames={categoryNames}
         activeIndex={activeIndex}
         categories={categories}
+        showSearchBar
       />
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
@@ -215,7 +216,6 @@ const Homepage = () => {
                         autoPlay
                         loop
                         muted
-                        controls={ele.cat !== "kids"}
                         className="w-full h-screen object-cover"
                       >
                         <source src={ele.video} type="video/mp4" />

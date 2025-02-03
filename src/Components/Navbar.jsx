@@ -6,7 +6,7 @@ import { RiMenuLine, RiCloseLine, RiQuestionLine, RiShoppingBagLine } from "reac
 import NavMenu from "./NavMenu"
 import Cart from "./Cart"
 
-const Navbar = ({ activeCategory, setActiveCategory, activeIndex, categories }) => {
+const Navbar = ({ activeCategory, setActiveCategory, activeIndex, categories, showSearchBar }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [logoSize, setLogoSize] = useState("h-40")
   const [isScrolling, setIsScrolling] = useState(false)
@@ -88,13 +88,17 @@ const Navbar = ({ activeCategory, setActiveCategory, activeIndex, categories }) 
 
           {/* Right section: Search and other links */}
           <div className="flex items-center gap-2 sm:gap-6 mb-auto">
-            <div className="relative hidden md:block">
-              <input
-                type="text"
-                placeholder="SEARCH"
-                className="bg-white mx-2 lg:mx-10 mt-4 text-right border border-black w-[200px] lg:w-[400px] py-1 px-2 text-xs lg:text-sm"
-              />
-            </div>
+            {showSearchBar && (
+              <div className="relative hidden md:block">
+                <Link to={'/search/home'}>
+                <input
+                  type="text"
+                  placeholder="SEARCH"
+                  className="bg-white mx-2 lg:mx-10 mt-4 text-right border border-black w-[200px] lg:w-[400px] py-1 px-2 text-xs lg:text-sm"
+                />
+                </Link>
+              </div>
+            )}
             <Link to="/login" className="text-xs mb-auto py-2 hidden md:block">
               LOG IN
             </Link>

@@ -16,3 +16,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@keyframes scroll {
+  from {
+    transform: translateX(75%);
+  }
+  to {
+    transform: translateX(25%);
+  }
+}
+
+.animate-scroll {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll 30s linear infinite;
+  padding: 1rem;
+}
