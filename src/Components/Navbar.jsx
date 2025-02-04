@@ -76,7 +76,9 @@ const Navbar = ({
                 <img
                   src={logoUrl || "/placeholder.svg"}
                   alt="ZARA"
-                  className={`transition-all duration-700 ease-in-out ${logoSize}`}
+                  className={`transition-all duration-700 ease-in-out 
+                    mt-[-3.5rem] ml-[-3rem] 
+                    md:mt-0 md:ml-0 ${logoSize}`}                  
                 />
               </Link>
 

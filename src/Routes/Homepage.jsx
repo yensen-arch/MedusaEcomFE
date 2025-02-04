@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import FooterLP from "../Components/FooterLP";
 import { motion, AnimatePresence } from "framer-motion";
-import categories from "../data/categoriesData";
+import { categories, categoriesMobile } from "../data/categoriesData";
 
 const SLIDE_VARIANTS = {
   enter: (direction) => ({
@@ -27,13 +27,26 @@ const SLIDE_VARIANTS = {
 };
 
 const Homepage = () => {
-  const categoryNames = useMemo(() => Object.keys(categories), []);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const activeCategories = isMobile ? categoriesMobile : categories;
+  const categoryNames = useMemo(() => Object.keys(activeCategories), [activeCategories]);
+
   const [activeCategory, setActiveCategory] = useState(categoryNames[0]);
   const [direction, setDirection] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef(null);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    setActiveCategory(categoryNames[0]);
+  }, [categoryNames]);
 
   const indexNo = useMemo(() => categoryNames.indexOf(activeCategory), [activeCategory, categoryNames]);
 
@@ -47,14 +60,17 @@ const Homepage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleSlideChange = useCallback((swiper) => {
-    setActiveIndex(swiper.activeIndex);
-    if (categories[activeCategory][swiper.activeIndex]?.type === "footer") {
-      setTimeout(() => {
-        swiper.slideTo(0);
-      }, 20000);
-    }
-  }, [activeCategory]);
+  const handleSlideChange = useCallback(
+    (swiper) => {
+      setActiveIndex(swiper.activeIndex);
+      if (activeCategories[activeCategory][swiper.activeIndex]?.type === "footer") {
+        setTimeout(() => {
+          swiper.slideTo(0);
+        }, 20000);
+      }
+    },
+    [activeCategory, activeCategories]
+  );
 
   const handlePrev = useCallback(() => {
     if (indexNo > 0) {
@@ -70,11 +86,14 @@ const Homepage = () => {
     }
   }, [indexNo, categoryNames]);
 
-  const handleCategoryChange = useCallback((category) => {
-    const newIndex = categoryNames.indexOf(category);
-    setDirection(newIndex > indexNo ? 1 : -1);
-    setActiveCategory(category);
-  }, [categoryNames, indexNo]);
+  const handleCategoryChange = useCallback(
+    (category) => {
+      const newIndex = categoryNames.indexOf(category);
+      setDirection(newIndex > indexNo ? 1 : -1);
+      setActiveCategory(category);
+    },
+    [categoryNames, indexNo]
+  );
 
   const handleScroll = useCallback(() => {
     setIsScrolling(true);
@@ -86,28 +105,16 @@ const Homepage = () => {
     }, 300);
   }, []);
 
-  // Memoize renderSlides to prevent unnecessary re-renders
   const renderSlides = useMemo(() => {
-    return categories[activeCategory]?.map((ele, index) => (
+    return activeCategories[activeCategory]?.map((ele, index) => (
       <SwiperSlide key={`${activeCategory}-${index}`} className="w-full h-screen">
         {ele.type === "footer" ? (
           <FooterLP />
         ) : (
           <Link to={`/products`} state={{ query: ele.path }}>
-            {ele.img && (
-              <img
-                src={ele.img}
-                alt="Slide"
-                className="w-full h-screen object-cover"
-              />
-            )}
+            {ele.img && <img src={ele.img} alt="Slide" className="w-full h-screen object-cover" />}
             {ele.video && (
-              <video
-                autoPlay
-                loop
-                muted
-                className="w-full h-screen object-cover"
-              >
+              <video autoPlay loop muted className="w-full h-screen object-cover">
                 <source src={ele.video} type="video/mp4" />
               </video>
             )}
@@ -115,7 +122,7 @@ const Homepage = () => {
         )}
       </SwiperSlide>
     ));
-  }, [activeCategory]);
+  }, [activeCategory, activeCategories]);
 
   return (
     <div className="relative w-full h-screen cursor-pointer overflow-hidden">
@@ -123,7 +130,7 @@ const Homepage = () => {
         activeCategory={activeCategory}
         setActiveCategory={handleCategoryChange}
         categoryNames={categoryNames}
-        categories={categories}
+        categories={activeCategories}
         isScrolling={isScrolling}
         swiperRef={swiperRef}
         showSearchBar
@@ -160,18 +167,12 @@ const Homepage = () => {
       </AnimatePresence>
       <div className="absolute flex items-center justify-between w-full top-1/2 z-10 px-4">
         {indexNo > 0 && (
-          <button
-            onClick={handlePrev}
-            className="flex items-center bg-transparent border-none font-light text-white"
-          >
+          <button onClick={handlePrev} className="flex items-center bg-transparent border-none font-light text-white">
             <ArrowBackIosIcon fontSize="small" />
           </button>
         )}
         {indexNo < categoryNames.length - 1 && (
-          <button
-            onClick={handleNext}
-            className="flex items-center bg-transparent border-none font-light ml-auto text-white"
-          >
+          <button onClick={handleNext} className="flex items-center bg-transparent border-none font-light ml-auto text-white">
             <ArrowForwardIosIcon fontSize="small" />
           </button>
         )}
