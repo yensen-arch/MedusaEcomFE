@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel, FreeMode } from "swiper/modules";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -27,17 +27,19 @@ const SLIDE_VARIANTS = {
 };
 
 const Homepage = () => {
-  const categoryNames = Object.keys(categories);
+  const categoryNames = useMemo(() => Object.keys(categories), []);
   const [activeCategory, setActiveCategory] = useState(categoryNames[0]);
   const [direction, setDirection] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef(null);
   const [isScrolling, setIsScrolling] = useState(false);
-  const indexNo = categoryNames.indexOf(activeCategory);
+  const scrollTimeoutRef = useRef(null);
+
+  const indexNo = useMemo(() => categoryNames.indexOf(activeCategory), [activeCategory, categoryNames]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (swiperRef.current && swiperRef.current.swiper) {
+      if (swiperRef.current?.swiper) {
         swiperRef.current.swiper.slideNext();
       }
     }, 15000);
@@ -45,45 +47,76 @@ const Homepage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleSlideChange = (swiper) => {
+  const handleSlideChange = useCallback((swiper) => {
     setActiveIndex(swiper.activeIndex);
     if (categories[activeCategory][swiper.activeIndex]?.type === "footer") {
       setTimeout(() => {
         swiper.slideTo(0);
-      }, 15000);
+      }, 20000);
     }
-  };
+  }, [activeCategory]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (indexNo > 0) {
       setDirection(-1);
       setActiveCategory(categoryNames[indexNo - 1]);
     }
-  };
+  }, [indexNo, categoryNames]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (indexNo < categoryNames.length - 1) {
       setDirection(1);
       setActiveCategory(categoryNames[indexNo + 1]);
     }
-  };
+  }, [indexNo, categoryNames]);
 
-  const handleCategoryChange = (category) => {
+  const handleCategoryChange = useCallback((category) => {
     const newIndex = categoryNames.indexOf(category);
     setDirection(newIndex > indexNo ? 1 : -1);
     setActiveCategory(category);
-  };
-  let scrollTimeout = useRef(null);
+  }, [categoryNames, indexNo]);
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     setIsScrolling(true);
-    if (scrollTimeout.current) {
-      clearTimeout(scrollTimeout.current);
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
     }
-    scrollTimeout.current = setTimeout(() => {
+    scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
     }, 300);
-  };
+  }, []);
+
+  // Memoize renderSlides to prevent unnecessary re-renders
+  const renderSlides = useMemo(() => {
+    return categories[activeCategory]?.map((ele, index) => (
+      <SwiperSlide key={`${activeCategory}-${index}`} className="w-full h-screen">
+        {ele.type === "footer" ? (
+          <FooterLP />
+        ) : (
+          <Link to={`/products`} state={{ query: ele.path }}>
+            {ele.img && (
+              <img
+                src={ele.img}
+                alt="Slide"
+                className="w-full h-screen object-cover"
+              />
+            )}
+            {ele.video && (
+              <video
+                autoPlay
+                loop
+                muted
+                className="w-full h-screen object-cover"
+              >
+                <source src={ele.video} type="video/mp4" />
+              </video>
+            )}
+          </Link>
+        )}
+      </SwiperSlide>
+    ));
+  }, [activeCategory]);
+
   return (
     <div className="relative w-full h-screen cursor-pointer overflow-hidden">
       <Navbar
@@ -121,33 +154,7 @@ const Homepage = () => {
             onSlideChange={handleSlideChange}
             className="w-full h-full"
           >
-            {categories[activeCategory]?.map((ele, index) => (
-              <SwiperSlide key={index} className="w-full h-screen">
-                {ele.type === "footer" ? (
-                  <FooterLP />
-                ) : (
-                  <Link to={`/products`} state={{ query: ele.path }}>
-                    {ele.img && (
-                      <img
-                        src={ele.img}
-                        alt="Slide"
-                        className="w-full h-screen object-cover"
-                      />
-                    )}
-                    {ele.video && (
-                      <video
-                        autoPlay
-                        loop
-                        muted
-                        className="w-full h-screen object-cover"
-                      >
-                        <source src={ele.video} type="video/mp4" />
-                      </video>
-                    )}
-                  </Link>
-                )}
-              </SwiperSlide>
-            ))}
+            {renderSlides}
           </Swiper>
         </motion.div>
       </AnimatePresence>
