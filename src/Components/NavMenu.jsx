@@ -114,7 +114,9 @@ export default function NavMenu({
           <RiCloseLine className="w-6 h-6" />
         </button>
         <div className="flex items-center gap-4">
-          <RiSearchLine className="w-6 h-6" />
+          <Link to="/search/home" className="text-xs md:hidden">
+            <RiSearchLine className="w-6 h-6" />
+          </Link>
           <RiUserLine className="w-6 h-6" />
           <RiShoppingBagLine className="w-6 h-6" />
         </div>
