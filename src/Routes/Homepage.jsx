@@ -32,7 +32,7 @@ const Homepage = () => {
   const [direction, setDirection] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef(null);
-
+  const [isScrolling, setIsScrolling] = useState(false);
   const indexNo = categoryNames.indexOf(activeCategory);
 
   useEffect(() => {
@@ -73,7 +73,17 @@ const Homepage = () => {
     setDirection(newIndex > indexNo ? 1 : -1);
     setActiveCategory(category);
   };
+  let scrollTimeout = useRef(null);
 
+  const handleScroll = () => {
+    setIsScrolling(true);
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+    scrollTimeout.current = setTimeout(() => {
+      setIsScrolling(false);
+    }, 300);
+  };
   return (
     <div className="relative w-full h-screen cursor-pointer overflow-hidden">
       <Navbar
@@ -81,6 +91,7 @@ const Homepage = () => {
         setActiveCategory={handleCategoryChange}
         categoryNames={categoryNames}
         categories={categories}
+        isScrolling={isScrolling}
         showSearchBar
       />
       <AnimatePresence initial={false} custom={direction}>
@@ -104,6 +115,7 @@ const Homepage = () => {
             slidesPerView={1}
             mousewheel={true}
             freeMode={true}
+            onScroll={handleScroll}
             speed={800}
             onSlideChange={handleSlideChange}
             className="w-full h-full"

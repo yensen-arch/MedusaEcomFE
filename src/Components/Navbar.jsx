@@ -17,6 +17,7 @@ const Navbar = ({
   setActiveCategory,
   activeIndex,
   categories,
+  isScrolling,
   showSearchBar,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
