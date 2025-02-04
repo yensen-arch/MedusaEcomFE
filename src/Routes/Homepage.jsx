@@ -92,6 +92,7 @@ const Homepage = () => {
         categoryNames={categoryNames}
         categories={categories}
         isScrolling={isScrolling}
+        swiperRef={swiperRef}
         showSearchBar
       />
       <AnimatePresence initial={false} custom={direction}>

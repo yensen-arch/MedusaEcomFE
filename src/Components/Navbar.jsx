@@ -18,6 +18,7 @@ const Navbar = ({
   activeIndex,
   categories,
   showSearchBar,
+  swiperRef,
   isScrolling,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,7 +28,10 @@ const Navbar = ({
   const isSearchPage = location.pathname === "/search/home";
 
   // Change the logo based on the bg
-  const logoUrl = categories?.[activeCategory]?.[activeIndex]?.video
+
+  const currentItem = categories?.[activeCategory]?.[swiperRef?.current?.swiper?.activeIndex];
+ 
+  const logoUrl = currentItem?.video
     ? "https://static.zara.net/assets/public/ae9d/d9bd/51f24d7eaf0c/0c9ae293a60b/default-light-green-0.svg?ts=1728680676189"
     : "https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876";
 
@@ -60,7 +64,6 @@ const Navbar = ({
                 <RiMenuLine className="w-6 h-6" />
               )}
             </button>
-
             <div className="flex flex-col justify-center pl-20 relative">
               <Link
                 to="/"
