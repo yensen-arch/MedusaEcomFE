@@ -29,8 +29,9 @@ const Navbar = ({
 
   // Change the logo based on the bg
 
-  const currentItem = categories?.[activeCategory]?.[swiperRef?.current?.swiper?.activeIndex];
- 
+  const currentItem =
+    categories?.[activeCategory]?.[swiperRef?.current?.swiper?.activeIndex];
+
   const logoUrl = currentItem?.video
     ? "https://static.zara.net/assets/public/ae9d/d9bd/51f24d7eaf0c/0c9ae293a60b/default-light-green-0.svg?ts=1728680676189"
     : "https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876";
@@ -68,7 +69,7 @@ const Navbar = ({
               <Link
                 to="/"
                 className={`mb-auto py-2 transition-opacity duration-500 ${
-                  !isVisible && window.innerWidth <= 768
+                  !isVisible && window.matchMedia("(max-width: 768px)").matches
                     ? "opacity-0"
                     : "opacity-100"
                 } `}
@@ -78,7 +79,7 @@ const Navbar = ({
                   alt="ZARA"
                   className={`transition-all duration-700 ease-in-out 
                     mt-[-3.5rem] ml-[-3rem] 
-                    md:mt-0 md:ml-0 ${logoSize}`}                  
+                    md:mt-0 md:ml-0 ${logoSize}`}
                 />
               </Link>
 
