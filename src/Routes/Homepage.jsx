@@ -1,3 +1,4 @@
+'use client'
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel, FreeMode } from "swiper/modules";
