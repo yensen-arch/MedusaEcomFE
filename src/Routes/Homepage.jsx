@@ -52,13 +52,13 @@ const Homepage = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (swiperRef.current?.swiper) {
+      if (swiperRef.current?.swiper && !isMobile && !isScrolling) {
         swiperRef.current.swiper.slideNext();
       }
     }, 15000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isMobile]);
 
   const handleSlideChange = useCallback(
     (swiper) => {
@@ -94,6 +94,8 @@ const Homepage = () => {
     },
     [categoryNames, indexNo]
   );
+
+  
 
   const handleScroll = useCallback(() => {
     setIsScrolling(true);
