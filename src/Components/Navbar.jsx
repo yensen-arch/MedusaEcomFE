@@ -161,7 +161,7 @@ const Navbar = ({
             <input
               type="text"
               placeholder="SEARCH"
-              className="w-full bg-transparent border border-black py-1 text-sm text-black px-4 text-right"
+              className="w-full rounded-none bg-transparent border border-black py-1 text-sm text-black px-4 text-right"
             />
           </Link>
         </div>
