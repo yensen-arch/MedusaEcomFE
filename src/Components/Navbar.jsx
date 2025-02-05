@@ -109,7 +109,7 @@ const Navbar = ({
                   <input
                     type="text"
                     placeholder="SEARCH"
-                    className="bg-white mx-2 lg:mx-10 mt-4 text-right border border-black w-[200px] lg:w-[400px] py-1 px-2 text-xs lg:text-sm rounded-none"
+                    className="bg-white mx-2 lg:mx-10 mt-4 text-right border border-black w-[200px] lg:w-[400px] py-1 px-2 text-xs lg:text-sm rounded-none appearance-none"
                   />
                 </Link>
               </div>
