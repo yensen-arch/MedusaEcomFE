@@ -119,12 +119,18 @@ const Homepage = () => {
         {ele.type === "footer" ? (
           <FooterLP />
         ) : (
-          <Link
-            to={isScrolling ? "#" : "/products"}  //to prevent accidental routing to /products
-            state={isScrolling ? undefined : { query: ele.path }}
-            onClick={(e) => {
-              if (isScrolling) e.preventDefault();
+          <div
+            onClick={() => {
+              if (isScrolling) {
+                // Stop scrolling logic
+                swiperRef.current?.swiper?.disable(); // Disable Swiper scrolling
+                setIsScrolling(false); // Reset scrolling state
+              } else {
+                // Navigate to /products
+                window.location.href = `/products?query=${ele.path}`;
+              }
             }}
+            style={{ cursor: "pointer" }}
           >
             {ele.img && (
               <img
@@ -134,16 +140,20 @@ const Homepage = () => {
               />
             )}
             {ele.video && (
-              <video autoPlay loop muted className="w-full h-screen object-cover">
+              <video
+                autoPlay
+                loop
+                muted
+                className="w-full h-screen object-cover"
+              >
                 <source src={ele.video} type="video/mp4" />
               </video>
             )}
-          </Link>
+          </div>
         )}
       </SwiperSlide>
     ));
   }, [activeCategory, activeCategories, isScrolling]);
-  
 
   return (
     <div className="relative w-full h-screen cursor-pointer overflow-hidden">
