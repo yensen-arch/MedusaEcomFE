@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel, FreeMode } from "swiper/modules";
@@ -30,8 +30,10 @@ const SLIDE_VARIANTS = {
 const Homepage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const activeCategories = isMobile ? categoriesMobile : categories;
-  const categoryNames = useMemo(() => Object.keys(activeCategories), [activeCategories]);
-
+  const categoryNames = useMemo(
+    () => Object.keys(activeCategories),
+    [activeCategories]
+  );
   const [activeCategory, setActiveCategory] = useState(categoryNames[0]);
   const [direction, setDirection] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -49,7 +51,10 @@ const Homepage = () => {
     setActiveCategory(categoryNames[0]);
   }, [categoryNames]);
 
-  const indexNo = useMemo(() => categoryNames.indexOf(activeCategory), [activeCategory, categoryNames]);
+  const indexNo = useMemo(
+    () => categoryNames.indexOf(activeCategory),
+    [activeCategory, categoryNames]
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -64,7 +69,9 @@ const Homepage = () => {
   const handleSlideChange = useCallback(
     (swiper) => {
       setActiveIndex(swiper.activeIndex);
-      if (activeCategories[activeCategory][swiper.activeIndex]?.type === "footer") {
+      if (
+        activeCategories[activeCategory][swiper.activeIndex]?.type === "footer"
+      ) {
         setTimeout(() => {
           swiper.slideTo(0);
         }, 20000);
@@ -96,8 +103,6 @@ const Homepage = () => {
     [categoryNames, indexNo]
   );
 
-  
-
   const handleScroll = useCallback(() => {
     setIsScrolling(true);
     if (scrollTimeoutRef.current) {
@@ -114,8 +119,20 @@ const Homepage = () => {
         {ele.type === "footer" ? (
           <FooterLP />
         ) : (
-          <Link to={`/products`} state={{ query: ele.path }}>
-            {ele.img && <img src={ele.img} alt="Slide" className="w-full h-screen object-cover" />}
+          <Link
+            to={isScrolling ? "#" : "/products"}  //to prevent accidental routing to /products
+            state={isScrolling ? undefined : { query: ele.path }}
+            onClick={(e) => {
+              if (isScrolling) e.preventDefault();
+            }}
+          >
+            {ele.img && (
+              <img
+                src={ele.img}
+                alt="Slide"
+                className="w-full h-screen object-cover"
+              />
+            )}
             {ele.video && (
               <video autoPlay loop muted className="w-full h-screen object-cover">
                 <source src={ele.video} type="video/mp4" />
@@ -125,7 +142,8 @@ const Homepage = () => {
         )}
       </SwiperSlide>
     ));
-  }, [activeCategory, activeCategories]);
+  }, [activeCategory, activeCategories, isScrolling]);
+  
 
   return (
     <div className="relative w-full h-screen cursor-pointer overflow-hidden">
@@ -170,12 +188,18 @@ const Homepage = () => {
       </AnimatePresence>
       <div className="absolute flex items-center justify-between w-full top-1/2 z-10 px-4">
         {indexNo > 0 && (
-          <button onClick={handlePrev} className="flex items-center bg-transparent border-none font-light text-white">
+          <button
+            onClick={handlePrev}
+            className="flex items-center bg-transparent border-none font-light text-white"
+          >
             <ArrowBackIosIcon fontSize="small" />
           </button>
         )}
         {indexNo < categoryNames.length - 1 && (
-          <button onClick={handleNext} className="flex items-center bg-transparent border-none font-light ml-auto text-white">
+          <button
+            onClick={handleNext}
+            className="flex items-center bg-transparent border-none font-light ml-auto text-white"
+          >
             <ArrowForwardIosIcon fontSize="small" />
           </button>
         )}
