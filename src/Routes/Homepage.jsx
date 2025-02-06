@@ -26,7 +26,6 @@ const SLIDE_VARIANTS = {
     opacity: 0,
   }),
 };
-
 const Homepage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const activeCategories = isMobile ? categoriesMobile : categories;
@@ -57,14 +56,22 @@ const Homepage = () => {
   );
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (swiperRef.current?.swiper && !isMobile && !isScrolling) {
-        swiperRef.current.swiper.slideNext();
-      }
-    }, 15000);
+    let interval;
+    if (!isMobile) {
+      // Only set up the interval if not in mobile mode
+      interval = setInterval(() => {
+        if (swiperRef.current?.swiper && !isScrolling) {
+          swiperRef.current.swiper.slideNext();
+        }
+      }, 15000);
+    }
 
-    return () => clearInterval(interval);
-  }, [isMobile]);
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isMobile, isScrolling]); 
 
   const handleSlideChange = useCallback(
     (swiper) => {
@@ -115,22 +122,25 @@ const Homepage = () => {
 
   const renderSlides = useMemo(() => {
     return activeCategories[activeCategory]?.map((ele, index) => (
-      <SwiperSlide key={`${activeCategory}-${index}`} className="w-full h-screen">
+      <SwiperSlide
+        key={`${activeCategory}-${index}`}
+        className="w-full h-screen"
+      >
         {ele.type === "footer" ? (
           <FooterLP />
         ) : (
           <div
-          onClick={() => {
-            if (isScrolling) {
-              swiperRef.current?.swiper?.disable(); // Disable Swiper scrolling
-              setIsScrolling(false); // Reset scrolling state
-              setTimeout(() => {
-                swiperRef.current?.swiper?.enable(); // Re-enable Swiper after 1 second
-              }, 100);
-            } else {
-              window.location.href = `/products?query=${ele.path}`;
-            }
-          }}
+            onClick={() => {
+              if (isScrolling) {
+                swiperRef.current?.swiper?.disable(); // Disable Swiper scrolling
+                setIsScrolling(false); // Reset scrolling state
+                setTimeout(() => {
+                  swiperRef.current?.swiper?.enable(); // Re-enable Swiper after 1 second
+                }, 100);
+              } else {
+                window.location.href = `/products?query=${ele.path}`;
+              }
+            }}
             style={{ cursor: "pointer" }}
           >
             {ele.img && (
