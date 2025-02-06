@@ -120,16 +120,17 @@ const Homepage = () => {
           <FooterLP />
         ) : (
           <div
-            onClick={() => {
-              if (isScrolling) {
-                // Stop scrolling logic
-                swiperRef.current?.swiper?.disable(); // Disable Swiper scrolling
-                setIsScrolling(false); // Reset scrolling state
-              } else {
-                // Navigate to /products
-                window.location.href = `/products?query=${ele.path}`;
-              }
-            }}
+          onClick={() => {
+            if (isScrolling) {
+              swiperRef.current?.swiper?.disable(); // Disable Swiper scrolling
+              setIsScrolling(false); // Reset scrolling state
+              setTimeout(() => {
+                swiperRef.current?.swiper?.enable(); // Re-enable Swiper after 1 second
+              }, 100);
+            } else {
+              window.location.href = `/products?query=${ele.path}`;
+            }
+          }}
             style={{ cursor: "pointer" }}
           >
             {ele.img && (
