@@ -149,6 +149,7 @@ const Homepage = () => {
                 autoPlay
                 loop
                 muted
+                playsInline
                 className="w-full h-screen object-cover"
               >
                 <source src={ele.video} type="video/mp4" />
