@@ -168,8 +168,7 @@ const Homepage = () => {
         categories={activeCategories}
         isScrolling={isScrolling}
         swiperRef={swiperRef}
-        showSearchBar
-        isMobile
+        isMobile={isMobile}
       />
       <AnimatePresence initial={false} custom={direction}>
         <motion.div

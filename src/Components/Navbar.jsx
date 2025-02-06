@@ -104,7 +104,7 @@ const Navbar = ({
 
           {/* Right section: Search and other links */}
           <div className="flex items-center gap-2 sm:gap-6 mb-auto">
-            {showSearchBar && !isSearchPage && (
+            {isMobile && !isSearchPage && (
               <div className="relative hidden md:block rounded-none">
                 <Link to={"/search/home"}>
                   <input
