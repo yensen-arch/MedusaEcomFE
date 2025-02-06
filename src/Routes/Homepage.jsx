@@ -71,7 +71,7 @@ const Homepage = () => {
         clearInterval(interval);
       }
     };
-  }, [isMobile, isScrolling]); 
+  }, [isMobile, isScrolling]);
 
   const handleSlideChange = useCallback(
     (swiper) => {
@@ -131,14 +131,8 @@ const Homepage = () => {
         ) : (
           <div
             onClick={() => {
-              if (isScrolling) {
-                swiperRef.current?.swiper?.disable(); // Disable Swiper scrolling
-                setIsScrolling(false); // Reset scrolling state
-                setTimeout(() => {
-                  swiperRef.current?.swiper?.enable(); // Re-enable Swiper after 1 second
-                }, 100);
-              } else {
-                window.location.href = `/products?query=${ele.path}`;
+              if (!isScrolling) {
+                window.location.href = `/products`;
               }
             }}
             style={{ cursor: "pointer" }}
@@ -165,7 +159,6 @@ const Homepage = () => {
       </SwiperSlide>
     ));
   }, [activeCategory, activeCategories, isScrolling]);
-
   return (
     <div className="relative w-full h-screen cursor-pointer overflow-hidden">
       <Navbar
