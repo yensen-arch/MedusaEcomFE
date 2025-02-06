@@ -20,6 +20,7 @@ const Navbar = ({
   showSearchBar,
   swiperRef,
   isScrolling,
+  isMobile,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [logoSize, setLogoSize] = useState("h-40");
@@ -69,7 +70,7 @@ const Navbar = ({
               <Link
                 to="/"
                 className={`mb-auto py-2 transition-opacity duration-500 ${
-                  !isVisible && window.matchMedia("(max-width: 768px)").matches
+                  !isVisible && isMobile
                     ? "opacity-0"
                     : "opacity-100"
                 } `}

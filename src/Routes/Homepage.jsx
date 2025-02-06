@@ -166,6 +166,7 @@ const Homepage = () => {
         isScrolling={isScrolling}
         swiperRef={swiperRef}
         showSearchBar
+        isMobile
       />
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
