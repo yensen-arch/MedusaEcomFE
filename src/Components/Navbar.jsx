@@ -103,18 +103,26 @@ const Navbar = ({
 
           {/* Right section: Search and other links */}
           <div className="flex items-center gap-2 sm:gap-6 mb-auto">
-            { !isSearchPage && (
-              <div className="relative hidden md:block rounded-none">
-                <Link to={"/search/home"}>
-                  <input
-                    type="text"
-                    placeholder="SEARCH"
-                    className="bg-white mx-2 lg:mx-10 mt-4 text-right border border-black w-[200px] lg:w-[400px] py-1 px-2 text-xs lg:text-sm rounded-none appearance-none"
-                  />
-                </Link>
-              </div>
-            )}
             {!isSearchPage && (
+              <>
+                <div className="relative hidden lg:block rounded-none ">
+                  <Link to={"/search/home"}>
+                    <input
+                      type="text"
+                      placeholder="SEARCH"
+                      className="bg-white mx-2 lg:mx-10 mt-4 text-right border border-black lg:w-[300px] py-1 px-2 text-xs lg:text-sm rounded-none appearance-none"
+                    />
+                  </Link>
+                </div>
+                <Link
+                  to="/search/home"
+                  className="hidden md:block lg:hidden  lg:mx-10  text-xs lg:text-sm"
+                >
+                  SEARCH
+                </Link>
+              </>
+            )}
+            {!isSearchPage && isMobile && (
               <Link to="/search/home" className="text-xs md:hidden">
                 <RiSearchLine className="w-6 h-6" />
               </Link>
@@ -132,7 +140,7 @@ const Navbar = ({
               onClick={toggleCart}
               className="text-xs mb-auto py-2 relative"
             >
-              <span className="hidden md:inline">SHOPPING BAG</span>
+              <span className="hidden md:block">SHOPPING BAG</span>
               <RiShoppingBagLine className="w-6 h-6 md:hidden" />
             </button>
           </div>
