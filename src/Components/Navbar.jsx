@@ -53,7 +53,7 @@ const Navbar = ({
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
-  console.log("Mobile=", isMobile, "scroll=", isScrolling);
+  console.log("Mobile=", isMobile, "!search=", !isSearchPage);
   return (
     <>
       <nav className="fixed top-0 left-0 w-full z-40 bg-transparent">
@@ -103,7 +103,7 @@ const Navbar = ({
 
           {/* Right section: Search and other links */}
           <div className="flex items-center gap-2 sm:gap-6 mb-auto">
-            {isMobile && !isSearchPage && (
+            { !isSearchPage && (
               <div className="relative hidden md:block rounded-none">
                 <Link to={"/search/home"}>
                   <input
