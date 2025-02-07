@@ -193,6 +193,9 @@ const Homepage = () => {
             mousewheel={true}
             freeMode={true}
             onScroll={handleScroll}
+            onTouchStart={() => setIsScrolling(true)}
+            onTouchMove={() => setIsScrolling(true)}
+            onTouchEnd={() => setIsScrolling(false)}
             speed={800}
             onSlideChange={handleSlideChange}
             className="w-full h-full"

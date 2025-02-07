@@ -53,6 +53,7 @@ const Navbar = ({
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
+  console.log("Mobile=", isMobile, "scroll=", isScrolling);
   return (
     <>
       <nav className="fixed top-0 left-0 w-full z-40 bg-transparent">
@@ -70,9 +71,7 @@ const Navbar = ({
               <Link
                 to="/"
                 className={`mb-auto py-2 transition-opacity duration-500 ${
-                  !isVisible && isMobile
-                    ? "opacity-0"
-                    : "opacity-100"
+                  isScrolling && isMobile ? "opacity-0" : "opacity-100"
                 } `}
               >
                 <img
