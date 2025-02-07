@@ -39,7 +39,6 @@ const Homepage = () => {
   const swiperRef = useRef(null);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef(null);
-  const [touchStartPos, setTouchStartPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -111,60 +110,17 @@ const Homepage = () => {
     [categoryNames, indexNo]
   );
 
-  const handleScroll = useCallback((event) => {
+  const handleScroll = useCallback(() => {
     setIsScrolling(true);
-  
+
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
     }
-  
+
     scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
     }, 300);
-    if (event.type === "touchmove") {
-      event.preventDefault();
-    }
   }, []);
-
-  const handleTouchStart = (e) => {
-    setTouchStartPos({
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY,
-    });
-  };
-
-  const handleTouchEnd = (e) => {
-    const touchEndPos = {
-      x: e.changedTouches[0].clientX,
-      y: e.changedTouches[0].clientY,
-    };
-  
-    const distanceMoved = Math.sqrt(
-      Math.pow(touchEndPos.x - touchStartPos.x, 2) + Math.pow(touchEndPos.y - touchStartPos.y, 2)
-    );
-  
-    if (distanceMoved < 10) {
-      if (!isScrolling) {
-        window.location.href = `/products`;
-      }
-    }
-  
-    handleScroll(e);
-  };
-
-  useEffect(() => {
-    if (isMobile) {
-      window.addEventListener("touchstart", handleTouchStart, { passive: false });
-      window.addEventListener("touchmove", handleScroll, { passive: false });
-      window.addEventListener("touchend", handleTouchEnd, { passive: false });
-    }
-  
-    return () => {
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleScroll);
-      window.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, [isMobile, handleScroll, touchStartPos]);
 
   const renderSlides = useMemo(() => {
     return activeCategories[activeCategory]?.map((ele, index) => (
