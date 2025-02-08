@@ -53,7 +53,6 @@ const Navbar = ({
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
-  console.log("Mobile=", isMobile, "!search=", !isSearchPage, "scroll=", isScrolling);
   return (
     <>
       <nav className="fixed top-0 left-0 w-full z-40 bg-transparent">

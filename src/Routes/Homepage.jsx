@@ -118,13 +118,13 @@ const Homepage = () => {
       }
       scrollTimeoutRef.current = setTimeout(() => {
         setIsScrolling(false);
+        scrollTimeoutRef.current = null; // Reset reference
       }, 1000);
     };
-  
+
     window.addEventListener("touchmove", handleTouchMove);
     return () => window.removeEventListener("touchmove", handleTouchMove);
   }, []);
-  
 
   const renderSlides = useMemo(() => {
     return activeCategories[activeCategory]?.map((ele, index) => (
@@ -137,7 +137,7 @@ const Homepage = () => {
         ) : (
           <div
             onClick={() => {
-              if (!isScrolling) {
+              if (!isScrolling && scrollTimeoutRef.current === null) {
                 window.location.href = `/products`;
               }
             }}
