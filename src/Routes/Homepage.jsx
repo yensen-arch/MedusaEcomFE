@@ -118,7 +118,7 @@ const Homepage = () => {
       }
       scrollTimeoutRef.current = setTimeout(() => {
         setIsScrolling(false);
-      }, 300);
+      }, 1000);
     };
   
     window.addEventListener("touchmove", handleTouchMove);
