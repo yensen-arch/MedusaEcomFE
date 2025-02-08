@@ -17,6 +17,8 @@ import Privacy from './Privacy'
 import NotFound from './NotFound'
 import MyOrdersHelp from './MyOrdersHelp'
 import SearchHome from './SearchHome'
+import Products from './Products'
+
 const AllRoutes = () => {
   return (
     <Routes>
@@ -36,6 +38,7 @@ const AllRoutes = () => {
       <Route path='/search/home' element={<SearchHome/>}></Route>
       <Route path='career' element={<Careers />}></Route>
       <Route path='/privacy' element={<Privacy />}></Route>
+      <Route path='products' element={<Products/>}></Route>
       <Route path='*' element={<NotFound />}></Route>
     </Routes>
   )

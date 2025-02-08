@@ -1,6 +1,7 @@
 {
   "name": "medusaecomfe",
   "version": "1.0.0",
+  "proxy": "https://api.clothd.co",
   "description": "",
   "main": "tailwind.config.js",
   "scripts": {
