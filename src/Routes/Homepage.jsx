@@ -110,17 +110,21 @@ const Homepage = () => {
     [categoryNames, indexNo]
   );
 
-  const handleScroll = useCallback(() => {
-    setIsScrolling(true);
-
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
-
-    scrollTimeoutRef.current = setTimeout(() => {
-      setIsScrolling(false);
-    }, 300);
+  useEffect(() => {
+    const handleTouchMove = () => {
+      setIsScrolling(true);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = setTimeout(() => {
+        setIsScrolling(false);
+      }, 300);
+    };
+  
+    window.addEventListener("touchmove", handleTouchMove);
+    return () => window.removeEventListener("touchmove", handleTouchMove);
   }, []);
+  
 
   const renderSlides = useMemo(() => {
     return activeCategories[activeCategory]?.map((ele, index) => (
@@ -194,10 +198,6 @@ const Homepage = () => {
             slidesPerView={1}
             mousewheel={true}
             freeMode={true}
-            onScroll={handleScroll}
-            onTouchStart={() => setIsScrolling(true)}
-            onTouchMove={() => setIsScrolling(true)}
-            onTouchEnd={() => setIsScrolling(false)}
             speed={800}
             onSlideChange={handleSlideChange}
             className="w-full h-full"
