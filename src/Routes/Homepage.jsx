@@ -126,6 +126,39 @@ const Homepage = () => {
     return () => window.removeEventListener("touchmove", handleTouchMove);
   }, []);
 
+  useEffect(() => {
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    const handleTouchStart = (e) => {
+      touchStartX = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (e) => {
+      touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+
+      if (Math.abs(diff) > 50) {
+        // Minimum swipe distance
+        if (diff > 0) {
+          handleNext(); // Swipe left → Next category
+        } else {
+          handlePrev(); // Swipe right → Previous category
+        }
+      }
+    };
+
+    if (isMobile) {
+      window.addEventListener("touchstart", handleTouchStart);
+      window.addEventListener("touchend", handleTouchEnd);
+    }
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isMobile, handleNext, handlePrev]);
+
   const renderSlides = useMemo(() => {
     return activeCategories[activeCategory]?.map((ele, index) => (
       <SwiperSlide
