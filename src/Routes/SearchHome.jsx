@@ -6,7 +6,18 @@ const SearchHome = () => {
   const [activeCategory, setActiveCategory] = useState("WOMAN");
   const categoryNames = ["WOMAN", "MAN", "KIDS", "BEAUTY"];
   const items = [
-    "Dresses", "Shoes", "Accessories", "Tops", "Jeans", "Skirts", "Jackets", "Bags", "Jewelry", "Swimwear", "Activewear", "Lingerie"
+    "Dresses",
+    "Shoes",
+    "Accessories",
+    "Tops",
+    "Jeans",
+    "Skirts",
+    "Jackets",
+    "Bags",
+    "Jewelry",
+    "Swimwear",
+    "Activewear",
+    "Lingerie",
   ];
 
   const scrollRef = useRef(null);
@@ -53,9 +64,32 @@ const SearchHome = () => {
     isDragging.current = false;
   };
 
+  const handleTouchStart = (e) => {
+    isDragging.current = true;
+    startX.current = e.touches[0].pageX - (scrollRef.current?.offsetLeft || 0);
+    scrollLeft.current = scrollRef.current?.scrollLeft || 0;
+  };
+  
+  const handleTouchMove = (e) => {
+    if (!isDragging.current) return;
+    const x = e.touches[0].pageX - (scrollRef.current?.offsetLeft || 0);
+    const walk = (x - startX.current) * 1;
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollLeft.current - walk;
+    }
+  };
+  
+  const handleTouchEnd = () => {
+    isDragging.current = false;
+  };
+
   return (
     <>
-      <Navbar activeCategory={activeCategory} setActiveCategory={setActiveCategory} categoryNames={categoryNames} />
+      <Navbar
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+        categoryNames={categoryNames}
+      />
       <div className="mx-auto mt-60 flex flex-col min-h-screen">
         <div className="flex flex-col justify-center items-center">
           <p className="text-lg font-semibold">WHAT ARE YOU LOOKING FOR?</p>
@@ -66,6 +100,9 @@ const SearchHome = () => {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseUp}
             onMouseUp={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             {[...items, ...items].map((item, index) => (
               <span
