@@ -105,6 +105,7 @@ const SignIn = () => {
               alt="Zara fashion"
               autoPlay
               muted
+              playsInline
               loop
               className="w-max object-fill"
             />

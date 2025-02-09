@@ -73,6 +73,7 @@ const LogIn = () => {
               alt="Zara fashion"
               autoPlay
               muted
+              playsInline
               loop
               className="w-max object-fill"
             />
