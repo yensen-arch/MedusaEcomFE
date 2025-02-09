@@ -37,3 +37,17 @@ export const GET_PRODUCTS = gql`
     }
   }
 `;
+
+export const GET_CATEGORIES = gql`
+  query GetCategories {
+    categories(first: 100) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+

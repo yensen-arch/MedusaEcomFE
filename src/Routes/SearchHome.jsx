@@ -1,9 +1,22 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
+import SearchProducts from "../Components/SearchProducts";
+import { useQuery } from '@apollo/client';
+import { GET_CATEGORIES } from '../graphql/queries';
 
 const SearchHome = () => {
+
+  const { loading, error, data } = useQuery(GET_CATEGORIES);
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+
+    const categories = data.categories.edges.map((edge) => edge.node);
+    console.log(categories);
   const [activeCategory, setActiveCategory] = useState("WOMAN");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const categoryNames = ["WOMAN", "MAN", "KIDS", "BEAUTY"];
   const items = [
     "Dresses",
@@ -42,7 +55,7 @@ const SearchHome = () => {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, []);
+  }, [autoScroll]); // Added autoScroll to dependencies
 
   const handleMouseDown = (e) => {
     isDragging.current = true;
@@ -69,7 +82,7 @@ const SearchHome = () => {
     startX.current = e.touches[0].pageX - (scrollRef.current?.offsetLeft || 0);
     scrollLeft.current = scrollRef.current?.scrollLeft || 0;
   };
-  
+
   const handleTouchMove = (e) => {
     if (!isDragging.current) return;
     const x = e.touches[0].pageX - (scrollRef.current?.offsetLeft || 0);
@@ -78,9 +91,14 @@ const SearchHome = () => {
       scrollRef.current.scrollLeft = scrollLeft.current - walk;
     }
   };
-  
+
   const handleTouchEnd = () => {
     isDragging.current = false;
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    setSelectedCategory("");
   };
 
   return (
@@ -113,13 +131,10 @@ const SearchHome = () => {
               </span>
             ))}
           </div>
-          <input
-            type="text"
-            placeholder="Search..."
-            className="border-b border-black text-center text-lg my-7 outline-none px-2 py-1 w-1/3"
-          />
         </div>
-        <div>Products can go here.</div>
+        <div className="p-12">
+          <SearchProducts selectedCategory={selectedCategory} />
+        </div>
       </div>
       <Footer />
     </>
