@@ -1,28 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCTS } from "../graphql/queries";
 
-function SearchProducts(selectedCategory) {
+function SearchProducts({ selectedCategory }) {
   const [searchQuery, setSearchQuery] = useState("");
   const { loading, error, data } = useQuery(GET_PRODUCTS);
 
-  if (loading)
-    return <p className="text-center text-gray-600 uppercase text-sm">Loading...</p>;
-  if (error)
-    return <p className="text-center text-red-500 uppercase text-sm">Error: {error.message}</p>;
+  useEffect(() => {
+    if (selectedCategory) {
+      setSearchQuery(selectedCategory);
+    }
+  }, [selectedCategory]);
+
+  if (loading || error) {
+    return (
+      <div className="text-center text-sm uppercase">
+        {loading ? <p className="text-gray-600">LOADING</p> : <p className="text-red-500">Error: {error.message}</p>}
+      </div>
+    );
+  }
 
   const products = data?.products?.edges.map(({ node }) => node) || [];
+
+  // **Search Filtering with Pattern Matching**
   const filteredProducts = !searchQuery
     ? products
-    : products.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+    : products.filter((product) => {
+        const searchTerm = searchQuery.toLowerCase().trim();
+        const regex = new RegExp(searchTerm.replace(/s$/, ""), "i"); // Remove plural 's' and match
 
+        return (
+          regex.test(product.name) ||
+          regex.test(product.category?.name || "") ||
+          regex.test(product.slug) ||
+          regex.test(String(product.price?.amount || ""))
+        );
+      });
+
+  // **Categorize Products**
   const categorizedProducts = {};
   filteredProducts.forEach((product) => {
-    const category = product.category?.name || "Uncategorized";
+    const category = product.category?.name || "UNCATEGORIZED";
     if (!categorizedProducts[category]) {
       categorizedProducts[category] = [];
     }
@@ -49,11 +69,11 @@ function SearchProducts(selectedCategory) {
           <h3 className="text-sm uppercase text-gray-700 mb-2">{category}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {products.map((product) => (
-              <div key={product.id} className="bg-slate-50 p-4 rounded-lg shadow">
+              <div key={product.id} className="bg-slate-50 p-4">
                 <img
                   src={product.thumbnail?.url || "https://via.placeholder.com/150"}
                   alt={product.name}
-                  className="w-full h-40 object-cover rounded-md mb-2"
+                  className="w-full h-40 object-cover rounded-none mb-2"
                 />
                 <h3 className="text-sm uppercase text-gray-700">{product.name}</h3>
                 <p className="text-xs text-gray-500">{product.slug}</p>
