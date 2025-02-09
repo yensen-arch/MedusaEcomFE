@@ -135,17 +135,20 @@ const Homepage = () => {
 
     const handleTouchEnd = (e) => {
       touchEndX = e.changedTouches[0].clientX;
-      const diff = touchStartX - touchEndX;
-
-      if (Math.abs(diff) > 50) {
-        // Minimum swipe distance
-        if (diff > 0) {
+      let touchEndY = e.changedTouches[0].clientY;
+      
+      const diffX = touchStartX - touchEndX;
+      const diffY = touchStartY - touchEndY;
+    
+      if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX > 0) {
           handleNext(); // Swipe left → Next category
         } else {
           handlePrev(); // Swipe right → Previous category
         }
       }
     };
+    
 
     if (isMobile) {
       window.addEventListener("touchstart", handleTouchStart);

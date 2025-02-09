@@ -30,7 +30,7 @@ const FooterLP = () => {
           )
         )}
       </nav>
-      <div className="pb-10 flex justify-start text-left text-[9px] ml-7 md:ml-0">
+      <div className="pb-20 flex justify-start text-left text-[9px] ml-7 md:ml-0">
         <div>
           <div>NAME AND ADDRESS OF THE MANUFACTURER :</div>
           <div>INDUSTRIA DE DISEÑO TEXTIL, S.A. (INDITEX, S.A.)</div>
