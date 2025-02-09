@@ -127,15 +127,18 @@ const Homepage = () => {
 
   useEffect(() => {
     let touchStartX = 0;
+    let touchStartY = 0;
     let touchEndX = 0;
+    let touchEndY = 0;
 
     const handleTouchStart = (e) => {
       touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
     };
 
     const handleTouchEnd = (e) => {
       touchEndX = e.changedTouches[0].clientX;
-      let touchEndY = e.changedTouches[0].clientY;
+      touchEndY = e.changedTouches[0].clientY;
       
       const diffX = touchStartX - touchEndX;
       const diffY = touchStartY - touchEndY;
