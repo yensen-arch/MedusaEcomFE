@@ -81,24 +81,30 @@ const SearchHome = () => {
           ) : error ? (
             <p className="mt-10 text-red-500">Error: {error.message}</p>
           ) : (
-            <div
-              ref={scrollRef}
-              className="overflow-hidden mt-10 w-full max-w-4xl flex space-x-4 cursor-grab"
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseUp}
-              onMouseUp={handleMouseUp}
-            >
-              {[...categories, ...categories].map((category, index) => (
-                <span
-                  key={index}
-                  className="mx-2 py-1 px-3 text-sm border border-black hover:bg-gray-300 cursor-pointer whitespace-nowrap"
-                  onClick={() => setSelectedCategory(category)}
-                  
-                >
-                  {category}
-                </span>
-              ))}
+            <div className="relative w-full max-w-4xl">
+              {/* Left & Right Blur */}
+              <div className="pointer-events-none absolute inset-0 w-full">
+                <div className="absolute left-0 top-0 h-full w-[10%] bg-gradient-to-r from-white to-transparent"></div>
+                <div className="absolute right-0 top-0 h-full w-[10%] bg-gradient-to-l from-white to-transparent"></div>
+              </div>
+
+              <div
+                ref={scrollRef}
+                className="overflow-hidden mt-10 w-full flex space-x-4 cursor-grab"
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseUp}
+                onMouseUp={handleMouseUp}
+              >
+                {[...categories, ...categories].map((category, index) => (
+                  <span
+                    key={index}
+                    className="mx-2 py-1 px-3 text-sm border border-black hover:bg-gray-300 cursor-pointer whitespace-nowrap"
+                  >
+                    {category}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
         </div>
