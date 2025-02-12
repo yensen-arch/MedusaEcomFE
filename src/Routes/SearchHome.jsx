@@ -12,6 +12,9 @@ const SearchHome = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  useEffect(() => {
     if (data?.categories?.edges) {
       setCategories(data.categories.edges.map((edge) => edge.node.name));
     }
