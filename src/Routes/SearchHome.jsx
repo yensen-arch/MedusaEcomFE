@@ -100,6 +100,7 @@ const SearchHome = () => {
                   <span
                     key={index}
                     className="mx-2 py-1 px-3 text-sm border border-black hover:bg-gray-300 cursor-pointer whitespace-nowrap"
+                    onClick={() => setSelectedCategory(category)}
                   >
                     {category}
                   </span>
