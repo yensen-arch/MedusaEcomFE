@@ -75,6 +75,7 @@ export const GET_PRODUCT_BY_ID = gql`
         }
       }
       category {
+        id
         name
       }
       thumbnail {
@@ -116,3 +117,38 @@ export const GET_PRODUCT_BY_SLUG = gql`
     }
   }
 `;
+
+export const GET_PRODUCTS_BY_CATEGORY = gql`
+  query GetProductsByCategory($categoryId: ID!, $channel: String!) {
+    products(first: 10, filter: { categories: [$categoryId] }, channel: $channel) {
+      edges {
+        node {
+          id
+          name
+          slug
+          description
+          pricing {
+            priceRange {
+              start {
+                gross {
+                  amount
+                  currency
+                }
+              }
+              stop {
+                gross {
+                  amount
+                  currency
+                }
+              }
+            }
+          }
+          thumbnail {
+            url
+          }
+        }
+      }
+    }
+  }
+`;
+

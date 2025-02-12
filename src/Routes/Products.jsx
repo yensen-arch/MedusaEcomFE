@@ -1,19 +1,41 @@
+import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { GET_PRODUCT_BY_ID } from "../graphql/queries";
+import RelatedProducts from "../Components/RelatedProducts";
 
 const Product = () => {
   const { productId } = useParams();
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
     variables: { id: productId, channel: "default-channel" },
   });
+  const productCategoryID = data?.product?.category?.id;
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   const product = data.product;
-  const productData = data.product;
-  const description = productData.description || "";
+  const description = product.description || "";
+
+  const images = [...Array(4)].map(
+    () => product.thumbnail.url || "/placeholder.svg"
+  );
+
+  const openLightbox = (index) => {
+    setSelectedImageIndex(index);
+    setIsLightboxOpen(true);
+  };
+
+  const closeLightbox = () => setIsLightboxOpen(false);
+
+  const navigate = (direction) => {
+    setSelectedImageIndex((prevIndex) => {
+      const newIndex = prevIndex + direction;
+      return newIndex < 0 ? images.length - 1 : newIndex % images.length;
+    });
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -23,7 +45,8 @@ const Product = () => {
           <img
             src={product.thumbnail.url || "/placeholder.svg"}
             alt={product.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover  cursor-pointer"
+            onClick={() => openLightbox(0)}
           />
         </div>
         <div className="space-y-6">
@@ -37,8 +60,10 @@ const Product = () => {
           </div>
 
           <div className="pt-4 border-t">
-            <p className="text-gray-700 mb-2">{product.variants?.[0]?.name}</p>
-            <button className="w-full py-3 px-4 border border-black text-center hover:bg-black hover:text-white transition-colors">
+            <p className="text-gray-500 mb-2">
+              {product.variants?.[0]?.name || "cat name"}
+            </p>
+            <button className="w-full py-3 px-4 border border-black text-center hover:bg-black hover:text-white ">
               ADD
             </button>
           </div>
@@ -58,7 +83,7 @@ const Product = () => {
                 <span className="transform group-open:rotate-180">▼</span>
               </summary>
               <div className="pb-4 text-xs">
-                <p>Product care and composition details...</p>
+                <p>PRODUCT COMPOSITION DETAILS...</p>
               </div>
             </details>
 
@@ -97,23 +122,59 @@ const Product = () => {
           <img
             src={product.thumbnail.url || "/placeholder.svg"}
             alt={product.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover cursor-pointer"
+            onClick={() => openLightbox(1)}
           />
         </div>
       </div>
 
       {/* Gallery Section */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[...Array(4)].map((_, index) => (
+      <div className="grid grid-cols-2 gap-4">
+        {images.slice(0, 4).map((image, index) => (
           <div key={index} className="relative aspect-square">
             <img
-              src={product.thumbnail.url || "/placeholder.svg"}
+              src={image}
               alt={`${product.name} view ${index + 1}`}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover cursor-pointer"
+              onClick={() => openLightbox(index)}
             />
           </div>
         ))}
       </div>
+
+      {/* Lightbox Overlay */}
+      {isLightboxOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+          onClick={closeLightbox}
+        >
+          <button
+            className="absolute left-4 text-white text-3xl"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(-1);
+            }}
+          >
+            ←
+          </button>
+          <img
+            src={images[selectedImageIndex]}
+            alt="Fullscreen"
+            className="max-w-full max-h-full object-contain"
+          />
+          <button
+            className="absolute right-4 text-white text-3xl"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(1);
+            }}
+          >
+            →
+          </button>
+        </div>
+      )}
+
+      <RelatedProducts productCategoryID={productCategoryID} />
     </div>
   );
 };
