@@ -1,28 +1,30 @@
-// Products.js
-import React from 'react';
-import { useQuery } from '@apollo/client';
-import { GET_PRODUCTS } from '../graphql/queries';
+import React from "react";
+import { useQuery } from "@apollo/client";
+import { useParams } from "react-router-dom";
+import { GET_PRODUCT_BY_ID } from "../graphql/queries";
 
-const Products = () => {
-  const { loading, error, data } = useQuery(GET_PRODUCTS);
+const Product = () => {
+  const { productId } = useParams();
+  const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
+    variables: { id: productId, channel: "default-channel" },
+  });
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  const product = data.product;
+
   return (
     <div>
-      {data.products.edges.map(({ node }) => (
-        <div key={node.id}>
-          <h2>{node.name}</h2>
-          <p>{node.description}</p>
-          <p>
-            Price: {node.pricing.priceRange.start.gross.amount}{' '}
-            {node.pricing.priceRange.start.gross.currency}
-          </p>
-          <img src={node.thumbnail.url} alt={node.name} />
-        </div>
-      ))}
+      <h2>{product.name}</h2>
+      <p dangerouslySetInnerHTML={{ __html: product.description }}></p>
+      <p>
+        Price: {product.pricing.priceRange.start.gross.amount}{" "}
+        {product.pricing.priceRange.start.gross.currency}
+      </p>
+      <img src={product.thumbnail.url} alt={product.name} />
     </div>
   );
 };
 
-export default Products;
+export default Product;

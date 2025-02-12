@@ -139,10 +139,10 @@ const Homepage = () => {
     const handleTouchEnd = (e) => {
       touchEndX = e.changedTouches[0].clientX;
       touchEndY = e.changedTouches[0].clientY;
-      
+
       const diffX = touchStartX - touchEndX;
       const diffY = touchStartY - touchEndY;
-    
+
       if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
         if (diffX > 0) {
           handleNext(); // Swipe left → Next category
@@ -151,7 +151,6 @@ const Homepage = () => {
         }
       }
     };
-    
 
     if (isMobile) {
       window.addEventListener("touchstart", handleTouchStart);
@@ -176,7 +175,7 @@ const Homepage = () => {
           <div
             onClick={() => {
               if (!isScrolling && scrollTimeoutRef.current === null) {
-                window.location.href = `/products`;
+                window.location.href = `/products/${ele.productId}`;
               }
             }}
             style={{ cursor: "pointer" }}

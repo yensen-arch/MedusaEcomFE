@@ -1,5 +1,5 @@
 // queries.js
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_PRODUCTS = gql`
   query GetProducts {
@@ -51,3 +51,68 @@ export const GET_CATEGORIES = gql`
   }
 `;
 
+export const GET_PRODUCT_BY_ID = gql`
+  query GetProduct($id: ID!, $channel: String!) {
+    product(id: $id, channel: $channel) {
+      id
+      name
+      slug
+      description
+      pricing {
+        priceRange {
+          start {
+            gross {
+              amount
+              currency
+            }
+          }
+          stop {
+            gross {
+              amount
+              currency
+            }
+          }
+        }
+      }
+      category {
+        name
+      }
+      thumbnail {
+        url
+      }
+    }
+  }
+`;
+
+export const GET_PRODUCT_BY_SLUG = gql`
+  query GetProduct($slug: String!, $channel: String!) {
+    product(slug: $slug, channel: $channel) {
+      id
+      name
+      slug
+      description
+      pricing {
+        priceRange {
+          start {
+            gross {
+              amount
+              currency
+            }
+          }
+          stop {
+            gross {
+              amount
+              currency
+            }
+          }
+        }
+      }
+      category {
+        name
+      }
+      thumbnail {
+        url
+      }
+    }
+  }
+`;
