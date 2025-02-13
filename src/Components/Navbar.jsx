@@ -27,6 +27,7 @@ const Navbar = ({
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const isSearchPage = location.pathname === "/search/home";
+  const isProductPage = location.pathname.includes("/products/");
 
   // Change the logo based on the bg
 
@@ -66,38 +67,44 @@ const Navbar = ({
                 <RiMenuLine className="w-6 h-6" />
               )}
             </button>
-            <div className="flex flex-col justify-center pl-20 relative">
-              <Link
-                to="/"
-                className={`mb-auto py-2 transition-opacity duration-500 ${
-                  isScrolling && isMobile ? "opacity-0" : "opacity-100"
-                } `}
-              >
-                <img
-                  src={logoUrl || "/placeholder.svg"}
-                  alt="ZARA"
-                  className={`transition-all duration-700 ease-in-out 
+            {!isProductPage && (
+              <div className="flex flex-col justify-center pl-20 relative">
+                {/* Hide logo on product page */}
+
+                <Link
+                  to="/"
+                  className={`mb-auto py-2 transition-opacity duration-500 ${
+                    isScrolling && isMobile ? "opacity-0" : "opacity-100"
+                  } `}
+                >
+                  <img
+                    src={logoUrl || "/placeholder.svg"}
+                    alt="ZARA"
+                    className={`transition-all duration-700 ease-in-out 
                     mt-[-3.5rem] ml-[-3rem] 
                     md:mt-0 md:ml-0 ${logoSize}`}
-                />
-              </Link>
+                  />
+                </Link>
 
-              {/* Categories row - desktop only */}
-              <div className="hidden md:flex items-center space-x-8 py-2">
-                {["V00", "WOMAN", "MAN", "KIDS", "ARCHIVE"].map((category) => (
-                  <button
-                    key={category}
-                    className={"text-sm"}
-                    onClick={() => {
-                      setActiveCategory(category);
-                      setIsMenuOpen(true);
-                    }}
-                  >
-                    {category}
-                  </button>
-                ))}
+                {/* Categories row - desktop only */}
+                <div className="hidden md:flex items-center space-x-8 py-2">
+                  {["V00", "WOMAN", "MAN", "KIDS", "ARCHIVE"].map(
+                    (category) => (
+                      <button
+                        key={category}
+                        className={"text-sm"}
+                        onClick={() => {
+                          setActiveCategory(category);
+                          setIsMenuOpen(true);
+                        }}
+                      >
+                        {category}
+                      </button>
+                    )
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Right section: Search and other links */}
@@ -158,7 +165,7 @@ const Navbar = ({
       <Cart isOpen={isCartOpen} />
 
       {/* Responsive search bar */}
-      {!isMenuOpen && !isSearchPage && (
+      {!isMenuOpen && !isSearchPage && !isProductPage && (
         <div
           className={`px-4 z-50 pb-4 md:hidden fixed bottom-0 left-0 w-full bg-transparent transition-transform duration-300 ${
             isVisible ? "translate-y-0" : "translate-y-full"
