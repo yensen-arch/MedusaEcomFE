@@ -3,13 +3,14 @@ import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { GET_PRODUCT_BY_ID } from "../graphql/queries";
 import RelatedProducts from "../Components/RelatedProducts";
-
+import Footer from "../Components/Footer";
 const Product = () => {
   const { productId } = useParams();
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
     variables: { id: productId, channel: "default-channel" },
   });
   const productCategoryID = data?.product?.category?.id;
+  const catName=data?.product?.category?.name
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
@@ -61,7 +62,7 @@ const Product = () => {
 
           <div className="pt-4 border-t">
             <p className="text-gray-500 mb-2">
-              {product.variants?.[0]?.name || "cat name"}
+              {catName.toUpperCase()}
             </p>
             <button className="w-full py-3 px-4 border border-black text-center hover:bg-black hover:text-white ">
               ADD
@@ -175,6 +176,7 @@ const Product = () => {
       )}
 
       <RelatedProducts productCategoryID={productCategoryID} />
+      <Footer />
     </div>
   );
 };

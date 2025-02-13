@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queries";
-import { FaPlus } from "react-icons/fa";
+import { FiPlus } from "react-icons/fi";
 
 export default function RelatedProducts({ productCategoryID }) {
   const { loading, error, data } = useQuery(GET_PRODUCTS_BY_CATEGORY, {
@@ -21,7 +21,7 @@ export default function RelatedProducts({ productCategoryID }) {
   return (
     <div className="w-full py-8">
       <h2 className="text-base font-normal mb-6">YOU MAY BE INTERESTED IN</h2>
-      <div className="flex overflow-x-auto gap-4 pb-4 -mx-4 px-4 scrollbar-hide">
+      <div className="flex overflow-x-auto gap-4 pb-4 mx-4 px-4 scrollbar-hide">
         {products.map((product) => (
           <div key={product.id} className="flex-none w-[280px]">
             <div className="relative group">
@@ -29,10 +29,13 @@ export default function RelatedProducts({ productCategoryID }) {
                 <img
                   src={product.imageUrl}
                   alt={product.name}
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full cursor-pointer"
+                  onClick={() =>
+                    (window.location.href = `/products/${product.id}`)
+                  }
                 />
-                <button className="absolute bottom-4 right-4 w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center hover:bg-gray-200">
-                  <FaPlus className="h-4 w-4" />
+                <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-white opacity-60 rounded-full flex items-center justify-center hover:bg-gray-200">
+                  <FiPlus className="h-4 w-4" />
                   <span className="sr-only">Add to cart</span>
                 </button>
               </div>
