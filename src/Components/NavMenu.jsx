@@ -102,7 +102,7 @@ export default function NavMenu({
 
   return (
     <div
-      className={`fixed top-10 left-8 bg-white z-50 w-full md:w-[400px] h-full md:h-[80vh] md:border-black md:border-[1px] overflow-hidden transition-transform transition-opacity duration-300 ease-in-out pointer-events-auto ${
+      className={`fixed inset-0 md:top-10 md:left-8 bg-white z-50 w-full h-full md:w-[400px] md:h-[80vh] md:border-black md:border-[1px] overflow-hidden transition-transform transition-opacity duration-300 ease-in-out pointer-events-auto  ${
         isMenuOpen
           ? "translate-x-0 opacity-100 visible"
           : "-translate-x-full opacity-0 invisible"

@@ -41,7 +41,7 @@ export default function RelatedProducts({ productCategoryID }) {
               </div>
             </div>
             <div className="space-y-1">
-              <h3 className="text-sm font-normal">{product.name}</h3>
+              <h3 className="text-sm font-normal">{product.name.toUpperCase()}</h3>
               <p className="text-sm">${product.price.toFixed(2)}</p>
             </div>
           </div>
