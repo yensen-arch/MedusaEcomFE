@@ -27,6 +27,7 @@ const Navbar = ({
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const isSearchPage = location.pathname === "/search/home";
+  const isHomePage= location.pathname === "/";
   const isProductPage = location.pathname.includes("/products/");
   // Change the logo based on the bg
 
@@ -165,7 +166,7 @@ const Navbar = ({
       <Cart isOpen={isCartOpen} />
 
       {/* Responsive search bar */}
-      {!isMenuOpen && !isSearchPage && !isProductPage && (
+      {!isMenuOpen && isHomePage && !isProductPage && (
         <div
           className={`px-4 z-50 pb-4 md:hidden fixed bottom-0 left-0 w-full bg-transparent transition-transform duration-300 ${
             isVisible ? "translate-y-0" : "translate-y-full"

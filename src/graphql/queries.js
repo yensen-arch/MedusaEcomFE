@@ -120,7 +120,11 @@ export const GET_PRODUCT_BY_SLUG = gql`
 
 export const GET_PRODUCTS_BY_CATEGORY = gql`
   query GetProductsByCategory($categoryId: ID!, $channel: String!) {
-    products(first: 10, filter: { categories: [$categoryId] }, channel: $channel) {
+    products(
+      first: 10
+      filter: { categories: [$categoryId] }
+      channel: $channel
+    ) {
       edges {
         node {
           id
@@ -152,3 +156,61 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
   }
 `;
 
+export const REGISTER_MUTATION = gql`
+  mutation Register($email: String!, $password: String!, $firstName: String!, $metadata: [MetadataInput!]) {
+    accountRegister(input: { email: $email, password: $password, firstName: $firstName, metadata: $metadata }) {
+      accountErrors {
+        field
+        message
+      }
+      user {
+        id
+        email
+        firstName
+        metadata {
+          key
+          value
+        }
+      }
+    }
+  }
+`;
+
+
+export const LOGIN_MUTATION = gql`
+  mutation TokenCreate($email: String!, $password: String!) {
+    tokenCreate(email: $email, password: $password) {
+      token
+      refreshToken
+      csrfToken
+      user {
+        id
+        email
+      }
+      accountErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const LOGOUT_MUTATION = gql`
+  mutation TokenRemove {
+    tokenRemove {
+      accountErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const GET_USER_QUERY = gql`
+  query GetUser {
+    me {
+      id
+      email
+    }
+  }
+`;

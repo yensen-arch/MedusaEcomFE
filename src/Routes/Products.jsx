@@ -71,7 +71,7 @@ const Product = () => {
             <p className="text-sm mb-4">Model height: 170 cm | Size: S</p>
             <div
               className="prose prose-sm"
-              dangerouslySetInnerHTML={{ __html: product.description }}
+              dangerouslySetInnerHTML={{ __html: product?.description }}
             ></div>
           </div>
 
@@ -114,7 +114,7 @@ const Product = () => {
         <div className="order-2 md:order-1 space-y-6">
           <div className="prose prose-sm">
             <h2 className="text-sm">PRODUCT DETAILS</h2>
-            <p dangerouslySetInnerHTML={{ __html: description }}></p>
+            <p dangerouslySetInnerHTML={{ __html: description||"" }}></p>
           </div>
         </div>
         <div className="order-1 md:order-2 relative aspect-square">

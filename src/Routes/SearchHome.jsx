@@ -76,7 +76,7 @@ const SearchHome = () => {
       />
       <div className="mx-auto mt-60 flex flex-col min-h-screen">
         <div className="flex flex-col justify-center items-center">
-          <p className="text-lg font-semibold">WHAT ARE YOU LOOKING FOR?</p>
+          <p className="text-lg ">WHAT ARE YOU LOOKING FOR?</p>
 
           {/* Loading/Error States */}
           {loading ? (
