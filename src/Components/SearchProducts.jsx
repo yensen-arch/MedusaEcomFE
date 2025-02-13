@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCTS } from "../graphql/queries";
+import { Link } from "react-router-dom";
 
 function SearchProducts({ selectedCategory }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,7 +18,11 @@ function SearchProducts({ selectedCategory }) {
   if (loading || error) {
     return (
       <div className="text-center text-sm uppercase">
-        {loading ? <p className="text-gray-600">LOADING</p> : <p className="text-red-500">Error: {error.message}</p>}
+        {loading ? (
+          <p className="text-gray-600">LOADING</p>
+        ) : (
+          <p className="text-red-500">Error: {error.message}</p>
+        )}
       </div>
     );
   }
@@ -67,20 +72,27 @@ function SearchProducts({ selectedCategory }) {
       {Object.entries(categorizedProducts).map(([category, products]) => (
         <div key={category} className="mb-8">
           <h3 className="text-sm uppercase text-gray-700 mb-2">{category}</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 ">
             {products.map((product) => (
-              <div key={product.id} className="bg-slate-50 p-4">
-                <img
-                  src={product.thumbnail?.url || "https://via.placeholder.com/150"}
-                  alt={product.name}
-                  className="w-full h-40 object-cover rounded-none mb-2"
-                />
-                <h3 className="text-sm uppercase text-gray-700">{product.name}</h3>
-                <p className="text-xs text-gray-500">{product.slug}</p>
-                <p className="text-xs text-gray-700 mt-2">
-                  Price: {product.price?.amount} {product.price?.currency}
-                </p>
-              </div>
+              <Link key={product.id} to={`/products/${product.id}`}>
+                <div key={product.id} className="bg-slate-50 p-4 cursor-pointer">
+                  <img
+                    src={
+                      product.thumbnail?.url ||
+                      "https://via.placeholder.com/150"
+                    }
+                    alt={product.name}
+                    className="w-full h-40 object-cover rounded-none mb-2"
+                  />
+                  <h3 className="text-sm uppercase text-gray-700">
+                    {product.name}
+                  </h3>
+                  <p className="text-xs uppercase text-gray-500">{product.slug}</p>
+                  <p className="text-xs text-gray-700 mt-2">
+                    PRICE: {product?.pricing.priceRange.start.gross.amount} {product?.pricing.priceRange.start.gross.currency}
+                  </p>
+                </div>
+              </Link>
             ))}
           </div>
         </div>

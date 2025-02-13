@@ -10,7 +10,7 @@ const Product = () => {
     variables: { id: productId, channel: "default-channel" },
   });
   const productCategoryID = data?.product?.category?.id;
-  const catName=data?.product?.category?.name
+  const catName = data?.product?.category?.name;
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
@@ -39,7 +39,7 @@ const Product = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8 mt-10">
       {/* First Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
         <div className="relative aspect-square">
@@ -61,9 +61,7 @@ const Product = () => {
           </div>
 
           <div className="pt-4 border-t">
-            <p className="text-gray-500 mb-2">
-              {catName.toUpperCase()}
-            </p>
+            <p className="text-gray-500 mb-2">{catName.toUpperCase()}</p>
             <button className="w-full py-3 px-4 border border-black text-center hover:bg-black hover:text-white ">
               ADD
             </button>

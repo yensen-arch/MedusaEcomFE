@@ -28,7 +28,6 @@ const Navbar = ({
   const [isVisible, setIsVisible] = useState(true);
   const isSearchPage = location.pathname === "/search/home";
   const isProductPage = location.pathname.includes("/products/");
-
   // Change the logo based on the bg
 
   const currentItem =
@@ -120,6 +119,7 @@ const Navbar = ({
                     />
                   </Link>
                 </div>
+                {/* For Tablets */}
                 <Link
                   to="/search/home"
                   className="hidden md:block lg:hidden  lg:mx-10  text-xs lg:text-sm"
@@ -128,7 +128,7 @@ const Navbar = ({
                 </Link>
               </>
             )}
-            {!isSearchPage && isMobile && (
+            {!isSearchPage &&(
               <Link to="/search/home" className="text-xs md:hidden">
                 <RiSearchLine className="w-6 h-6" />
               </Link>

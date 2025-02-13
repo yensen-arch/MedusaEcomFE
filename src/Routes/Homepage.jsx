@@ -32,6 +32,7 @@ const Homepage = () => {
     () => Object.keys(activeCategories),
     [activeCategories]
   );
+
   const [activeCategory, setActiveCategory] = useState(categoryNames[0]);
   const [direction, setDirection] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
