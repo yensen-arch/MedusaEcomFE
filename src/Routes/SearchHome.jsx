@@ -10,13 +10,19 @@ import { GET_CATEGORIES } from "../graphql/queries";
 const SearchHome = () => {
   const { loading, error, data } = useQuery(GET_CATEGORIES);
   const [categories, setCategories] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   useEffect(() => {
     if (data?.categories?.edges) {
-      setCategories(data.categories.edges.map((edge) => edge.node.name));
+      setCategories(
+        data.categories.edges.map((edge) => ({
+          id: edge.node.id,
+          name: edge.node.name,
+        }))
+      );
     }
   }, [data]);
 
@@ -103,9 +109,11 @@ const SearchHome = () => {
                   <span
                     key={index}
                     className="mx-2 py-1 px-3 text-sm border border-black hover:bg-gray-300 cursor-pointer whitespace-nowrap"
-                    onClick={() => setSelectedCategory(category)}
+                    onClick={() => {
+                      setSelectedCategory(category);
+                    }}
                   >
-                    {category}
+                    {category.name}
                   </span>
                 ))}
               </div>

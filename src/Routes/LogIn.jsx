@@ -1,5 +1,5 @@
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import Footer from "../Components/Footer";
 
 const LogIn = () => {
@@ -15,6 +15,9 @@ const LogIn = () => {
     e.preventDefault();
     console.log(data);
   };
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
 
   return (
     <>

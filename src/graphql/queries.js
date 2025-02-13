@@ -51,6 +51,55 @@ export const GET_CATEGORIES = gql`
   }
 `;
 
+export const GET_SUBCATEGORIES = gql`
+  query GetSubcategories($parentCategoryId: ID!) {
+    category(id: $parentCategoryId) {
+      id
+      name
+      children(first: 50) {
+        edges {
+          node {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_PRODUCTS_BY_SUBCATEGORY = gql`
+  query GetProductsBySubcategory($subcategoryId: ID!, $channel: String!) {
+    products(
+      first: 50
+      channel: $channel
+      filter: { categories: [$subcategoryId] }
+    ) {
+      edges {
+        node {
+          id
+          name
+          slug
+          thumbnail {
+            url
+          }
+          pricing {
+            priceRange {
+              start {
+                gross {
+                  amount
+                  currency
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+
 export const GET_PRODUCT_BY_ID = gql`
   query GetProduct($id: ID!, $channel: String!) {
     product(id: $id, channel: $channel) {
@@ -157,8 +206,20 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
 `;
 
 export const REGISTER_MUTATION = gql`
-  mutation Register($email: String!, $password: String!, $firstName: String!, $metadata: [MetadataInput!]) {
-    accountRegister(input: { email: $email, password: $password, firstName: $firstName, metadata: $metadata }) {
+  mutation Register(
+    $email: String!
+    $password: String!
+    $firstName: String!
+    $metadata: [MetadataInput!]
+  ) {
+    accountRegister(
+      input: {
+        email: $email
+        password: $password
+        firstName: $firstName
+        metadata: $metadata
+      }
+    ) {
       accountErrors {
         field
         message
@@ -175,7 +236,6 @@ export const REGISTER_MUTATION = gql`
     }
   }
 `;
-
 
 export const LOGIN_MUTATION = gql`
   mutation TokenCreate($email: String!, $password: String!) {

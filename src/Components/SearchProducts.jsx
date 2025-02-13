@@ -1,17 +1,22 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
-import { GET_PRODUCTS } from "../graphql/queries";
+import { GET_PRODUCTS_BY_SUBCATEGORY } from "../graphql/queries";
 import { Link } from "react-router-dom";
 
 function SearchProducts({ selectedCategory }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const { loading, error, data } = useQuery(GET_PRODUCTS);
+  const { loading, error, data } = useQuery(GET_PRODUCTS_BY_SUBCATEGORY, {
+    variables: {
+      subcategoryId: selectedCategory?.id,
+      channel: "default-channel",
+      fetchPolicy: "network-only"
+    },
+  });
 
   useEffect(() => {
     if (selectedCategory) {
-      setSearchQuery(selectedCategory);
+      setSearchQuery(selectedCategory.name);
     }
   }, [selectedCategory]);
 
@@ -28,7 +33,7 @@ function SearchProducts({ selectedCategory }) {
   }
 
   const products = data?.products?.edges.map(({ node }) => node) || [];
-
+console.log(products)
   // **Search Filtering with Pattern Matching**
   const filteredProducts = !searchQuery
     ? products
@@ -75,7 +80,10 @@ function SearchProducts({ selectedCategory }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 ">
             {products.map((product) => (
               <Link key={product.id} to={`/products/${product.id}`}>
-                <div key={product.id} className="bg-slate-50 p-4 cursor-pointer">
+                <div
+                  key={product.id}
+                  className="bg-slate-50 p-4 cursor-pointer"
+                >
                   <img
                     src={
                       product.thumbnail?.url ||
@@ -87,9 +95,12 @@ function SearchProducts({ selectedCategory }) {
                   <h3 className="text-sm uppercase text-gray-700">
                     {product.name}
                   </h3>
-                  <p className="text-xs uppercase text-gray-500">{product.slug}</p>
+                  <p className="text-xs uppercase text-gray-500">
+                    {product.slug}
+                  </p>
                   <p className="text-xs text-gray-700 mt-2">
-                    PRICE: {product?.pricing.priceRange.start.gross.amount} {product?.pricing.priceRange.start.gross.currency}
+                    PRICE: {product?.pricing.priceRange.start.gross.amount}{" "}
+                    {product?.pricing.priceRange.start.gross.currency}
                   </p>
                 </div>
               </Link>
