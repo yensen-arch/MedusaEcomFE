@@ -117,7 +117,7 @@ export default function NavMenu({
           <Link to="/search/home" className="text-xs md:hidden">
             <RiSearchLine className="w-6 h-6" />
           </Link>
-          <RiUserLine className="w-6 h-6" />
+         <Link to="/login"> <RiUserLine className="w-6 h-6" /></Link>
           <RiShoppingBagLine className="w-6 h-6" />
         </div>
       </div>

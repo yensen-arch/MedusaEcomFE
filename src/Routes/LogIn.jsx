@@ -1,23 +1,45 @@
+import { useMutation } from "@apollo/client";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import Footer from "../Components/Footer";
+import { LOGIN_MUTATION } from "../graphql/queries";
 
 const LogIn = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const path = location.state?.path;
-  const [data, setData] = useState({
-    email: "",
-    password: "",
+  const path = location.state?.path || "/";
+  const [errorMessage, setErrorMessage] = useState("");
+  const [data, setData] = useState({ email: "", password: "" });
+  
+  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
+    onCompleted: (response) => {
+      const { token, refreshToken, accountErrors } = response.tokenCreate;
+      if (accountErrors.length > 0) {
+        setErrorMessage(accountErrors[0].message);
+      } else {
+        localStorage.setItem("token", token);
+        localStorage.setItem("refreshToken", refreshToken);
+        navigate(path);
+      }
+    },
+    onError: (error) => {
+      setErrorMessage(error.message);
+    },
   });
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(data);
+    setErrorMessage("");
+    await login({ variables: { email: data.email, password: data.password } });
   };
+
   useEffect(() => {
     scrollTo(0, 0);
   }, []);
+
+  const isFormValid =
+    data.email.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) &&
+    data.password.trim().length >= 8;
 
   return (
     <>
@@ -26,11 +48,10 @@ const LogIn = () => {
         <div className="w-full flex justify-between items-start">
           <div className="w-full md:w-1/2 lg:w-2/5 pr-8">
             <h2 className="text-lg font-bold mb-4">LOG IN</h2>
-            <form action="" className="space-y-4">
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+            <form className="space-y-4" onSubmit={handleLogin}>
               <div>
-                <label htmlFor="email" className="block mb-1">
-                  E-MAIL
-                </label>
+                <label htmlFor="email" className="block mb-1">E-MAIL</label>
                 <input
                   type="email"
                   id="email"
@@ -40,24 +61,25 @@ const LogIn = () => {
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block mb-1">
-                  PASSWORD
-                </label>
+                <label htmlFor="password" className="block mb-1">PASSWORD</label>
                 <input
                   type="password"
                   id="password"
                   placeholder="Enter Password"
-                  onChange={(e) =>
-                    setData({ ...data, password: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, password: e.target.value })}
                   className="w-full border-b border-gray-300 focus:outline-none focus:border-black pb-1"
                 />
               </div>
               <button
-                onClick={handleLogin}
-                className="w-full bg-black text-white px-16 py-2 text-base cursor-pointer hover:bg-slate-600"
+                type="submit"
+                disabled={!isFormValid || loading}
+                className={`w-full px-16 py-2 text-base cursor-pointer transition ${
+                  isFormValid && !loading
+                    ? "bg-black text-white hover:bg-slate-600"
+                    : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                }`}
               >
-                LOG IN
+                {loading ? "Logging in..." : "LOG IN"}
               </button>
             </form>
 
@@ -73,7 +95,6 @@ const LogIn = () => {
           <div className="hidden md:block w-full lg:w-3/5 h-full">
             <video
               src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-              alt="Zara fashion"
               autoPlay
               muted
               playsInline
