@@ -39,7 +39,7 @@ const Product = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 mt-10">
+    <div className="max-w-7xl mx-auto px-4 py-8 mt-20">
       {/* First Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
         <div className="relative aspect-square">
@@ -51,9 +51,9 @@ const Product = () => {
           />
         </div>
         <div className="space-y-6">
-          <h1 className="text-2xl ">{product.name.toUpperCase()}</h1>
+          <h1 className="text-xl ">{product.name.toUpperCase()}</h1>
           <div className="space-y-1">
-            <p className="text-2xl">
+            <p className="text-md">
               {product.pricing.priceRange.start.gross.amount}{" "}
               {product.pricing.priceRange.start.gross.currency}
             </p>
@@ -68,7 +68,7 @@ const Product = () => {
           </div>
 
           <div className="pt-6">
-            <p className="text-sm mb-4">Model height: 170 cm | Size: S</p>
+            <p className="text-xs uppercase mb-4">Model height: 170 cm | Size: S</p>
             <div
               className="prose prose-sm"
               dangerouslySetInnerHTML={{ __html: product?.description }}

@@ -10,19 +10,16 @@ import { GET_CATEGORIES } from "../graphql/queries";
 const SearchHome = () => {
   const { loading, error, data } = useQuery(GET_CATEGORIES);
   const [categories, setCategories] = useState([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   useEffect(() => {
-    if (data?.categories?.edges) {
-      setCategories(
-        data.categories.edges.map((edge) => ({
-          id: edge.node.id,
-          name: edge.node.name,
-        }))
-      );
+    if (data?.categories?.edges?.length) {
+      const categoryObjects = data.categories.edges.map((edge) => edge.node);
+      setCategories(categoryObjects);
+      setSelectedCategory(categoryObjects[0]);
     }
   }, [data]);
 
@@ -35,21 +32,32 @@ const SearchHome = () => {
   const scrollLeft = useRef(0);
   const animationRef = useRef(null);
 
-  // Auto-scroll function
+  // Create repeated categories array - repeat 5 times to ensure smooth looping
+  const repeatedCategories = [...Array(5)].flatMap(() => categories);
+
   const autoScroll = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollLeft += 1; // Adjust speed
-      if (scrollRef.current.scrollLeft >= scrollRef.current.scrollWidth / 2) {
+      scrollRef.current.scrollLeft += 1;
+      // Check if we need to reset the scroll position
+      const scrollWidth = scrollRef.current.scrollWidth;
+      const currentScroll = scrollRef.current.scrollLeft;
+      // Reset when we've scrolled through one complete set of categories
+      if (currentScroll >= (scrollWidth / 5)) {
         scrollRef.current.scrollLeft = 0;
       }
-      animationRef.current = requestAnimationFrame(autoScroll);
     }
+    animationRef.current = requestAnimationFrame(autoScroll);
   };
 
   useEffect(() => {
-    animationRef.current = requestAnimationFrame(autoScroll);
+    // Start animation only if we have categories
+    if (categories.length > 0) {
+      animationRef.current = requestAnimationFrame(autoScroll);
+    }
     return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
   }, [categories]);
 
@@ -57,6 +65,11 @@ const SearchHome = () => {
     isDragging.current = true;
     startX.current = e.pageX - (scrollRef.current?.offsetLeft || 0);
     scrollLeft.current = scrollRef.current?.scrollLeft || 0;
+
+    // Pause animation while dragging
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
   };
 
   const handleMouseMove = (e) => {
@@ -71,6 +84,8 @@ const SearchHome = () => {
 
   const handleMouseUp = () => {
     isDragging.current = false;
+    // Resume animation after dragging
+    animationRef.current = requestAnimationFrame(autoScroll);
   };
 
   return (
@@ -82,16 +97,14 @@ const SearchHome = () => {
       />
       <div className="mx-auto mt-60 flex flex-col min-h-screen">
         <div className="flex flex-col justify-center items-center">
-          <p className="text-lg ">WHAT ARE YOU LOOKING FOR?</p>
+          <p className="text-lg font-semibold">WHAT ARE YOU LOOKING FOR?</p>
 
-          {/* Loading/Error States */}
           {loading ? (
             <p className="mt-10 text-gray-500">Loading categories...</p>
           ) : error ? (
             <p className="mt-10 text-red-500">Error: {error.message}</p>
           ) : (
             <div className="relative w-full max-w-4xl">
-              {/* Left & Right Blur */}
               <div className="pointer-events-none absolute inset-0 w-full">
                 <div className="absolute left-0 top-0 h-full w-[10%] bg-gradient-to-r from-white to-transparent"></div>
                 <div className="absolute right-0 top-0 h-full w-[10%] bg-gradient-to-l from-white to-transparent"></div>
@@ -105,13 +118,11 @@ const SearchHome = () => {
                 onMouseLeave={handleMouseUp}
                 onMouseUp={handleMouseUp}
               >
-                {[...categories, ...categories].map((category, index) => (
+                {repeatedCategories.map((category, index) => (
                   <span
-                    key={index}
+                    key={`${category.name}-${index}`}
                     className="mx-2 py-1 px-3 text-sm border border-black hover:bg-gray-300 cursor-pointer whitespace-nowrap"
-                    onClick={() => {
-                      setSelectedCategory(category);
-                    }}
+                    onClick={() => setSelectedCategory(category)}
                   >
                     {category.name}
                   </span>

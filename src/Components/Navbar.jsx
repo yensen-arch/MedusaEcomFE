@@ -35,8 +35,8 @@ const Navbar = ({
     categories?.[activeCategory]?.[swiperRef?.current?.swiper?.activeIndex];
 
   const logoUrl = currentItem?.video
-    ? "https://static.zara.net/assets/public/ae9d/d9bd/51f24d7eaf0c/0c9ae293a60b/default-light-green-0.svg?ts=1728680676189"
-    : "https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876";
+    ? "https://res.cloudinary.com/dmjhto8sd/image/upload/v1739507590/Clothd-green_r3fe9v.webp"
+    : "https://res.cloudinary.com/dmjhto8sd/image/upload/v1739507590/Clothd-black_kgtd7e.webp";
 
   useEffect(() => {
     const timer = setTimeout(() => {

@@ -199,11 +199,15 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
           thumbnail {
             url
           }
+          category {
+            name
+          }
         }
       }
     }
   }
 `;
+
 
 export const REGISTER_MUTATION = gql`
   mutation Register(
