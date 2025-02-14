@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queries";
+import { Link } from "react-router-dom";
 
 function SearchProducts({ selectedCategory }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,10 +82,9 @@ function SearchProducts({ selectedCategory }) {
           <h3 className="text-sm uppercase text-gray-700 mb-2">{category}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {products.map((product) => (
-              <div
+              <Link to={`/products/${product.id}`}
                 key={product.id}
                 className="bg-slate-50 p-4"
-                onClick={() => router.push(`/products/${product.id}`)}
               >
                 <img
                   src={
@@ -103,7 +103,7 @@ function SearchProducts({ selectedCategory }) {
                   PRICE: {product.pricing?.priceRange?.start?.gross?.amount}{" "}
                   {product.pricing?.priceRange?.start?.gross?.currency}
                 </p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
