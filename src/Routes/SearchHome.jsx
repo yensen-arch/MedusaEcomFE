@@ -10,6 +10,14 @@ import { GET_CATEGORIES } from "../graphql/queries";
 const SearchHome = () => {
   const { loading, error, data } = useQuery(GET_CATEGORIES);
   const [categories, setCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("WOMAN");
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const scrollRef = useRef(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+  const animationRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,34 +31,21 @@ const SearchHome = () => {
     }
   }, [data]);
 
-  const [activeCategory, setActiveCategory] = useState("WOMAN");
-  const [selectedCategory, setSelectedCategory] = useState("");
-
-  const scrollRef = useRef(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
-  const animationRef = useRef(null);
-
-  // Create repeated categories array - repeat 5 times to ensure smooth looping
   const repeatedCategories = [...Array(5)].flatMap(() => categories);
 
   const autoScroll = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollLeft += 1;
-      // Check if we need to reset the scroll position
-      const scrollWidth = scrollRef.current.scrollWidth;
-      const currentScroll = scrollRef.current.scrollLeft;
-      // Reset when we've scrolled through one complete set of categories
-      if (currentScroll >= (scrollWidth / 5)) {
+      if (scrollRef.current.scrollLeft >= scrollRef.current.scrollWidth / 5) {
         scrollRef.current.scrollLeft = 0;
       }
     }
+    cancelAnimationFrame(animationRef.current);
+
     animationRef.current = requestAnimationFrame(autoScroll);
   };
 
   useEffect(() => {
-    // Start animation only if we have categories
     if (categories.length > 0) {
       animationRef.current = requestAnimationFrame(autoScroll);
     }
@@ -61,30 +56,25 @@ const SearchHome = () => {
     };
   }, [categories]);
 
-  const handleMouseDown = (e) => {
+  const handleDragStart = (e) => {
     isDragging.current = true;
-    startX.current = e.pageX - (scrollRef.current?.offsetLeft || 0);
+    startX.current = e.type === "mousedown" ? e.pageX : e.touches[0].pageX;
     scrollLeft.current = scrollRef.current?.scrollLeft || 0;
-
-    // Pause animation while dragging
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-    }
+    cancelAnimationFrame(animationRef.current);
   };
 
-  const handleMouseMove = (e) => {
+  const handleDragMove = (e) => {
     if (!isDragging.current) return;
     e.preventDefault();
-    const x = e.pageX - (scrollRef.current?.offsetLeft || 0);
-    const walk = (x - startX.current) * 1;
+    const pageX = e.type === "mousemove" ? e.pageX : e.touches[0].pageX;
+    const walk = (pageX - startX.current) * 1;
     if (scrollRef.current) {
       scrollRef.current.scrollLeft = scrollLeft.current - walk;
     }
   };
 
-  const handleMouseUp = () => {
+  const handleDragEnd = () => {
     isDragging.current = false;
-    // Resume animation after dragging
     animationRef.current = requestAnimationFrame(autoScroll);
   };
 
@@ -97,7 +87,7 @@ const SearchHome = () => {
       />
       <div className="mx-auto mt-60 flex flex-col min-h-screen">
         <div className="flex flex-col justify-center items-center">
-          <p className="text-lg font-semibold">WHAT ARE YOU LOOKING FOR?</p>
+          <p className="text-lg ">WHAT ARE YOU LOOKING FOR?</p>
 
           {loading ? (
             <p className="mt-10 text-gray-500">Loading categories...</p>
@@ -112,11 +102,14 @@ const SearchHome = () => {
 
               <div
                 ref={scrollRef}
-                className="overflow-hidden mt-10 w-full flex space-x-4 cursor-grab"
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseUp}
-                onMouseUp={handleMouseUp}
+                className="overflow-hidden mt-10 w-full flex space-x-4 cursor-grab touch-pan-x"
+                onMouseDown={handleDragStart}
+                onMouseMove={handleDragMove}
+                onMouseLeave={handleDragEnd}
+                onMouseUp={handleDragEnd}
+                onTouchStart={handleDragStart}
+                onTouchMove={handleDragMove}
+                onTouchEnd={handleDragEnd}
               >
                 {repeatedCategories.map((category, index) => (
                   <span
