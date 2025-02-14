@@ -208,13 +208,13 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
   }
 `;
 
-
 export const REGISTER_MUTATION = gql`
   mutation Register(
     $email: String!
     $password: String!
     $firstName: String!
     $metadata: [MetadataInput!]
+    $redirectUrl: String!
   ) {
     accountRegister(
       input: {
@@ -222,6 +222,7 @@ export const REGISTER_MUTATION = gql`
         password: $password
         firstName: $firstName
         metadata: $metadata
+        redirectUrl: $redirectUrl
       }
     ) {
       accountErrors {
@@ -240,6 +241,7 @@ export const REGISTER_MUTATION = gql`
     }
   }
 `;
+
 
 export const LOGIN_MUTATION = gql`
   mutation TokenCreate($email: String!, $password: String!) {
