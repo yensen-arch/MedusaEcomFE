@@ -15,11 +15,12 @@ const SignIn = () => {
   });
 
   const isFormValid =
-  data.email.trim() &&
-  data.password.trim() &&
+  data.email.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) &&
+  data.password.trim().length >= 8 &&
   data.name.trim() &&
-  data.phone.trim() &&
+  data.phone.trim().match(/^\d+$/) &&
   data.termsAccepted;
+
 
   const [registerUser, { loading, error }] = useMutation(REGISTER_MUTATION);
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const SignIn = () => {
                 label: "PASSWORD",
                 type: "password",
                 key: "password",
-                placeholder: "Enter Password",
+                placeholder: "Minimum Length of 8 Characters",
               },
               {
                 label: "NAME",
