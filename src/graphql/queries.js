@@ -99,7 +99,6 @@ export const GET_PRODUCTS_BY_SUBCATEGORY = gql`
   }
 `;
 
-
 export const GET_PRODUCT_BY_ID = gql`
   query GetProduct($id: ID!, $channel: String!) {
     product(id: $id, channel: $channel) {
@@ -215,6 +214,7 @@ export const REGISTER_MUTATION = gql`
     $firstName: String!
     $metadata: [MetadataInput!]
     $redirectUrl: String!
+    $channel: String!
   ) {
     accountRegister(
       input: {
@@ -223,6 +223,7 @@ export const REGISTER_MUTATION = gql`
         firstName: $firstName
         metadata: $metadata
         redirectUrl: $redirectUrl
+        channel: $channel
       }
     ) {
       accountErrors {
@@ -241,7 +242,6 @@ export const REGISTER_MUTATION = gql`
     }
   }
 `;
-
 
 export const LOGIN_MUTATION = gql`
   mutation TokenCreate($email: String!, $password: String!) {

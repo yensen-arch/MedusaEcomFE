@@ -39,7 +39,8 @@ const SignIn = () => {
             { key: "phone", value: data.phone },
             { key: "subscribe_to_updates", value: data.subscribe.toString() },
           ],
-          redirectUrl: window.location.origin, // Fix for redirectUrl error
+          redirectUrl: window.location.origin, 
+          channel: "default-channel",
         },
       });
 
