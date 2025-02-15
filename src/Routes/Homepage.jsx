@@ -79,9 +79,10 @@ const Homepage = () => {
       if (
         activeCategories[activeCategory][swiper.activeIndex]?.type === "footer"
       ) {
+        if (isMobile) return;
         setTimeout(() => {
           swiper.slideTo(0);
-        }, 20000);
+        }, 25000);
       }
     },
     [activeCategory, activeCategories]

@@ -20,16 +20,19 @@ export default function RelatedProducts({ productCategoryID }) {
 
   return (
     <div className="w-full py-8">
-      <h2 className="text-base font-normal mb-6">YOU MAY BE INTERESTED IN</h2>
-      <div className="flex overflow-x-auto gap-4 pb-4 mx-4 px-4 scrollbar-hide">
+      <h2 className="text-base text-center font-normal px-2 mb-6">YOU MAY BE INTERESTED IN</h2>
+      <div className="flex overflow-x-auto pb-4 mx-4 px-4 scrollbar-hide">
         {products.map((product) => (
-          <div key={product.id} className="flex-none w-[280px]">
+          <div
+            key={product.id}
+            className="flex-none w-[280px] "
+          >
             <div className="relative group">
-              <div className="aspect-[3/4] bg-gray-100 relative mb-3">
+              <div className="aspect-[3/4]  relative mb-3">
                 <img
                   src={product.imageUrl}
                   alt={product.name}
-                  className="object-cover w-full h-full cursor-pointer"
+                  className="object-cover w-full  h-full cursor-pointer"
                   onClick={() =>
                     (window.location.href = `/products/${product.id}`)
                   }
@@ -41,8 +44,8 @@ export default function RelatedProducts({ productCategoryID }) {
               </div>
             </div>
             <div className="space-y-1">
-              <h3 className="text-sm font-normal">{product.name.toUpperCase()}</h3>
-              <p className="text-sm">${product.price.toFixed(2)}</p>
+              <h3 className="text-sm font-normal text-center">{product.name.toUpperCase()}</h3>
+              <p className="text-sm text-center">${product.price.toFixed(2)}</p>
             </div>
           </div>
         ))}
