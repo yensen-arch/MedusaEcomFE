@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
 import SearchProducts from "../Components/SearchProducts";
@@ -85,9 +86,17 @@ const SearchHome = () => {
         setActiveCategory={setActiveCategory}
         categoryNames={categories.length ? categories : ["Loading..."]}
       />
-      <div className="mx-auto mt-60 flex flex-col min-h-screen">
+      <div className="relative mx-auto mt-60 flex flex-col min-h-screen">
+        {/* Back Home Button
+        <Link
+          to="/"
+          className="absolute  right-4 px-4 py-2 bg-black text-white text-sm rounded-none hover:bg-white border border-black hover:text-black transition"
+        >
+          BACK HOME
+        </Link> */}
+        
         <div className="flex flex-col justify-center items-center">
-          <p className="text-lg ">WHAT ARE YOU LOOKING FOR?</p>
+          <p className="text-lg">WHAT ARE YOU LOOKING FOR?</p>
 
           {loading ? (
             <p className="mt-10 text-gray-500">Loading categories...</p>
