@@ -49,20 +49,21 @@ const Navbar = ({
   }, [lastScrollY]);
 
   const handleCategoryHover = (category) => {
-    setHoveredCategory(category);
-    setActiveCategory(category);
-    setIsMenuOpen(true);
+    if (hoveredCategory !== category) {
+      setHoveredCategory(category);
+      setActiveCategory(category);
+      setIsMenuOpen(true);
+    }
   };
 
   const toggleCart = () => setIsCartOpen(!isCartOpen);
-
   return (
     <>
       {/* Main Navbar */}
-      <nav className="fixed top-0 left-0 w-full z-40 bg-white">
+      <nav className="fixed top-0 left-0 w-full z-50 bg-white">
         <div className="w-full flex flex-col">
           {/* Top section */}
-          <div className="flex justify-between items-center px-6 py-4 border-b border-black">
+          <div className="flex justify-between items-center px-6 py-3 border-b border-black">
             {/* Left: Categories */}
             <div className="flex items-center space-x-6">
               {["V00", "WOMAN", "MAN", "KIDS", "ARCHIVE"].map((category) => (
@@ -100,14 +101,11 @@ const Navbar = ({
 
           {/* Search bar section */}
           <div
-            className={`w-full transition-transform duration-300 ease-in-out ${
+            className={`w-full h-10 transition-transform duration-300 ease-in-out border-b border-black ${
               isVisible ? "translate-y-0" : "-translate-y-full"
             }`}
           >
-            <Link
-              to={"/search/home"}
-              className="px-6 py-3 border-b border-black flex items-center"
-            >
+            <Link to={"/search/home"} className="px-6 py-3  flex items-center">
               <RiSearchLine className="w-5 h-5 text-black" />
               <input
                 type="text"
@@ -126,6 +124,13 @@ const Navbar = ({
         isMenuOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
       />
+      {/* Dark overlay when menu is open */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 pointer-events-auto"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
 
       {/* Cart component */}
       <Cart isOpen={isCartOpen} />
