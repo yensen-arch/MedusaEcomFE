@@ -54,11 +54,6 @@ const Navbar = ({
     setIsMenuOpen(true);
   };
 
-  const handleMouseLeave = () => {
-    setHoveredCategory(null);
-    setIsMenuOpen(false);
-  };
-
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
   return (
@@ -75,7 +70,6 @@ const Navbar = ({
                   key={category}
                   className="text-sm hover:font-bold transition-all"
                   onMouseEnter={() => handleCategoryHover(category)}
-                  onMouseLeave={handleMouseLeave}
                 >
                   {category}
                 </button>

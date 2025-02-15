@@ -102,7 +102,7 @@ export default function NavMenu({
 
   return (
     <div
-      className={`fixed inset-0 md:top-10 md:left-8 bg-white z-50 w-full h-full md:w-[400px] md:h-[80vh] md:border-black md:border-[1px] overflow-hidden transition-transform transition-opacity duration-300 ease-in-out pointer-events-auto  ${
+      className={`fixed inset-0 md:top-24 bg-white z-50 w-full h-full md:w-1/3 md:h-full md:border-black md:border-[1px] overflow-hidden transition-transform transition-opacity duration-300 ease-in-out pointer-events-auto  ${
         isMenuOpen
           ? "translate-x-0 opacity-100 visible"
           : "-translate-x-full opacity-0 invisible"
@@ -117,37 +117,12 @@ export default function NavMenu({
           <Link to="/search/home" className="text-xs md:hidden">
             <RiSearchLine className="w-6 h-6" />
           </Link>
-         <Link to="/login"> <RiUserLine className="w-6 h-6" /></Link>
+          <Link to="/login">
+            {" "}
+            <RiUserLine className="w-6 h-6" />
+          </Link>
           <RiShoppingBagLine className="w-6 h-6" />
         </div>
-      </div>
-
-      {/* Desktop Logo - only show on desktop */}
-      <div className="hidden md:flex justify-center pt-2 pb-16">
-        <Link to="/" className="mb-auto py-2">
-          <img
-            src="https://static.zara.net/photos///contents/cm/assets/logos/default-light_0.svg?ts=1690441518876"
-            alt="ZARA"
-            className="h-28 mr-auto px-8 transition-opacity duration-300 ease-in-out opacity-100"
-          />
-        </Link>
-      </div>
-
-      {/* Categories */}
-      <div className="flex items-center space-x-8 py-4 border-b border-black px-8">
-        {Object.keys(menuItems).map((category) => (
-          <button
-            key={category}
-            className={`text-sm transition-all duration-300 ease-in-out ${
-              activeCategory === category
-                ? "font-bold text-black"
-                : "text-gray-600 hover:text-black"
-            }`}
-            onClick={() => setActiveCategory(category)}
-          >
-            {category}
-          </button>
-        ))}
       </div>
 
       {/* Items with custom scrollbar */}
