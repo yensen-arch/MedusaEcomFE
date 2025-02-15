@@ -52,6 +52,7 @@ const Navbar = ({
     if (hoveredCategory !== category) {
       setHoveredCategory(category);
       setActiveCategory(category);
+      setIsVisible(true);
       setIsMenuOpen(true);
     }
   };
@@ -101,8 +102,8 @@ const Navbar = ({
 
           {/* Search bar section */}
           <div
-            className={`w-full h-10 transition-transform duration-300 ease-in-out border-b border-black ${
-              isVisible ? "translate-y-0" : "-translate-y-full"
+            className={`w-full h-10 overflow-hidden transition-transform duration-300 ease-in-out border-b border-black ${
+              isVisible ? "h-10 " : "h-0"
             }`}
           >
             <Link to={"/search/home"} className="px-6 py-3  flex items-center">
