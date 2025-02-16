@@ -87,14 +87,12 @@ const SearchHome = () => {
         categoryNames={categories.length ? categories : ["Loading..."]}
       />
       <div className="relative mx-auto mt-60 flex flex-col min-h-screen">
-        {/* Back Home Button
         <Link
           to="/"
-          className="absolute  right-4 px-4 py-2 bg-black text-white text-sm rounded-none hover:bg-white border border-black hover:text-black transition"
+          className="absolute hidden md:block right-4 px-4 py-2 bg-black text-white text-sm rounded-none hover:bg-white border border-black hover:text-black transition"
         >
           BACK HOME
-        </Link> */}
-        
+        </Link>
         <div className="flex flex-col justify-center items-center">
           <p className="text-lg">WHAT ARE YOU LOOKING FOR?</p>
 

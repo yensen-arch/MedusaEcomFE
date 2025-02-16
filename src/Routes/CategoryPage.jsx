@@ -105,18 +105,18 @@ function ProductCard({ product }) {
           ))}
         </div>
       </div>
-      <div className="text-center mt-2 text-sm relative h-12">
-        <div className="absolute w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-x-180">
-          <div className="absolute w-full text-center text-gray-600 group-hover:opacity-0 transition-opacity duration-300">
-            {product.name.toUpperCase()}
-            <br />
-            <p className="text-xs">${product.price.toFixed(2)}</p>
+        <div className="text-center mt-2 text-sm relative h-12">
+          <div className="absolute w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-x-180">
+            <div className="absolute w-full text-center text-gray-600 group-hover:opacity-0 transition-opacity duration-300">
+              {product.name.toUpperCase()}
+              <br />
+              <p className="text-xs">${product.price.toFixed(2)}</p>
+            </div>
+            <button className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs">
+              ADD TO CART
+            </button>
           </div>
-          <button className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs">
-            ADD TO CART
-          </button>
         </div>
-      </div>
     </div>
   );
 }

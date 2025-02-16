@@ -109,7 +109,7 @@ const Navbar = ({
 
             {/* Desktop Categories */}
             <div className="hidden md:flex items-center space-x-6 ">
-              {["V00", "WOMAN", "MAN", "KIDS", "ARCHIVE"].map((category) => (
+              {["V00", "WOMEN", "MEN", "ARCHIVE"].map((category) => (
                 <button
                   key={category}
                   className="text-sm hover:font-bold transition-all"
