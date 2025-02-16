@@ -27,9 +27,6 @@ const Navbar = ({
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const isSearchPage = location.pathname === "/search/home";
-  const isHomePage = location.pathname === "/";
-  const isProductPage = location.pathname.includes("/products/");
 
   const currentItem =
     categories?.[activeCategory]?.[swiperRef?.current?.swiper?.activeIndex];
@@ -46,7 +43,7 @@ const Navbar = ({
     const handleTouchMove = (e) => {
       const currentY = e.touches[0].clientY;
       const isScrollingUp = currentY > startY;
-      setIsVisible(isScrollingUp || window.scrollY < 50);
+      setIsVisible(isScrollingUp);
       startY = currentY;
     };
 
@@ -63,6 +60,10 @@ const Navbar = ({
         setLastScrollY(window.scrollY);
       }
     };
+    // Hide navbar when on /search/home
+    if (window.location.pathname === "/search/home") {
+      setIsVisible(false);
+    }
 
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("touchstart", handleTouchStart);

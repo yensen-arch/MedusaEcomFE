@@ -13,7 +13,6 @@ const SearchHome = () => {
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState("WOMAN");
   const [selectedCategory, setSelectedCategory] = useState("");
-
   const scrollRef = useRef(null);
   const isDragging = useRef(false);
   const startX = useRef(0);
@@ -42,7 +41,15 @@ const SearchHome = () => {
       }
     }
     cancelAnimationFrame(animationRef.current);
+    animationRef.current = requestAnimationFrame(autoScroll);
+  };
+  const handleMouseEnter = () => {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+  };
 
+  const handleMouseLeave = () => {
     animationRef.current = requestAnimationFrame(autoScroll);
   };
 
@@ -86,10 +93,10 @@ const SearchHome = () => {
         setActiveCategory={setActiveCategory}
         categoryNames={categories.length ? categories : ["Loading..."]}
       />
-      <div className="relative mx-auto mt-60 flex flex-col min-h-screen">
+      <div className="relative mx-auto mt-28 flex flex-col min-h-screen">
         <Link
           to="/"
-          className="absolute hidden md:block right-4 px-4 py-2 bg-black text-white text-sm rounded-none hover:bg-white border border-black hover:text-black transition"
+          className="absolute z-20 hidden md:block right-4 px-4 py-2 bg-black text-white text-sm rounded-none hover:bg-white border border-black hover:text-black transition"
         >
           BACK HOME
         </Link>
@@ -117,6 +124,7 @@ const SearchHome = () => {
                 onTouchStart={handleDragStart}
                 onTouchMove={handleDragMove}
                 onTouchEnd={handleDragEnd}
+                onMouseEnter={handleMouseEnter} // Pause on hover
               >
                 {repeatedCategories.map((category, index) => (
                   <span
