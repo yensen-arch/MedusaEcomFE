@@ -132,7 +132,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
 
       {/* Login & Help options at the bottom */}
       <div className="fixed bottom-0 left-0 right-0 bg-white md:hidden">
-        <div className="flex flex-col gap-4 p-4 pb-8 border-t border-gray-200">
+        <div className="flex flex-col gap-4 p-4 pb-40 border-t border-black">
           <Link
             to="/login"
             className="w-full text-center border border-black py-2 rounded-none text-white bg-black"
