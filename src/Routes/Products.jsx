@@ -4,7 +4,12 @@ import { useParams } from "react-router-dom";
 import { GET_PRODUCT_BY_ID } from "../graphql/queries";
 import RelatedProducts from "../Components/RelatedProducts";
 import Footer from "../Components/Footer";
-import { FiChevronUp, FiChevronDown, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import {
+  FiChevronUp,
+  FiChevronDown,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 
 const Product = () => {
   const { productId } = useParams();
@@ -35,10 +40,10 @@ const Product = () => {
 
   const handleTouchMove = (e) => {
     if (!touchStart) return;
-    
+
     const touchEnd = e.touches[0].clientX;
     const diff = touchStart - touchEnd;
-    
+
     if (Math.abs(diff) > 50) {
       if (diff > 0 && currentImageIndex < images.length - 1) {
         setCurrentImageIndex(currentImageIndex + 1);
@@ -52,10 +57,13 @@ const Product = () => {
   return (
     <div className="min-h-screen mt-20">
       {/* Desktop Layout */}
-      <div className="hidden md:grid md:grid-cols-2 gap-8 container mx-auto px-4">
-        <div className="flex flex-col gap-4">
+      <div className="hidden md:grid md:grid-cols-2  container mx-auto ">
+        <div className="flex flex-col ">
           {images.map((image, index) => (
-            <div key={index} className="aspect-w-3 aspect-h-4 overflow-hidden border border-gray-200">
+            <div
+              key={index}
+              className="aspect-w-3  aspect-h-4 overflow-hidden border border-black"
+            >
               <img
                 src={image}
                 alt={`${product.name} view ${index + 1}`}
@@ -65,7 +73,7 @@ const Product = () => {
             </div>
           ))}
         </div>
-        <div className="sticky top-24 h-fit space-y-8 px-8">
+        <div className="sticky top-24 h-fit px-8 border border-black">
           <ProductInfo
             product={product}
             description={description}
@@ -81,7 +89,7 @@ const Product = () => {
 
       {/* Mobile Layout */}
       <div className="md:hidden">
-        <div 
+        <div
           className="relative h-[90vh] overflow-hidden"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -92,7 +100,11 @@ const Product = () => {
               <div
                 key={index}
                 className={`absolute w-full h-full transition-transform duration-300 ${
-                  index === currentImageIndex ? "translate-x-0" : index < currentImageIndex ? "-translate-x-full" : "translate-x-full"
+                  index === currentImageIndex
+                    ? "translate-x-0"
+                    : index < currentImageIndex
+                    ? "-translate-x-full"
+                    : "translate-x-full"
                 }`}
               >
                 <img
@@ -116,13 +128,19 @@ const Product = () => {
           </div>
           <button
             className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full"
-            onClick={() => currentImageIndex > 0 && setCurrentImageIndex(currentImageIndex - 1)}
+            onClick={() =>
+              currentImageIndex > 0 &&
+              setCurrentImageIndex(currentImageIndex - 1)
+            }
           >
             <FiChevronLeft className="w-6 h-6" />
           </button>
           <button
             className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full"
-            onClick={() => currentImageIndex < images.length - 1 && setCurrentImageIndex(currentImageIndex + 1)}
+            onClick={() =>
+              currentImageIndex < images.length - 1 &&
+              setCurrentImageIndex(currentImageIndex + 1)
+            }
           >
             <FiChevronRight className="w-6 h-6" />
           </button>
@@ -168,30 +186,44 @@ const ProductInfo = ({
   isShippingOpen,
   setIsShippingOpen,
   isCareOpen,
-  setIsCareOpen
+  setIsCareOpen,
 }) => (
   <div className="space-y-6">
-    <h1 className="text-2xl font-bold text-center">{product.name}</h1>
+    <h1 className="text-xl font-semibold text-center">
+      {product.name.toUpperCase()}
+    </h1>
     <p className="text-xl text-center">
-      {product.pricing.priceRange.start.gross.amount} {product.pricing.priceRange.start.gross.currency}
+      {product.pricing.priceRange.start.gross.amount}{" "}
+      {product.pricing.priceRange.start.gross.currency}
     </p>
-    
+
     <div className="space-y-4">
-    <select className="w-full py-4 bg-white text-black border border-black hover:bg-white hover:text-black transition-colors appearance-none px-4 pr-10">
-    <option className="text-black bg-white" value="">SELECT SIZE</option>
-    <option className="text-black bg-white" value="s">SMALL</option>
-    <option className="text-black bg-white" value="m">MEDIUM</option>
-    <option className="text-black bg-white" value="l">LARGE</option>
-  </select>
-      
+      <select className="w-full py-4 bg-white text-black border border-black hover:bg-white hover:text-black transition-colors appearance-none px-4 pr-10">
+        <option className="text-black bg-white" value="">
+          SELECT SIZE
+        </option>
+        <option className="text-black bg-white" value="s">
+          SMALL
+        </option>
+        <option className="text-black bg-white" value="m">
+          MEDIUM
+        </option>
+        <option className="text-black bg-white" value="l">
+          LARGE
+        </option>
+      </select>
+
       <button className="w-full py-4 bg-black text-white hover:bg-white hover:text-black border hover:border-black transition-colors">
         ADD TO CART
       </button>
     </div>
 
     <div className="space-y-4 pt-6">
-      <div dangerouslySetInnerHTML={{ __html: description }} className="text-sm leading-relaxed" />
-      
+      <div
+        dangerouslySetInnerHTML={{ __html: description }}
+        className="text-sm leading-relaxed "
+      />
+
       <Dropdown
         title="PRODUCT DETAILS"
         isOpen={isProductDetailsOpen}
@@ -206,10 +238,14 @@ const ProductInfo = ({
         content={
           <>
             Free standard shipping on orders over $200.
-            <br /><br />
+            <br />
+            <br />
             Express shipping available.
-            <br /><br />
-            <a href="/refund-policy" className="underline">View our refund policy</a>
+            <br />
+            <br />
+            <a href="/refund-policy" className="underline">
+              View our refund policy
+            </a>
           </>
         }
       />
@@ -225,7 +261,7 @@ const ProductInfo = ({
 );
 
 const Dropdown = ({ title, isOpen, setIsOpen, content }) => (
-  <div className="border-t border-gray-200 pt-4">
+  <div className="border-t border-black pt-4">
     <button
       className="w-full flex justify-between items-center py-2"
       onClick={() => setIsOpen(!isOpen)}
@@ -233,7 +269,7 @@ const Dropdown = ({ title, isOpen, setIsOpen, content }) => (
       {title}
       {isOpen ? <FiChevronUp /> : <FiChevronDown />}
     </button>
-    {isOpen && <div className="py-4 text-sm text-gray-600">{content}</div>}
+    {isOpen && <div className="py-4 text-sm">{content}</div>}
   </div>
 );
 

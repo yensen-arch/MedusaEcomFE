@@ -2,8 +2,13 @@ import React, { useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queries";
-import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
+import {
+  RiArrowLeftSLine,
+  RiArrowRightSLine,
+  RiShoppingCartLine,
+} from "react-icons/ri";
 import Footer from "../Components/Footer";
+
 function CategoryPage() {
   const { categoryId } = useParams();
   const { loading, error, data } = useQuery(GET_PRODUCTS_BY_CATEGORY, {
@@ -70,29 +75,34 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className="border border-black rounded-none overflow-hidden  p-4 relative">
+    <div className="outline outline-1 outline-black rounded-none overflow-hidden p-4 relative">
+      <button className="absolute top-2 right-2 bg-white p-2 rounded-full  hover:bg-slate-200 z-50">
+        <RiShoppingCartLine size={20} />
+      </button>
       <div
         className="relative"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <img
-          src={images[currentImage]}
-          alt={product.name}
-          className="w-full h-64 object-cover transition-transform duration-300 ease-in-out"
-        />
+        <Link to={`/products/${product.id}`} className="block">
+          <img
+            src={images[currentImage]}
+            alt={product.name}
+            className="w-full h-64 object-cover transition-transform duration-300 ease-in-out"
+          />
+        </Link>
         {images.length > 1 && (
           <>
             <button
               onClick={prevImage}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white  p-1 rounded-full "
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full"
             >
               <RiArrowLeftSLine size={24} />
             </button>
             <button
               onClick={nextImage}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full "
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full"
             >
               <RiArrowRightSLine size={24} />
             </button>
@@ -109,12 +119,12 @@ function ProductCard({ product }) {
           ))}
         </div>
       </div>
-      <div className="text-center mt-2">
-        <Link to={`/products/${product.id}`} className="text-sm">
+      <Link to={`/products/${product.id}`} className="block">
+        <div className="text-center mt-2 text-sm">
           {product.name.toUpperCase()}
-        </Link>
-        <p className="text-gray-600 text-xs">${product.price.toFixed(2)}</p>
-      </div>
+          <p className="text-gray-600 text-xs">${product.price.toFixed(2)}</p>
+        </div>
+      </Link>
     </div>
   );
 }
