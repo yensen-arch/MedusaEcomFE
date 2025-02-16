@@ -18,6 +18,7 @@ import NotFound from "./NotFound";
 import MyOrdersHelp from "./MyOrdersHelp";
 import SearchHome from "./SearchHome";
 import Products from "./Products";
+import CategoryPage from "./CategoryPage";
 
 const AllRoutes = () => {
   return (
@@ -48,6 +49,7 @@ const AllRoutes = () => {
       <Route path="career" element={<Careers />}></Route>
       <Route path="/privacy" element={<Privacy />}></Route>
       <Route path="products/:productId" element={<Products />} />
+      <Route path="category/:categoryId" element={<CategoryPage />} />
       <Route path="*" element={<NotFound />}></Route>
     </Routes>
   );

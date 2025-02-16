@@ -60,7 +60,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
           ) : (
             categories.map((category) => (
               <li key={category.id} className="px-2 hover:translate-x-2 hover:border-black hover:border-[1px]">
-                <Link to={`/category/${category.slug}`} className="text-sm ">
+                <Link to={`/category/${category.id}`} className="text-sm ">
                   {category.name.toUpperCase()}
                 </Link>
               </li>
