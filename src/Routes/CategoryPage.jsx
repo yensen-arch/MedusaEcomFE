@@ -2,11 +2,7 @@ import React, { useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queries";
-import {
-  RiArrowLeftSLine,
-  RiArrowRightSLine,
-  RiShoppingCartLine,
-} from "react-icons/ri";
+import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import Footer from "../Components/Footer";
 
 function CategoryPage() {
@@ -51,7 +47,6 @@ function ProductCard({ product }) {
     product.images.length > 1
       ? product.images
       : Array(4).fill(product.images[0]);
-
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
@@ -60,27 +55,15 @@ function ProductCard({ product }) {
   const nextImage = () =>
     setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
 
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
+  const handleTouchStart = (e) => (touchStartX.current = e.touches[0].clientX);
+  const handleTouchMove = (e) => (touchEndX.current = e.touches[0].clientX);
   const handleTouchEnd = () => {
-    if (touchStartX.current - touchEndX.current > 50) {
-      nextImage(); // Swipe left
-    } else if (touchEndX.current - touchStartX.current > 50) {
-      prevImage(); // Swipe right
-    }
+    if (touchStartX.current - touchEndX.current > 50) nextImage();
+    else if (touchEndX.current - touchStartX.current > 50) prevImage();
   };
 
   return (
-    <div className="outline outline-1 outline-black rounded-none overflow-hidden p-4 relative">
-      <button className="absolute top-2 right-2 bg-white p-2 rounded-full  hover:bg-slate-200 z-50">
-        <RiShoppingCartLine size={20} />
-      </button>
+    <div className="outline outline-1 outline-black rounded-none overflow-hidden p-4 relative group">
       <div
         className="relative"
         onTouchStart={handleTouchStart}
@@ -98,13 +81,13 @@ function ProductCard({ product }) {
           <>
             <button
               onClick={prevImage}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2  p-1 rounded-full"
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             >
               <RiArrowLeftSLine size={24} />
             </button>
             <button
               onClick={nextImage}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             >
               <RiArrowRightSLine size={24} />
             </button>
@@ -114,19 +97,26 @@ function ProductCard({ product }) {
           {images.map((_, index) => (
             <span
               key={index}
-              className={`w-1 h-1 mx-1 rounded-full ${
-                index === currentImage ? "bg-black" : "bg-gray-200"
+              onClick={() => setCurrentImage(index)}
+              className={`w-1 h-1 mx-1 rounded-full cursor-pointer transition-all duration-300 ${
+                index === currentImage ? "bg-black scale-125" : "bg-gray-200"
               }`}
             ></span>
           ))}
         </div>
       </div>
-      <Link to={`/products/${product.id}`} className="block">
-        <div className="text-center mt-2 text-sm">
-          {product.name.toUpperCase()}
-          <p className="text-gray-600 text-xs">${product.price.toFixed(2)}</p>
+      <div className="text-center mt-2 text-sm relative h-12">
+        <div className="absolute w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-x-180">
+          <div className="absolute w-full text-center text-gray-600 group-hover:opacity-0 transition-opacity duration-300">
+            {product.name.toUpperCase()}
+            <br />
+            <p className="text-xs">${product.price.toFixed(2)}</p>
+          </div>
+          <button className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs">
+            ADD TO CART
+          </button>
         </div>
-      </Link>
+      </div>
     </div>
   );
 }
