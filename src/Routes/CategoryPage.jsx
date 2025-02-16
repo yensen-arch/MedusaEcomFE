@@ -31,8 +31,10 @@ function CategoryPage() {
   }));
 
   return (
-    <div className="py-10">
-      <h1 className="text-2xl font-bold mb-4">Category: {categoryId}</h1>
+    <div className="py-28">
+      <h1 className="text-2xl font-semibold px-6 mb-4">
+        {data?.products?.edges[0]?.node?.category?.name.toUpperCase()}
+      </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
@@ -89,20 +91,20 @@ function ProductCard({ product }) {
           <img
             src={images[currentImage]}
             alt={product.name}
-            className="w-full h-64 object-cover transition-transform duration-300 ease-in-out"
+            className="w-full h-[32rem] object-cover transition-transform duration-300 ease-in-out"
           />
         </Link>
         {images.length > 1 && (
           <>
             <button
               onClick={prevImage}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full"
+              className="absolute left-2 top-1/2 transform -translate-y-1/2  p-1 rounded-full"
             >
               <RiArrowLeftSLine size={24} />
             </button>
             <button
               onClick={nextImage}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full"
             >
               <RiArrowRightSLine size={24} />
             </button>
@@ -112,8 +114,8 @@ function ProductCard({ product }) {
           {images.map((_, index) => (
             <span
               key={index}
-              className={`w-2 h-2 mx-1 rounded-full ${
-                index === currentImage ? "bg-gray-800" : "bg-gray-400"
+              className={`w-1 h-1 mx-1 rounded-full ${
+                index === currentImage ? "bg-black" : "bg-gray-200"
               }`}
             ></span>
           ))}
