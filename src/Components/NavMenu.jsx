@@ -1,7 +1,16 @@
 import { Link } from "react-router-dom";
 import { Scrollbar } from "react-scrollbars-custom";
 import { useEffect, useState } from "react";
-import { RiCloseLine, RiSearchLine, RiUserLine, RiShoppingBagLine } from "react-icons/ri";
+import {
+  RiCloseLine,
+  RiSearchLine,
+  RiUserLine,
+  RiShoppingBagLine,
+  RiInstagramLine,
+  RiFacebookCircleLine,
+  RiTwitterXLine,
+  RiYoutubeLine,
+} from "react-icons/ri";
 import { useQuery } from "@apollo/client";
 import { GET_CATEGORIES } from "../graphql/queries";
 
@@ -21,10 +30,26 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
     return () => document.body.classList.remove("overflow-hidden");
   }, [isMenuOpen]);
 
+  const additionalLinks = [
+    { title: "CARE", path: "/care" },
+    { title: "OUR MISSION", path: "/mission" },
+    { title: "HELP", path: "/help" },
+    { title: "WORK WITH US", path: "/careers" },
+  ];
+
+  const socialLinks = [
+    { Icon: RiInstagramLine, path: "https://instagram.com" },
+    { Icon: RiFacebookCircleLine, path: "https://facebook.com" },
+    { Icon: RiTwitterXLine, path: "https://twitter.com" },
+    { Icon: RiYoutubeLine, path: "https://youtube.com" },
+  ];
+
   return (
     <div
       className={`fixed inset-0 md:top-20 bg-white z-40 w-full h-full md:w-1/3 md:border-black md:border-[1px] overflow-hidden transition-transform duration-300 ease-in-out ${
-        isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0 pointer-events-none"
+        isMenuOpen
+          ? "translate-x-0 opacity-100"
+          : "-translate-x-full opacity-0 pointer-events-none"
       }`}
     >
       {/* Mobile Header */}
@@ -51,28 +76,76 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
       </div>
 
       {/* Items with custom scrollbar */}
-      <Scrollbar style={{ height: "70vh" }}>
-        <ul className="flex flex-col gap-4 px-8 mt-10">
-          {loading ? (
-            <p className="text-center">Loading categories...</p>
-          ) : error ? (
-            <p className="text-red-500">Error: {error.message}</p>
-          ) : (
-            categories.map((category) => (
-              <li key={category.id} className="px-2 hover:translate-x-2 hover:border-black hover:border-[1px]">
-                <Link to={`/category/${category.id}`} className="text-sm ">
-                  {category.name.toUpperCase()}
-                </Link>
-              </li>
-            ))
-          )}
-        </ul>
+      <Scrollbar style={{ height: "calc(100vh - 280px)" }}>
+        <div className="flex flex-col gap-8">
+          {/* Main Categories */}
+          <ul className="flex flex-col gap-4 px-8 mt-10">
+            {loading ? (
+              <p className="text-center">Loading categories...</p>
+            ) : error ? (
+              <p className="text-red-500">Error: {error.message}</p>
+            ) : (
+              categories.map((category) => (
+                <li
+                  key={category.id}
+                  className="px-2 hover:translate-x-2 hover:border-black hover:border-[1px]"
+                >
+                  <Link to={`/category/${category.id}`} className="text-sm">
+                    {category.name.toUpperCase()}
+                  </Link>
+                </li>
+              ))
+            )}
+          </ul>
+
+          {/* Additional Links */}
+          <div className="px-8">
+            <ul className="flex flex-col gap-4">
+              {additionalLinks.map((link) => (
+                <li key={link.title} className="px-2 hover:translate-x-2">
+                  <Link to={link.path} className="text-sm text-gray-600">
+                    {link.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Social Media Icons */}
+          <div className="px-10">
+            <div className="flex justify-start gap-6">
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-black transition-colors"
+                >
+                  <social.Icon className="w-6 h-6" />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
       </Scrollbar>
 
       {/* Login & Help options at the bottom */}
-      <div className="flex flex-col items-center gap-4 p-4 md:hidden">
-        <Link to="/login" className="w-full text-center border border-black py-2 rounded-none">LOGIN</Link>
-        <Link to="/help" className="w-full text-center border border-black py-2 rounded-none">HELP</Link>
+      <div className="fixed bottom-0 left-0 right-0 bg-white md:hidden">
+        <div className="flex flex-col gap-4 p-4 pb-8 border-t border-gray-200">
+          <Link
+            to="/login"
+            className="w-full text-center border border-black py-2 rounded-none text-white bg-black"
+          >
+            LOGIN
+          </Link>
+          <Link
+            to="/register"
+            className="w-full text-center border border-black py-2 rounded-none"
+          >
+            REGISTER
+          </Link>
+        </div>
       </div>
     </div>
   );

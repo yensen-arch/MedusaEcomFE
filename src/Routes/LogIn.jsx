@@ -86,7 +86,7 @@ const LogIn = () => {
             <div className="mt-8">
               <button
                 onClick={() => navigate("/signin")}
-                className="w-full bg-white text-black px-4 py-2 text-base cursor-pointer border border-black hover:bg-slate-100"
+                className="w-full bg-white text-black px-4 py-2 text-base cursor-pointer border border-black hover:bg-black hover:text-white"
               >
                 REGISTER
               </button>

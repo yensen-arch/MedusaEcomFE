@@ -32,7 +32,7 @@ export default function RelatedProducts({ productCategoryID }) {
                 <img
                   src={product.imageUrl}
                   alt={product.name}
-                  className="object-cover w-full  h-full cursor-pointer"
+                  className="object-cover w-full   cursor-pointer"
                   onClick={() =>
                     (window.location.href = `/products/${product.id}`)
                   }

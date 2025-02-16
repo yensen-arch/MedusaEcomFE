@@ -96,7 +96,7 @@ const SearchHome = () => {
       <div className="relative mx-auto mt-28 flex flex-col min-h-screen">
         <Link
           to="/"
-          className="absolute z-20 hidden md:block right-4 px-4 py-2 bg-black text-white text-sm rounded-none hover:bg-white border border-black hover:text-black transition"
+          className="absolute z-20 hidden md:block right-14 px-4 py-2 bg-black text-white text-sm rounded-none hover:bg-white border border-black hover:text-black transition"
         >
           BACK HOME
         </Link>
@@ -140,7 +140,7 @@ const SearchHome = () => {
           )}
         </div>
 
-        <div className="p-12">
+        <div >
           <SearchProducts selectedCategory={selectedCategory} />
         </div>
       </div>

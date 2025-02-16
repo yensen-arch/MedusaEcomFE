@@ -1,18 +1,111 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queries";
 import { Link } from "react-router-dom";
+import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
+
+function ProductCard({ product }) {
+  const [currentImage, setCurrentImage] = useState(0);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  const images =
+    product.media?.length > 0
+      ? product.media.map((m) => m.url)
+      : product.thumbnail?.url
+      ? [product.thumbnail.url]
+      : ["/placeholder.svg"];
+
+  // Duplicate the image if only one exists
+  const displayImages = images.length > 1 ? images : Array(4).fill(images[0]);
+
+  const prevImage = () =>
+    setCurrentImage((prev) =>
+      prev === 0 ? displayImages.length - 1 : prev - 1
+    );
+  const nextImage = () =>
+    setCurrentImage((prev) =>
+      prev === displayImages.length - 1 ? 0 : prev + 1
+    );
+
+  const handleTouchStart = (e) => (touchStartX.current = e.touches[0].clientX);
+  const handleTouchMove = (e) => (touchEndX.current = e.touches[0].clientX);
+  const handleTouchEnd = () => {
+    if (touchStartX.current - touchEndX.current > 50) nextImage();
+    else if (touchEndX.current - touchStartX.current > 50) prevImage();
+  };
+
+  return (
+    <div className="outline outline-1 outline-black rounded-none overflow-hidden p-4 relative group">
+      <div
+        className="relative"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <Link to={`/products/${product.id}`} className="block">
+          <img
+            src={displayImages[currentImage]}
+            alt={product.name}
+            className="w-full h-[32rem] object-cover transition-transform duration-300 ease-in-out"
+          />
+        </Link>
+        {displayImages.length > 1 && (
+          <>
+            <button
+              onClick={prevImage}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            >
+              <RiArrowLeftSLine size={24} />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            >
+              <RiArrowRightSLine size={24} />
+            </button>
+          </>
+        )}
+        <div className="flex justify-center mt-2">
+          {displayImages.map((_, index) => (
+            <span
+              key={index}
+              onClick={() => setCurrentImage(index)}
+              className={`w-1 h-1 mx-1 rounded-full cursor-pointer transition-all duration-300 ${
+                index === currentImage ? "bg-black scale-125" : "bg-gray-200"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="text-center mt-2 text-sm relative h-12">
+        <div className="absolute w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-x-180">
+          <div className="absolute w-full text-center text-gray-600 group-hover:opacity-0 transition-opacity duration-300">
+            {product.name.toUpperCase()}
+            <br />
+            <p className="text-xs">
+              ${product.pricing?.priceRange?.start?.gross?.amount.toFixed(2)}
+            </p>
+          </div>
+          <button className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs">
+            ADD TO CART
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function SearchProducts({ selectedCategory }) {
   const [searchQuery, setSearchQuery] = useState("");
   const { loading, error, data } = useQuery(GET_PRODUCTS_BY_CATEGORY, {
     variables: {
       categoryId: selectedCategory?.id,
-      channel: "default-channel", // Replace with your actual channel name
+      channel: "default-channel",
     },
-    skip: !selectedCategory?.id, // Avoid running query when categoryId is missing
+    skip: !selectedCategory?.id,
   });
 
   useEffect(() => {
@@ -23,7 +116,7 @@ function SearchProducts({ selectedCategory }) {
 
   if (loading || error) {
     return (
-      <div className="text-center text-sm uppercase">
+      <div className="text-center text-sm uppercase py-28">
         {loading ? (
           <p className="text-gray-600">LOADING</p>
         ) : (
@@ -35,12 +128,11 @@ function SearchProducts({ selectedCategory }) {
 
   const products = data?.products?.edges.map(({ node }) => node) || [];
 
-  // **Search Filtering with Pattern Matching**
   const filteredProducts = !searchQuery
     ? products
     : products.filter((product) => {
         const searchTerm = searchQuery.toLowerCase().trim();
-        const regex = new RegExp(searchTerm.replace(/s$/, ""), "i"); // Remove plural 's' and match
+        const regex = new RegExp(searchTerm.replace(/s$/, ""), "i");
 
         return (
           regex.test(product.name) ||
@@ -52,7 +144,6 @@ function SearchProducts({ selectedCategory }) {
         );
       });
 
-  // **Categorize Products**
   const categorizedProducts = {};
   filteredProducts.forEach((product) => {
     const category = product.category?.name || "UNCATEGORIZED";
@@ -63,9 +154,9 @@ function SearchProducts({ selectedCategory }) {
   });
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="py-28">
       {/* Search Bar */}
-      <div className="mb-6 flex justify-center">
+      <div className="mb-6 flex justify-center px-4">
         <input
           type="text"
           placeholder="SEARCH"
@@ -74,36 +165,17 @@ function SearchProducts({ selectedCategory }) {
           className="border-b border-black text-center text-lg outline-none px-2 py-1 w-full sm:w-3/4 md:w-1/2"
         />
       </div>
-      <p className="text-lg pb-8">YOU MAY BE LOOKING FOR</p>
+      <p className="text-lg pb-8 px-6">YOU MAY BE LOOKING FOR</p>
 
       {/* Product Categories */}
       {Object.entries(categorizedProducts).map(([category, products]) => (
         <div key={category} className="mb-8">
-          <h3 className="text-sm uppercase text-gray-700 mb-2">{category}</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <h3 className="text-2xl font-semibold px-6 mb-4">
+            {category.toUpperCase()}
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
-              <Link to={`/products/${product.id}`}
-                key={product.id}
-                className="bg-slate-50 p-4"
-              >
-                <img
-                  src={
-                    product.thumbnail?.url || "https://via.placeholder.com/150"
-                  }
-                  alt={product.name}
-                  className="w-full h-40 object-cover rounded-none mb-2"
-                />
-                <h3 className="text-sm uppercase text-gray-700">
-                  {product.name}
-                </h3>
-                <p className="text-xs text-gray-500 uppercase">
-                  {product.slug}
-                </p>
-                <p className="text-xs text-gray-700 mt-2">
-                  PRICE: {product.pricing?.priceRange?.start?.gross?.amount}{" "}
-                  {product.pricing?.priceRange?.start?.gross?.currency}
-                </p>
-              </Link>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </div>
