@@ -37,16 +37,45 @@ const Navbar = ({
     ? "https://res.cloudinary.com/dmjhto8sd/image/upload/v1739507590/Clothd-green_r3fe9v.webp"
     : "https://res.cloudinary.com/dmjhto8sd/image/upload/v1739507590/Clothd-black_kgtd7e.webp";
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsVisible(currentScrollY < lastScrollY || currentScrollY < 50);
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+    useEffect(() => {
+      let startY = 0;
+      const handleTouchStart = (e) => {
+        startY = e.touches[0].clientY;
+      };
+    
+      const handleTouchMove = (e) => {
+        const currentY = e.touches[0].clientY;
+        const isScrollingUp = currentY > startY;
+        setIsVisible(isScrollingUp || window.scrollY < 50);
+        startY = currentY;
+      };
+    
+      const handleScroll = () => {
+        if (location.pathname === '/') {
+          const swiperEl = swiperRef?.current?.swiper;
+          if (swiperEl) {
+            const progress = swiperEl.progress;
+            setIsVisible(progress < lastScrollY || progress < 0.1);
+            setLastScrollY(progress);
+          }
+        } else {
+          setIsVisible(window.scrollY < lastScrollY || window.scrollY < 50);
+          setLastScrollY(window.scrollY);
+        }
+      };
+    
+      window.addEventListener('scroll', handleScroll);
+      window.addEventListener('touchstart', handleTouchStart);
+      window.addEventListener('touchmove', handleTouchMove);
+      swiperRef?.current?.swiper?.on('progress', handleScroll);
+    
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('touchstart', handleTouchStart);
+        window.removeEventListener('touchmove', handleTouchMove);
+        swiperRef?.current?.swiper?.off('progress', handleScroll);
+      };
+    }, [lastScrollY, swiperRef, location.pathname]);
 
   const handleCategoryHover = (category) => {
     if (hoveredCategory !== category) {
@@ -102,8 +131,8 @@ const Navbar = ({
 
           {/* Search bar section */}
           <div
-            className={`w-full h-10 overflow-hidden transition-transform duration-300 ease-in-out border-b border-black ${
-              isVisible ? "h-10 " : "h-0"
+            className={`w-full overflow-hidden transition-all duration-300 border-b border-black ${
+              isVisible ? "max-h-10 opacity-100" : "max-h-0 opacity-0"
             }`}
           >
             <Link to={"/search/home"} className="px-6 py-3  flex items-center">
