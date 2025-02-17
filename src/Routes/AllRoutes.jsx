@@ -19,7 +19,6 @@ import MyOrdersHelp from "./MyOrdersHelp";
 import SearchHome from "./SearchHome";
 import Products from "./Products";
 import CategoryPage from "./CategoryPage";
-
 const AllRoutes = () => {
   return (
     <Routes>

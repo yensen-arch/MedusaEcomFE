@@ -1,82 +1,77 @@
 import React from "react";
 import Footer from "../Components/Footer";
+
 function Privacy() {
   return (
-    <div className="mt-60 ">
-      <div className>
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Privacy Policy
-        </h1>
-        <p className="text-gray-600 mb-4">
-          Your privacy is important to us. This privacy policy explains how we
-          collect, use, and protect your information.
+    <div className="mt-28 px-6  mx-auto text-gray-800">
+      <div>
+        <h1 className="text-lg font-bold mb-4 uppercase">PRIVACY POLICY</h1>
+        <p className="text-xs mb-4">
+          YOUR PRIVACY IS IMPORTANT TO US. THIS PRIVACY POLICY EXPLAINS HOW WE
+          COLLECT, USE, AND PROTECT YOUR INFORMATION.
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">
-          Information We Collect
+        <h2 className="text-sm font-semibold mb-2 uppercase">
+          INFORMATION WE COLLECT
         </h2>
-        <p className="text-gray-600 mb-4">
-          We may collect personal information that you provide to us, such as
-          your name, email address, and phone number. We also collect
-          non-personal information like browser type and IP address to improve
-          our services.
+        <p className="text-xs mb-4">
+          WE MAY COLLECT PERSONAL INFORMATION THAT YOU PROVIDE TO US, SUCH AS
+          YOUR NAME, EMAIL ADDRESS, AND PHONE NUMBER. WE ALSO COLLECT
+          NON-PERSONAL INFORMATION LIKE BROWSER TYPE AND IP ADDRESS TO IMPROVE
+          OUR SERVICES.
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">
-          How We Use Your Information
+        <h2 className="text-sm font-semibold mb-2 uppercase">
+          HOW WE USE YOUR INFORMATION
         </h2>
-        <ul className="list-disc pl-5 text-gray-600 mb-4">
-          <li>To provide and improve our services</li>
-          <li>To personalize your experience</li>
-          <li>To communicate with you about updates and offers</li>
-          <li>To ensure the security of our platform</li>
+        <ul className="list-disc pl-5 text-xs mb-4">
+          <li>TO PROVIDE AND IMPROVE OUR SERVICES</li>
+          <li>TO PERSONALIZE YOUR EXPERIENCE</li>
+          <li>TO COMMUNICATE WITH YOU ABOUT UPDATES AND OFFERS</li>
+          <li>TO ENSURE THE SECURITY OF OUR PLATFORM</li>
         </ul>
 
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">
-          Sharing Your Information
+        <h2 className="text-sm font-semibold mb-2 uppercase">
+          SHARING YOUR INFORMATION
         </h2>
-        <p className="text-gray-600 mb-4">
-          We do not sell, trade, or rent your personal information to third
-          parties. We may share your information with trusted partners to
-          provide services on our behalf, but only under strict confidentiality
-          agreements.
+        <p className="text-xs mb-4">
+          WE DO NOT SELL, TRADE, OR RENT YOUR PERSONAL INFORMATION TO THIRD
+          PARTIES. WE MAY SHARE YOUR INFORMATION WITH TRUSTED PARTNERS TO
+          PROVIDE SERVICES ON OUR BEHALF, BUT ONLY UNDER STRICT CONFIDENTIALITY
+          AGREEMENTS.
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">
-          Your Choices
-        </h2>
-        <p className="text-gray-600 mb-4">
-          You have the right to access, update, or delete your personal
-          information. If you wish to exercise these rights, please contact us.
+        <h2 className="text-sm font-semibold mb-2 uppercase">YOUR CHOICES</h2>
+        <p className="text-xs mb-4">
+          YOU HAVE THE RIGHT TO ACCESS, UPDATE, OR DELETE YOUR PERSONAL
+          INFORMATION. IF YOU WISH TO EXERCISE THESE RIGHTS, PLEASE CONTACT US.
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">
-          Data Security
-        </h2>
-        <p className="text-gray-600 mb-4">
-          We implement appropriate technical and organizational measures to
-          protect your information against unauthorized access, alteration,
-          disclosure, or destruction.
+        <h2 className="text-sm font-semibold mb-2 uppercase">DATA SECURITY</h2>
+        <p className="text-xs mb-4">
+          WE IMPLEMENT APPROPRIATE TECHNICAL AND ORGANIZATIONAL MEASURES TO
+          PROTECT YOUR INFORMATION AGAINST UNAUTHORIZED ACCESS, ALTERATION,
+          DISCLOSURE, OR DESTRUCTION.
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">
-          Changes to This Policy
+        <h2 className="text-sm font-semibold mb-2 uppercase">
+          CHANGES TO THIS POLICY
         </h2>
-        <p className="text-gray-600 mb-4">
-          We reserve the right to update this privacy policy at any time. We
-          will notify you of any significant changes by posting the new policy
-          on this page.
+        <p className="text-xs mb-4">
+          WE RESERVE THE RIGHT TO UPDATE THIS PRIVACY POLICY AT ANY TIME. WE
+          WILL NOTIFY YOU OF ANY SIGNIFICANT CHANGES BY POSTING THE NEW POLICY
+          ON THIS PAGE.
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">Contact Us</h2>
-        <p className="text-gray-600">
-          If you have any questions or concerns about this privacy policy,
-          please contact us at:{" "}
+        <h2 className="text-sm font-semibold mb-2 uppercase">CONTACT US</h2>
+        <p className="text-xs">
+          IF YOU HAVE ANY QUESTIONS OR CONCERNS ABOUT THIS PRIVACY POLICY,
+          PLEASE CONTACT US AT:{" "}
           <a
             href="mailto:clothd@example.com"
-            className="text-blue-600 hover:underline"
+            className="underline"
           >
-            clothd@connect.com
+            CLOTHD@CONNECT.COM
           </a>
           .
         </p>

@@ -204,35 +204,35 @@ const ProductInfo = ({
 
       <div className="flex flex-col items-center space-y-2 ">
         <div className="relative w-full group">
-          <select className="w-full py-2 bg-white text-black border border-black hover:bg-white hover:text-black transition-colors appearance-none px-2">
+          <select className="w-full py-2 bg-white text-sm text-black border border-black hover:bg-white hover:text-black transition-colors appearance-none px-2">
             <option className="text-black bg-white" value="">
               SELECT SIZE
             </option>
-            <option className="text-black bg-white" value="s">
+            <option className="text-black bg-white text-xs" value="s">
               SMALL
             </option>
-            <option className="text-black bg-white" value="m">
+            <option className="text-black bg-white text-xs" value="m">
               MEDIUM
             </option>
-            <option className="text-black bg-white" value="l">
+            <option className="text-black bg-white text-xs" value="l">
               LARGE
             </option>
           </select>
-          <span className="absolute right-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="absolute right-2 text-xs top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
             ▼
           </span>
         </div>
-        <button className="w-full py-2 bg-black text-white hover:bg-white hover:text-black border hover:border-black transition-colors">
+        <button className="w-full py-2 bg-black text-sm text-white hover:bg-white hover:text-black border hover:border-black transition-colors">
           ADD TO CART
         </button>
       </div>
 
-      <div className="space-y-4 pt-6">
+      <div className="space-y-4 pt-6 text-xs uppercase">
         <Dropdown
           title="PRODUCT DETAILS"
           isOpen={isProductDetailsOpen}
           setIsOpen={setIsProductDetailsOpen}
-          content={`Our signature piece crafted with premium materials. Features a unique design that combines modern aesthetics with timeless appeal. Made from sustainably sourced materials with attention to detail and quality craftsmanship.`}
+          content={`OUR SIGNATURE PIECE CRAFTED WITH PREMIUM MATERIALS. FEATURES A UNIQUE DESIGN THAT COMBINES MODERN AESTHETICS WITH TIMELESS APPEAL. MADE FROM SUSTAINABLY SOURCED MATERIALS WITH ATTENTION TO DETAIL AND QUALITY CRAFTSMANSHIP.`}
         />
 
         <Dropdown
@@ -241,21 +241,15 @@ const ProductInfo = ({
           setIsOpen={setIsShippingOpen}
           content={
             <>
-              Free standard shipping on orders over $200.
+              FREE STANDARD SHIPPING ON ORDERS OVER $200.
+              <br />
+              EXPRESS SHIPPING AVAILABLE.
+              <br />
+              RETURNS ACCEPTED WITHIN 30 DAYS OF PURCHASE.
               <br />
               <br />
-              Express shipping available.
-              <br />
-              <br />
-              Returns accepted within 30 days of purchase.
-              <br />
-              <br />
-              <a href="/shipping-returns" className="underline">
-                Read more
-              </a>
-              <br />
-              <a href="/refund-policy" className="underline">
-                View our refund policy
+              <a href="/help/shipping" className="underline text-xs uppercase">
+                READ MORE
               </a>
             </>
           }
@@ -265,7 +259,7 @@ const ProductInfo = ({
           title="CARE INSTRUCTIONS"
           isOpen={isCareOpen}
           setIsOpen={setIsCareOpen}
-          content="Hand wash in cold water. Do not bleach. Lay flat to dry. Iron on low heat if needed. Store in a cool, dry place."
+          content="HAND WASH IN COLD WATER. DO NOT BLEACH. LAY FLAT TO DRY. IRON ON LOW HEAT IF NEEDED. STORE IN A COOL, DRY PLACE."
         />
       </div>
     </div>
@@ -273,7 +267,7 @@ const ProductInfo = ({
 );
 
 const Dropdown = ({ title, isOpen, setIsOpen, content }) => (
-  <div className="border-t  border-black pt-2">
+  <div className="border-t border-black pt-2">
     <button
       className="w-full flex justify-between items-center py-1"
       onClick={() => setIsOpen(!isOpen)}
@@ -281,7 +275,7 @@ const Dropdown = ({ title, isOpen, setIsOpen, content }) => (
       {title}
       {isOpen ? <FiChevronUp /> : <FiChevronDown />}
     </button>
-    {isOpen && <div className="py-4 text-sm">{content}</div>}
+    {isOpen && <div className="py-4 text-xs">{content}</div>}
   </div>
 );
 
