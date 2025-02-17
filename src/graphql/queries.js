@@ -206,7 +206,7 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
     }
   }
 `;
-
+        
 export const REGISTER_MUTATION = gql`
   mutation Register(
     $email: String!

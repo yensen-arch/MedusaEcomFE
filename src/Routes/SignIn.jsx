@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import Footer from "../Components/Footer";
@@ -15,16 +15,16 @@ const SignIn = () => {
   });
 
   const isFormValid =
-  data.email.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) &&
-  data.password.trim().length >= 8 &&
-  data.name.trim() &&
-  data.phone.trim().match(/^\d+$/) &&
-  data.termsAccepted;
-
+    data.email.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) &&
+    data.password.trim().length >= 8 &&
+    data.name.trim() &&
+    data.phone.trim().match(/^\d+$/) &&
+    data.termsAccepted;
 
   const [registerUser, { loading, error }] = useMutation(REGISTER_MUTATION);
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,12 +40,15 @@ const SignIn = () => {
             { key: "phone", value: data.phone },
             { key: "subscribe_to_updates", value: data.subscribe.toString() },
           ],
-          redirectUrl: window.location.origin, 
+          redirectUrl: window.location.origin,
           channel: "default-channel",
         },
       });
-
-      if (response.data.accountRegister.accountErrors.length === 0) {
+      const errors = response?.data?.accountRegister?.accountErrors || [];
+      if (errors.length > 0) {
+        console.log("Registration Error:", errors[0].message);
+        setErrorMessage(errors[0].message);
+      } else if (errors.length === 0) {
         setSuccessMessage("Registered successfully!");
         setTimeout(() => navigate("/"), 2000);
       }
@@ -56,11 +59,14 @@ const SignIn = () => {
 
   return (
     <>
-      {successMessage && (
-        <p className="text-green-600 text-center text-lg my-4">
-          {successMessage}
-        </p>
-      )}
+      {successMessage ? (
+  <p className="text-green-600 text-center text-lg mt-28">
+    {successMessage}
+  </p>
+) : errorMessage ? (
+  <p className="text-red-600 text-center text-lg mt-28">{errorMessage}</p>
+) : null}
+
       <div className="mt-60 flex mx-auto w-4/5 gap-10">
         <div className="w-3/5">
           <h3 className="text-left mb-8 text-xl">PERSONAL DETAILS</h3>

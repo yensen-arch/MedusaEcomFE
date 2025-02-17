@@ -62,7 +62,7 @@ const Product = () => {
           {images.map((image, index) => (
             <div
               key={index}
-              className="aspect-w-3  aspect-h-4 overflow-hidden border border-black"
+              className="aspect-w-3 h-120 overflow-hidden border border-black"
             >
               <img
                 src={image}
@@ -73,7 +73,7 @@ const Product = () => {
             </div>
           ))}
         </div>
-        <div className="sticky top-24 h-fit px-8 border border-black">
+        <div className="sticky top-24 h-fit px-8 ">
           <ProductInfo
             product={product}
             description={description}
@@ -188,82 +188,94 @@ const ProductInfo = ({
   isCareOpen,
   setIsCareOpen,
 }) => (
-  <div className="space-y-6">
-    <h1 className="text-xl font-semibold text-center">
+  <div className="space-y-1 mt-14 items-center flex flex-col">
+    <h1 className="text-md font-bold  text-center">
       {product.name.toUpperCase()}
     </h1>
-    <p className="text-xl text-center">
+    <p className="text-sm text-center">
       {product.pricing.priceRange.start.gross.amount}{" "}
       {product.pricing.priceRange.start.gross.currency}
     </p>
-
-    <div className="space-y-4">
-      <select className="w-full py-4 bg-white text-black border border-black hover:bg-white hover:text-black transition-colors appearance-none px-4 pr-10">
-        <option className="text-black bg-white" value="">
-          SELECT SIZE
-        </option>
-        <option className="text-black bg-white" value="s">
-          SMALL
-        </option>
-        <option className="text-black bg-white" value="m">
-          MEDIUM
-        </option>
-        <option className="text-black bg-white" value="l">
-          LARGE
-        </option>
-      </select>
-
-      <button className="w-full py-4 bg-black text-white hover:bg-white hover:text-black border hover:border-black transition-colors">
-        ADD TO CART
-      </button>
-    </div>
-
-    <div className="space-y-4 pt-6">
+    <div className="w-[60%]">
       <div
         dangerouslySetInnerHTML={{ __html: description }}
-        className="text-sm leading-relaxed "
+        className="text-sm py-4"
       />
 
-      <Dropdown
-        title="PRODUCT DETAILS"
-        isOpen={isProductDetailsOpen}
-        setIsOpen={setIsProductDetailsOpen}
-        content={`Our signature piece crafted with premium materials. Features a unique design that combines modern aesthetics with timeless appeal. Made from sustainably sourced materials with attention to detail and quality craftsmanship.`}
-      />
+      <div className="flex flex-col items-center space-y-2 ">
+        <div className="relative w-full group">
+          <select className="w-full py-2 bg-white text-black border border-black hover:bg-white hover:text-black transition-colors appearance-none px-2">
+            <option className="text-black bg-white" value="">
+              SELECT SIZE
+            </option>
+            <option className="text-black bg-white" value="s">
+              SMALL
+            </option>
+            <option className="text-black bg-white" value="m">
+              MEDIUM
+            </option>
+            <option className="text-black bg-white" value="l">
+              LARGE
+            </option>
+          </select>
+          <span className="absolute right-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+            ▼
+          </span>
+        </div>
+        <button className="w-full py-2 bg-black text-white hover:bg-white hover:text-black border hover:border-black transition-colors">
+          ADD TO CART
+        </button>
+      </div>
 
-      <Dropdown
-        title="SHIPPING & RETURNS"
-        isOpen={isShippingOpen}
-        setIsOpen={setIsShippingOpen}
-        content={
-          <>
-            Free standard shipping on orders over $200.
-            <br />
-            <br />
-            Express shipping available.
-            <br />
-            <br />
-            <a href="/refund-policy" className="underline">
-              View our refund policy
-            </a>
-          </>
-        }
-      />
+      <div className="space-y-4 pt-6">
+        <Dropdown
+          title="PRODUCT DETAILS"
+          isOpen={isProductDetailsOpen}
+          setIsOpen={setIsProductDetailsOpen}
+          content={`Our signature piece crafted with premium materials. Features a unique design that combines modern aesthetics with timeless appeal. Made from sustainably sourced materials with attention to detail and quality craftsmanship.`}
+        />
 
-      <Dropdown
-        title="CARE INSTRUCTIONS"
-        isOpen={isCareOpen}
-        setIsOpen={setIsCareOpen}
-        content="Hand wash in cold water. Do not bleach. Lay flat to dry. Iron on low heat if needed. Store in a cool, dry place."
-      />
+        <Dropdown
+          title="SHIPPING & RETURNS"
+          isOpen={isShippingOpen}
+          setIsOpen={setIsShippingOpen}
+          content={
+            <>
+              Free standard shipping on orders over $200.
+              <br />
+              <br />
+              Express shipping available.
+              <br />
+              <br />
+              Returns accepted within 30 days of purchase.
+              <br />
+              <br />
+              <a href="/shipping-returns" className="underline">
+                Read more
+              </a>
+              <br />
+              <a href="/refund-policy" className="underline">
+                View our refund policy
+              </a>
+            </>
+          }
+        />
+
+        <Dropdown
+          title="CARE INSTRUCTIONS"
+          isOpen={isCareOpen}
+          setIsOpen={setIsCareOpen}
+          content="Hand wash in cold water. Do not bleach. Lay flat to dry. Iron on low heat if needed. Store in a cool, dry place."
+        />
+      </div>
     </div>
   </div>
 );
 
 const Dropdown = ({ title, isOpen, setIsOpen, content }) => (
-  <div className="border-t border-black pt-4">
+  <div className="border-t  border-black pt-2">
     <button
-      className="w-full flex justify-between items-center py-2"
+      className="w-full flex justify-between items-center py-1"
       onClick={() => setIsOpen(!isOpen)}
     >
       {title}
