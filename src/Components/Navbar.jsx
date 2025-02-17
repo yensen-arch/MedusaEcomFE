@@ -198,7 +198,7 @@ const Navbar = ({
       )}
 
       {/* Cart component */}
-      <Cart isOpen={isCartOpen} />
+      <Cart isOpen={isCartOpen} onClose={toggleCart} />
     </>
   );
 };
