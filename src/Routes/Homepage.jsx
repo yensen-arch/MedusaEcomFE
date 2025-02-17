@@ -8,6 +8,8 @@ import Navbar from "../Components/Navbar";
 import FooterLP from "../Components/FooterLP";
 import { motion, AnimatePresence } from "framer-motion";
 import { categories, categoriesMobile } from "../data/categoriesData";
+import CustomLoader from "../Components/CustomLoader";
+import { useNavigate } from "react-router-dom";
 
 const SLIDE_VARIANTS = {
   enter: (direction) => ({
@@ -55,23 +57,23 @@ const Homepage = () => {
     [activeCategory, categoryNames]
   );
 
-  useEffect(() => {
-    let interval;
-    if (!isMobile) {
-      // Only set up the interval if not in mobile mode
-      interval = setInterval(() => {
-        if (swiperRef.current?.swiper && !isScrolling) {
-          swiperRef.current.swiper.slideNext();
-        }
-      }, 15000);
-    }
+  // useEffect(() => {
+  //   let interval;
+  //   if (!isMobile) {
+  //     // Only set up the interval if not in mobile mode
+  //     interval = setInterval(() => {
+  //       if (swiperRef.current?.swiper && !isScrolling) {
+  //         swiperRef.current.swiper.slideNext();
+  //       }
+  //     }, 15000);
+  //   }
 
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [isMobile, isScrolling]);
+  //   return () => {
+  //     if (interval) {
+  //       clearInterval(interval);
+  //     }
+  //   };
+  // }, [isMobile, isScrolling]);
 
   const handleSlideChange = useCallback(
     (swiper) => {
@@ -164,7 +166,16 @@ const Homepage = () => {
       window.removeEventListener("touchend", handleTouchEnd);
     };
   }, [isMobile, handleNext, handlePrev]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  const handleNavigation = (productId) => {
+    setLoading(true);
+    setTimeout(() => {
+      navigate(`/products/${productId}`);
+      setLoading(false);
+    }, 2000);
+  };
   const renderSlides = useMemo(() => {
     return activeCategories[activeCategory]?.map((ele, index) => (
       <SwiperSlide
@@ -177,28 +188,46 @@ const Homepage = () => {
           <div
             onClick={() => {
               if (!isScrolling && scrollTimeoutRef.current === null) {
-                window.location.href = `/products/${ele.productId}`;
+                handleNavigation(ele.productId);
               }
             }}
             style={{ cursor: "pointer" }}
           >
             {ele.img && (
-              <img
-                src={ele.img}
-                alt="Slide"
-                className="w-full h-screen object-cover"
-              />
+              <div className="relative">
+                <img
+                  src={ele.img}
+                  alt="Slide"
+                  className="w-full h-screen object-cover"
+                />
+                {loading && (
+                  <div className="absolute top-2 right-2 p-2">
+                    <div className="absolute top-2 right-2 z-10">
+                      <CustomLoader />
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
             {ele.video && (
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-screen object-cover"
-              >
-                <source src={ele.video} type="video/mp4" />
-              </video>
+              <div className="relative">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-screen object-cover"
+                >
+                  <source src={ele.video} type="video/mp4" />
+                </video>
+                {loading && (
+                  <div className="absolute top-2 right-2 p-2">
+                    <div className="absolute top-2 right-2 z-10">
+                      <CustomLoader />
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         )}
@@ -238,7 +267,7 @@ const Homepage = () => {
             mousewheel={true}
             freeMode={true}
             speed={800}
-            onSlideChange={handleSlideChange}
+            // onSlideChange={handleSlideChange}
             className="w-full h-full"
           >
             {renderSlides}
