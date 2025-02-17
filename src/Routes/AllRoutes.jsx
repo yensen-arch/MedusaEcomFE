@@ -19,6 +19,7 @@ import MyOrdersHelp from "./MyOrdersHelp";
 import SearchHome from "./SearchHome";
 import Products from "./Products";
 import CategoryPage from "./CategoryPage";
+import Account from "./Account";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -27,6 +28,7 @@ const AllRoutes = () => {
       <Route path="/help" element={<Help />}></Route>
       <Route path="newsletter" element={<NewsLetter />}></Route>
       <Route path="/login" element={<LogIn />} />
+      <Route path="/account" element={<Account />}></Route>
       <Route
         path="/help/items-and-sizes"
         element={<ItemsAvailabilityHelp />}

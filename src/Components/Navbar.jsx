@@ -113,7 +113,7 @@ const Navbar = ({
               {["V00", "WOMEN", "MEN", "ARCHIVE"].map((category) => (
                 <button
                   key={category}
-                  className="text-sm hover:font-bold transition-all"
+                  className="text-xs hover:font-bold transition-all"
                   onMouseEnter={() => handleCategoryHover(category)}
                 >
                   {category}
@@ -131,7 +131,10 @@ const Navbar = ({
 
             {/* Right: User links */}
             <div className="flex items-center space-x-6">
-              <Link to="/login" className="text-sm hidden md:block">
+              <Link to="/account" className="text-xs hidden md:block">
+                ACCOUNT
+              </Link>
+              <Link to="/login" className="text-xs hidden md:block">
                 LOGIN
               </Link>
               <Link to="/help" className="hidden md:block">
