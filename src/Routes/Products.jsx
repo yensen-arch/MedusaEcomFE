@@ -57,7 +57,7 @@ const Product = () => {
   return (
     <div className="min-h-screen mt-20">
       {/* Desktop Layout */}
-      <div className="hidden md:grid md:grid-cols-2  container mx-auto ">
+      <div className="hidden md:grid md:grid-cols-2 border-b border-black container mx-auto ">
         <div className="flex flex-col ">
           {images.map((image, index) => (
             <div
@@ -196,7 +196,7 @@ const ProductInfo = ({
       {product.pricing.priceRange.start.gross.amount}{" "}
       {product.pricing.priceRange.start.gross.currency}
     </p>
-    <div className="w-[60%]">
+    <div className="w-[90%] md:w-[80%] lg:w-[60%]">
       <div
         dangerouslySetInnerHTML={{ __html: description }}
         className="text-sm py-4"
