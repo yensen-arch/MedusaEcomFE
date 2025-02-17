@@ -206,38 +206,24 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
     }
   }
 `;
-        
+
 export const REGISTER_MUTATION = gql`
-  mutation Register(
-    $email: String!
-    $password: String!
-    $firstName: String!
-    $metadata: [MetadataInput!]
-    $redirectUrl: String!
-    $channel: String!
-  ) {
+  mutation {
     accountRegister(
       input: {
-        email: $email
-        password: $password
-        firstName: $firstName
-        metadata: $metadata
-        redirectUrl: $redirectUrl
-        channel: $channel
+        email: "customer@example.com"
+        password: "secret"
+        channel: "default-channel"
       }
     ) {
-      accountErrors {
+      errors {
         field
-        message
+        code
       }
       user {
-        id
         email
-        firstName
-        metadata {
-          key
-          value
-        }
+        isActive
+        isConfirmed
       }
     }
   }

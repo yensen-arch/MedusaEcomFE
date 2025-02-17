@@ -15,7 +15,7 @@ function Cart({ isOpen }) {
 
   return (
     <div
-      className={`fixed top-16 right-4 bg-white p-4 w-64 h-80 border border-black z-50 transition-opacity duration-300 ${
+      className={`fixed top-16 right-4 bg-white p-4 w-64 h-screen border border-black z-50 transition-opacity duration-300 ${
         isOpen ? "opacity-100" : "opacity-0"
       }`}
     >

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import Footer from "../Components/Footer";
@@ -7,20 +7,12 @@ import { REGISTER_MUTATION } from "../graphql/queries";
 const SignIn = () => {
   const [data, setData] = useState({
     email: "",
-    phone: "",
     password: "",
-    name: "",
-    subscribe: false,
-    termsAccepted: false,
   });
 
   const isFormValid =
     data.email.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) &&
-    data.password.trim().length >= 8 &&
-    data.name.trim() &&
-    data.phone.trim().match(/^\d+$/) &&
-    data.termsAccepted;
-
+    data.password.trim().length >= 8;
   const [registerUser, { loading, error }] = useMutation(REGISTER_MUTATION);
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
@@ -28,48 +20,53 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!data.termsAccepted) return;
 
     try {
       const response = await registerUser({
         variables: {
-          email: data.email,
-          password: data.password,
-          firstName: data.name,
-          metadata: [
-            { key: "phone", value: data.phone },
-            { key: "subscribe_to_updates", value: data.subscribe.toString() },
-          ],
-          redirectUrl: window.location.origin,
-          channel: "default-channel",
+          input: {
+            email: data.email,
+            password: data.password,
+            channel: "default-channel",
+          },
         },
       });
-      const errors = response?.data?.accountRegister?.accountErrors || [];
-      if (errors.length > 0) {
-        console.log("Registration Error:", errors[0].message);
-        setErrorMessage(errors[0].message);
-      } else if (errors.length === 0) {
-        setSuccessMessage("Registered successfully!");
-        setTimeout(() => navigate("/"), 2000);
+
+      if (response.data?.accountRegister?.errors?.length > 0) {
+        const error = response.data.accountRegister.errors[0];
+        setErrorMessage(`Error in ${error.field}: ${error.code}`);
+      } else if (response.data?.accountRegister?.user) {
+        const user = response.data.accountRegister.user;
+        setSuccessMessage("Account created successfully!");
+
+        if (!user.isConfirmed) {
+          setSuccessMessage(
+            "Account created! Please check your email to confirm your account."
+          );
+        }
+
+        setTimeout(() => navigate("/"), 4000);
       }
     } catch (err) {
       console.error("Registration Error:", err);
+      setErrorMessage("Something went wrong. Please try again.");
     }
   };
 
   return (
     <>
-      {successMessage ? (
-  <p className="text-green-600 text-center text-lg mt-28">
-    {successMessage}
-  </p>
-) : errorMessage ? (
-  <p className="text-red-600 text-center text-lg mt-28">{errorMessage}</p>
-) : null}
+      {successMessage && (
+        <p className="text-green-600 text-center text-lg mt-28">
+          {successMessage}
+        </p>
+      )}
+      {errorMessage && (
+        <p className="text-red-600 text-center text-lg mt-28">{errorMessage}</p>
+      )}
 
       <div className="mt-60 flex mx-auto w-4/5 gap-10">
         <div className="w-3/5">
-          <h3 className="text-left mb-8 text-xl">PERSONAL DETAILS</h3>
+          <h3 className="text-left mb-8 text-xl">CREATE ACCOUNT</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             {[
               {
@@ -83,12 +80,6 @@ const SignIn = () => {
                 type: "password",
                 key: "password",
                 placeholder: "Minimum Length of 8 Characters",
-              },
-              {
-                label: "NAME",
-                type: "text",
-                key: "name",
-                placeholder: "Enter Name",
               },
             ].map((field) => (
               <div key={field.key}>
@@ -105,53 +96,6 @@ const SignIn = () => {
                 />
               </div>
             ))}
-
-            <div className="flex py-4">
-              <div className="w-24 text-xs">
-                <label className="block text-xs mb-1">PREFIX</label>
-                <input
-                  type="text"
-                  placeholder="+123"
-                  onChange={(e) => setData({ ...data, phone: e.target.value })}
-                  className="w-full outline-none text-xs py-1"
-                />
-              </div>
-              <div className="flex-1">
-                <label className="block text-xs mb-1">TELEPHONE</label>
-                <input
-                  type="text"
-                  placeholder="TELEPHONE"
-                  onChange={(e) => setData({ ...data, phone: e.target.value })}
-                  className="w-full border-b border-gray-300 focus:border-black outline-none text-xs py-1"
-                />
-              </div>
-            </div>
-
-            <div className="mt-8 space-y-2 text-sm">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="mr-2"
-                  checked={data.subscribe}
-                  onChange={(e) =>
-                    setData({ ...data, subscribe: e.target.checked })
-                  }
-                />
-                <label>I WISH TO RECEIVE CLOTHD. NEWS</label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="mr-2"
-                  checked={data.termsAccepted}
-                  onChange={(e) =>
-                    setData({ ...data, termsAccepted: e.target.checked })
-                  }
-                  required
-                />
-                <label>I ACCEPT THE PRIVACY STATEMENT</label>
-              </div>
-            </div>
 
             <button
               type="submit"
