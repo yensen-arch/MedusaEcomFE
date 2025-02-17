@@ -34,7 +34,7 @@ function CategoryPage() {
 
   return (
     <div className="py-28">
-      <h1 className="text-2xl font-semibold px-6 mb-4">
+      <h1 className="text-xl font-semibold px-6 mb-4">
         {data?.products?.edges[0]?.node?.category?.name.toUpperCase()}
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ">

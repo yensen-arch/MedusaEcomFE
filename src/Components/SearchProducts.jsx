@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queries";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
-
+import CustomLoader from "./CustomLoader";
 function ProductCard({ product }) {
   const [currentImage, setCurrentImage] = useState(0);
   const touchStartX = useRef(0);
@@ -36,7 +36,16 @@ function ProductCard({ product }) {
     if (touchStartX.current - touchEndX.current > 50) nextImage();
     else if (touchEndX.current - touchStartX.current > 50) prevImage();
   };
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  const handleProductClick = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulating API load time
+    setLoading(false);
+    navigate(`/products/${product.id}`);
+  };
   return (
     <div className="outline outline-1 outline-black rounded-none overflow-hidden p-4 relative group">
       <div
@@ -45,12 +54,21 @@ function ProductCard({ product }) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <Link to={`/products/${product.id}`} className="block">
+        <Link
+          to={`/products/${product.id}`}
+          className="block"
+          onClick={handleProductClick}
+        >
           <img
             src={displayImages[currentImage]}
             alt={product.name}
             className="w-full h-[32rem] object-cover transition-transform duration-300 ease-in-out"
           />
+          {loading && (
+            <div className="absolute top-2 right-2  p-2  ">
+              <CustomLoader className="animate-spin text-black" size={20} />
+            </div>
+          )}
         </Link>
         {displayImages.length > 1 && (
           <>
@@ -114,17 +132,13 @@ function SearchProducts({ selectedCategory }) {
     }
   }, [selectedCategory]);
 
-  if (loading || error) {
+  if (loading)
     return (
-      <div className="text-center text-sm uppercase py-28">
-        {loading ? (
-          <p className="text-gray-600">LOADING</p>
-        ) : (
-          <p className="text-red-500">Error: {error.message}</p>
-        )}
+      <div className="fixed inset-0 flex items-center justify-center">
+        <CustomLoader />
       </div>
     );
-  }
+  if (error) return <p>Error: {error.message}</p>;
 
   const products = data?.products?.edges.map(({ node }) => node) || [];
 
