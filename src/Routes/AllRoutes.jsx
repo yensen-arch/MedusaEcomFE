@@ -20,6 +20,7 @@ import SearchHome from "./SearchHome";
 import Products from "./Products";
 import CategoryPage from "./CategoryPage";
 import Account from "./Account";
+import Checkout from "./Checkout";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -29,6 +30,7 @@ const AllRoutes = () => {
       <Route path="newsletter" element={<NewsLetter />}></Route>
       <Route path="/login" element={<LogIn />} />
       <Route path="/account" element={<Account />}></Route>
+      <Route path="/checkout" element={<Checkout />}></Route>
       <Route
         path="/help/items-and-sizes"
         element={<ItemsAvailabilityHelp />}

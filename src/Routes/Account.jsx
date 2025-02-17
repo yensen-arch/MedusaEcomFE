@@ -14,19 +14,27 @@ function Account() {
               <nav className="flex items-center ">
                 <button
                   onClick={() => setActiveTab("orders")}
-                  className={`px-4 py-3 text-xs hover:bg-slate-200  ${
-                    activeTab === "orders" ? "bg-slate-300" : ""
+                  className={`px-4 py-3 text-xs hover:bg-slate-100  ${
+                    activeTab === "orders" ? "bg-slate-200" : ""
                   }`}
                 >
                   ORDERS
                 </button>
                 <button
                   onClick={() => setActiveTab("account")}
-                  className={`px-4 py-3 text-xs hover:bg-slate-200 ${
-                    activeTab === "account" ? "bg-slate-300" : ""
+                  className={`px-4 py-3 text-xs hover:bg-slate-100 ${
+                    activeTab === "account" ? "bg-slate-200" : ""
                   }`}
                 >
                   ACCOUNT
+                </button>
+                <button
+                  onClick={() => setActiveTab("cart")}
+                  className={`px-4 py-3 text-xs hover:bg-slate-100 ${
+                    activeTab === "cart" ? "bg-slate-300" : ""
+                  }`}
+                >
+                  CART
                 </button>
               </nav>
             </div>
@@ -39,7 +47,7 @@ function Account() {
                 CONTINUE SHOPPING
               </button>
             </div>
-          ) : (
+          ) : activeTab === "account" ? (
             <div className="space-y-12">
               <section className="space-y-6">
                 <h2 className="text-center text-sm">PERSONAL INFO</h2>
@@ -58,7 +66,6 @@ function Account() {
                   </button>
                 </div>
               </section>
-
               <section className="space-y-6">
                 <h2 className="text-center text-xs">PASSWORD</h2>
                 <div className="space-y-6">
@@ -68,7 +75,14 @@ function Account() {
                 </div>
               </section>
             </div>
-          )}
+          ) : activeTab === "cart" ? (
+            <div className="flex flex-col items-center justify-center h-80 space-y-6">
+              <h2 className="text-sm">NO ITEMS IN CART</h2>
+              <button className="border text-sm text-white bg-black border-black py-3 px-6 hover:bg-white hover:text-black transition-colors">
+                CONTINUE SHOPPING
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
       <Footer />
