@@ -1,7 +1,7 @@
 const content = 
 `<div class='flex flex-col gap-6 leading-[1.4] my-6 text-[0.625rem] tracking-wider'>
   <p>
-    If you wish to receive weekly information about new collections, promotions and other news from Zara.com, don't miss our Newsletter.
+    If you wish to receive weekly information about new collections, promotions and other news from Clothd.com, don't miss our Newsletter.
   </p>
   <div class='flex flex-col gap-4'>
     <h4 class='text-xs font-semibold'>

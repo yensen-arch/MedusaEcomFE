@@ -24,7 +24,7 @@ const AboutUs = () => {
       <div className='mt-80 mx-auto w-[76%] flex flex-col gap-3'>
         <h2 className='text-[15px] font-semibold tracking-[0.8px] [font-stretch:condensed] font-aboutUs'>Company</h2>
         <p className='text-[13px] font-aboutUs font-light leading-[20px]'>
-          Zara is one of the largest international fashion companies. It belongs to Inditex, one of the world’s largest distribution groups.<br /><br />
+          Clothd is one of the largest international fashion companies. It belongs to Inditex, one of the world’s largest distribution groups.<br /><br />
           The customer is at the heart of our unique business model, which includes design, production, distribution and sales through<br />our extensive retail network.<br /><br />
           For more information, please visit the Inditex Group website: <a href='https://www.inditex.com'>www.inditex.com</a>
         </p>

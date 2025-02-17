@@ -54,12 +54,12 @@ export const faqs =[
 
 export const faqs2 =[
   {
-    title: 'MY ZARA ACCOUNT',
+    title: 'MY Clothd ACCOUNT',
     pointers: [
       'REGISTRATION AND LOGIN',
       'MANAGING MY PROFILE',
       'MY FAVOURTIES',
-      'MY ZARA QR CODE'
+      'MY Clothd QR CODE'
     ]
   },
   {
@@ -203,8 +203,8 @@ export const faqs2 =[
     ]
   },
   {
-    title: 'ZARA EXPERIENCES',
-    url: 'zara-experiences',
+    title: 'Clothd EXPERIENCES',
+    url: 'Clothd-experiences',
     pointers: [
       {
         pointer: 'OUR USED CLOTHING COLLECTION PROGRAMME',
@@ -266,7 +266,7 @@ export const exchanges_returns_refunds_map = {
   "SPECIAL RETURN CONDITIONS": SpecialReturn
 };
 
-export const zara_exp_map = {
+export const Clothd_exp_map = {
   "NEWSLETTER": NewsLetter,
   "STORE MODE IN THE APP": StoreMode,
   "OUR USED CLOTHING COLLECTION PROGRAMME": UsedCloth

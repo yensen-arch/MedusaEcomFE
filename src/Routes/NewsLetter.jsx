@@ -78,7 +78,7 @@ const NewsLetter = () => {
       <div className="hidden md:block w-full lg:w-2/5 h-full">
         <video
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-          alt="Zara fashion"
+          alt="Clothd fashion"
           autoPlay
           muted
           playsInline

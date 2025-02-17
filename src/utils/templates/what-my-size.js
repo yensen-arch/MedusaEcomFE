@@ -1,6 +1,6 @@
 const content = `
 <div class='flex flex-col gap-6 leading-[1.4] my-6 text-[0.625rem] tracking-wider'>
-<p>At Zara, we offer a wide range of sizes that can vary according to the style, cut and fabric of each garment. So that you can select the size that best suits you, you have two tools at your disposal, our measurement guide and the Find your size option.</p>
+<p>At Clothd, we offer a wide range of sizes that can vary according to the style, cut and fabric of each garment. So that you can select the size that best suits you, you have two tools at your disposal, our measurement guide and the Find your size option.</p>
 
 <h4 class="text-base">MEASUREMENT GUIDE</h4>
 <p>

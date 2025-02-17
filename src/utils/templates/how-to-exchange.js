@@ -1,14 +1,14 @@
 const content = 
 `<div class='flex flex-col gap-6 leading-[1.4] my-6 text-[0.625rem] tracking-wider'>
 <p>
-    At Zara, you have the option to exchange the items you purchase for free. Here are the conditions and how you can manage it.
+    At Clothd, you have the option to exchange the items you purchase for free. Here are the conditions and how you can manage it.
 </p>
 
 <div class="bg-gray-100 p-4 flex flex-col gap-4 rounded-lg my-6">
     <p>IN THIS ARTICLE</p>
     <div class="flex flex-col gap-2 underline">
         <a href="#conditions">CONDITIONS FOR MAKING AN EXCHANGE</a>
-        <a href="#zara-store-exchange">EXCHANGES AT A ZARA STORE</a>
+        <a href="#Clothd-store-exchange">EXCHANGES AT A Clothd STORE</a>
     </div>
 </div>
 
@@ -33,18 +33,18 @@ const content =
     </p>
 </div>
 
-<div id="zara-store-exchange" class="flex flex-col gap-6 my-6">
-    <h4>EXCHANGES AT A ZARA STORE</h4>
+<div id="Clothd-store-exchange" class="flex flex-col gap-6 my-6">
+    <h4>EXCHANGES AT A Clothd STORE</h4>
     <p>
-        The exchange option in a Zara store is not available for online purchases. Please note that you can always return your order before the deadline and make a new purchase.
+        The exchange option in a Clothd store is not available for online purchases. Please note that you can always return your order before the deadline and make a new purchase.
     </p>
     <p>
         However, for purchases made in a store, you have the option to exchange items for another garment, another size or another colour. 
     </p>
     <div class="bg-gray-100 p-4 rounded-lg text-center">
-        <p><strong>Remember: </strong> to make an exchange, you must show the purchase receipt or your Zara QR code.</p>
+        <p><strong>Remember: </strong> to make an exchange, you must show the purchase receipt or your Clothd QR code.</p>
     </div>
-    <p>Use our <span>store finder</span> to find your nearest Zara store.</p>
+    <p>Use our <span>store finder</span> to find your nearest Clothd store.</p>
 </div>
 </div>`
 

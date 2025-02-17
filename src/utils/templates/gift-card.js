@@ -5,7 +5,7 @@ const content =
 <p>There are two options available:</p>
 <ul style="list-style: disc;" class="flex flex-col gap-4">
     <li>
-        <strong>Physical gift card</strong>: you can buy it in any of our Zara stores.
+        <strong>Physical gift card</strong>: you can buy it in any of our Clothd stores.
     </li>
     <li>
         <strong>Virtual gift card</strong>: we will send it by email to the address you give us at the time of purchase.
@@ -16,7 +16,7 @@ const content =
 
 <ul style="list-style: disc;" class="flex flex-col gap-4">
     <li>
-        You can use it online or in any of our Zara stores.
+        You can use it online or in any of our Clothd stores.
     </li>
     <li>
         It is valid only in the market/region in which it was purchased.
@@ -25,7 +25,7 @@ const content =
         It is valid for one year.
     </li>
     <li>
-        It is a bearer document. Zara will not replace the Gift Card if it is stolen, lost or damaged.
+        It is a bearer document. Clothd will not replace the Gift Card if it is stolen, lost or damaged.
     </li>
     <li>
         Once purchased, the Gift Card cannot be returned.

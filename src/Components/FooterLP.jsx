@@ -18,10 +18,10 @@ const FooterLP = () => {
                   : platform.toLowerCase()
               }.com/${
                 platform === "X"
-                  ? "zara"
+                  ? "Clothd"
                   : platform === "YOUTUBE"
-                  ? "user/ZARA"
-                  : "zara"
+                  ? "user/Clothd"
+                  : "Clothd"
               }`}
               className="md:mx-2 mx-1 lg:mx-3 text-[#333] text-xs hover:underline"
             >

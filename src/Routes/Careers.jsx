@@ -16,7 +16,7 @@ const Careers = () => {
           CREATIVE, UNSTOPPABLE, CLEVER AND PROACTIVE.<br/>
         </div>
         <div className='flex w-full text-xs text-right justify-end underline'>
-          <a href='https://www.inditexcareers.com/portalweb/en/offers?ns=1&country=542061&ns=2&utm_source=zara&utm_medium=ecommerce&utm_campaign=ecommercezara-india&utm_content=offer-ic'>WOULD YOU LIKE TO BE PART OF OUR STORE TEAM?</a>
+          <a href='https://www.inditexcareers.com/portalweb/en/offers?ns=1&country=542061&ns=2&utm_source=Clothd&utm_medium=ecommerce&utm_campaign=ecommerceClothd-india&utm_content=offer-ic'>WOULD YOU LIKE TO BE PART OF OUR STORE TEAM?</a>
         </div>
       </div>
     </div>

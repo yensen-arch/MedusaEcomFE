@@ -1,7 +1,7 @@
 const content=
 `<div class="text-[0.625rem] leading-[1.4] tracking-wider flex flex-col gap-6 my-6">
 <p>
-    At Zara you can find a wide range of garments in natural, artificial and synthetic <strong>materials</strong>. You will have detailed information about the composition of each item both on Zara.com and on the garment itself.
+    At Clothd you can find a wide range of garments in natural, artificial and synthetic <strong>materials</strong>. You will have detailed information about the composition of each item both on Clothd.com and on the garment itself.
 </p>
 
 <p>

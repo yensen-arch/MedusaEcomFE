@@ -12,7 +12,7 @@ import GiftCardHelp from "./GiftCardHelp";
 import ShippingHelp from "./ShippingHelp";
 import PaymentInvoiceHelp from "./PaymentInvoiceHelp";
 import ExchangesHelp from "./ExchangesHelp";
-import ZaraExperiencesHelp from "./ZaraExperiencesHelp";
+import ClothdExperiencesHelp from "./ClothdExperiencesHelp";
 import Privacy from "./Privacy";
 import NotFound from "./NotFound";
 import MyOrdersHelp from "./MyOrdersHelp";
@@ -39,8 +39,8 @@ const AllRoutes = () => {
         element={<PaymentInvoiceHelp />}
       ></Route>
       <Route
-        path="/help/zara-experiences"
-        element={<ZaraExperiencesHelp />}
+        path="/help/Clothd-experiences"
+        element={<ClothdExperiencesHelp />}
       ></Route>
       <Route path="/help/exchanges" element={<ExchangesHelp />}></Route>
       <Route path="/signin" element={<SignIn />} />

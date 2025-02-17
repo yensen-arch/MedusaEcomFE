@@ -1,10 +1,10 @@
 const content = 
 `<div class='flex flex-col gap-6 leading-[1.4] my-6 text-[0.625rem] tracking-wider'>
   <p>
-    We suggest you activate the Store Mode in our APP. You can access new experiences and services to get the most out of Zara.
+    We suggest you activate the Store Mode in our APP. You can access new experiences and services to get the most out of Clothd.
   </p>
   <p>
-    You can activate it when you enter a Zara store or whenever you want directly on your user profile.
+    You can activate it when you enter a Clothd store or whenever you want directly on your user profile.
   </p>
   <div class='flex flex-col gap-4'>
     <h4 class='text-xs font-semibold'>

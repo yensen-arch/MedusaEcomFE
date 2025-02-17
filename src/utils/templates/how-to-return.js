@@ -11,7 +11,7 @@ const content =
     <p>IN THIS ARTICLE</p>
     <div class="flex flex-col gap-2 underline">
         <a href="#conditions">CONDITIONS TO COMPLETE A RETURN</a>
-        <a href="#zara-store-return">RETURNS TO A ZARA STORE</a>
+        <a href="#Clothd-store-return">RETURNS TO A Clothd STORE</a>
         <a href="#home-collection">HOME COLLECTION</a>
     </div>
 </div>
@@ -41,13 +41,13 @@ const content =
     </p>
 </div>
 
-<div id="zara-store-return" class="flex flex-col gap-6">
-    <h4 class="text-xs font-semibold">RETURNS TO A ZARA STORE</h4>
-    <p>You can return your items for <strong>free</strong> at any of our Zara stores.</p>
+<div id="Clothd-store-return" class="flex flex-col gap-6">
+    <h4 class="text-xs font-semibold">RETURNS TO A Clothd STORE</h4>
+    <p>You can return your items for <strong>free</strong> at any of our Clothd stores.</p>
     <p>
         The in-store return option is available for both online and in-store purchases. Simply provide the items to be returned and your <strong>purchase receipt.</strong>
     </p>
-    <p>Use our <span>store finder</span> to find your nearest Zara store.</p>
+    <p>Use our <span>store finder</span> to find your nearest Clothd store.</p>
     <div class="bg-gray-100 p-4 rounded-lg text-center">
         <p><strong>Remember: </strong> if you can't come to the store to make the return, someone else can do it for you.</p>
     </div>

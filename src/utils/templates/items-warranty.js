@@ -5,7 +5,7 @@ const content =
 </p>
 
 <p>
-    However, if you have received a <strong>faulty item</strong> in your <strong>order</strong> , or if after using it, you detect a defect, please contact us or visit a Zara store so that we can help you.
+    However, if you have received a <strong>faulty item</strong> in your <strong>order</strong> , or if after using it, you detect a defect, please contact us or visit a Clothd store so that we can help you.
 </p>
 
 <p>

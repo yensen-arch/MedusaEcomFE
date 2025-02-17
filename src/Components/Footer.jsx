@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="footer_rows">
           <h4 className="font-bold">HELP</h4>
           <div>
-            <Link to={"/help/"}>MY ZARA ACCOUNT</Link>
+            <Link to={"/help/"}>MY Clothd ACCOUNT</Link>
           </div>
 
           <div>
@@ -37,11 +37,11 @@ const Footer = () => {
             <Link to={"/newsletter"}>NEWSLETTER</Link>
           </div>
           {/* REPLACE WITH YOUR ACCOUNTS*/}
-          <div><a href="https://www.instagram.com/zara">INSTAGRAM</a></div>
-          <div><a href="https://www.facebook.com/zara">FACEBOOK</a></div>
-          <div><a href="https://www.x.com/zara">X</a></div>
-          <div><a href="http://pinterest.com/zaraofficial/">PINTEREST</a></div>
-          <div><a href="https://www.youtube.com/@zara">YOUTUBE</a></div>
+          <div><a href="https://www.instagram.com/Clothd">INSTAGRAM</a></div>
+          <div><a href="https://www.facebook.com/Clothd">FACEBOOK</a></div>
+          <div><a href="https://www.x.com/Clothd">X</a></div>
+          <div><a href="http://pinterest.com/Clothdofficial/">PINTEREST</a></div>
+          <div><a href="https://www.youtube.com/@Clothd">YOUTUBE</a></div>
         </div>
         <div className="footer_rows">
           <h4 className="font-bold">COMPANY</h4>

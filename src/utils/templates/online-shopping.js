@@ -3,7 +3,7 @@ const content =
   <p>Here are the details of the purchase process on our website, it's very easy!</p>
   <ul class="list-disc flex flex-col gap-6">
     <li>
-      You can place an online purchase at Zara as a registered user or as a guest. For this last option, we will ask you for the required data to be able to place the order.
+      You can place an online purchase at Clothd as a registered user or as a guest. For this last option, we will ask you for the required data to be able to place the order.
     </li>
     <li>
       You have to add the items to your basket, choose where you want to receive them and complete the payment. You have the option to save your payment details so you can make future purchases more quickly. 

@@ -6,7 +6,7 @@ const content =
   <div class="flex flex-col gap-4">
     <h4 class="text-xs font-bold">CAN YOU CANCEL YOUR ORDER?</h4>
     <p>
-      It is possible to cancel a purchase as long as the order status allows it. If available, you will see this option in your Zara account, in the order details. If you have made the purchase as a guest, you can manage it from the link that you will find in the email confirming your purchase.
+      It is possible to cancel a purchase as long as the order status allows it. If available, you will see this option in your Clothd account, in the order details. If you have made the purchase as a guest, you can manage it from the link that you will find in the email confirming your purchase.
     </p>
   </div>
   <div class="flex flex-col gap-4">

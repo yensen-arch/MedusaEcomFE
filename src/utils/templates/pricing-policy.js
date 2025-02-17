@@ -1,7 +1,7 @@
 const content = 
 `<div class='flex flex-col gap-6 leading-[1.4] my-6 text-[0.625rem] tracking-wider'>
 <p>
-    Zara reserves the right to <strong>change the prices</strong> of items throughout the campaign.
+    Clothd reserves the right to <strong>change the prices</strong> of items throughout the campaign.
 </p>
 
 <p>

@@ -23,8 +23,8 @@ const text = `
 
 <div id="instore-availability" class="text-[0.625rem] flex flex-col gap-6 leading-[1.4] my-6">
     <h2 class="text-lg">IN-STORE ITEM AVAILABILITY</h2>
-    <p>On Zara.com, you can check the <strong>stock in our stores</strong> thanks to the option Check in-store availability. Just select the item you are interested in and the location and we will show you the nearest stores where it is available. Please remember that the stock information in our stores is for guidance only.</p>
-    <p>If you are in one of our Zara stores and the garment you are interested in is not available, our staff will be able to help you make an online purchase using an in-store device.</p>
+    <p>On Clothd.com, you can check the <strong>stock in our stores</strong> thanks to the option Check in-store availability. Just select the item you are interested in and the location and we will show you the nearest stores where it is available. Please remember that the stock information in our stores is for guidance only.</p>
+    <p>If you are in one of our Clothd stores and the garment you are interested in is not available, our staff will be able to help you make an online purchase using an in-store device.</p>
 </div>
 </div>`
 

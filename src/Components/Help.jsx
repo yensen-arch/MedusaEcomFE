@@ -17,7 +17,7 @@ const Help = () => {
         className="bg-cover bg-center w-full h-screen"
         style={{
           backgroundImage:
-            "url('https://static.zara.net/assets/public/96b3/0302/e44e4e019db2/65a192e9968c/image-landscape-web-60c40758-6e66-4050-a5e5-7a09d0374901-default_0/image-landscape-web-60c40758-6e66-4050-a5e5-7a09d0374901-default_0.jpg?ts=1737021733464&w=1263')",
+            "url('https://static.Clothd.net/assets/public/96b3/0302/e44e4e019db2/65a192e9968c/image-landscape-web-60c40758-6e66-4050-a5e5-7a09d0374901-default_0/image-landscape-web-60c40758-6e66-4050-a5e5-7a09d0374901-default_0.jpg?ts=1737021733464&w=1263')",
         }}
       ></div>
       <div className="flex flex-col my-20 mx-auto w-[90%] md:w-[76%] gap-10 ">
