@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queries";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import Footer from "../Components/Footer";
+import CustomLoader from "../Components/CustomLoader";
 
 function CategoryPage() {
   const { categoryId } = useParams();
@@ -11,7 +12,12 @@ function CategoryPage() {
     variables: { categoryId, channel: "default-channel" },
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center">
+        <CustomLoader />
+      </div>
+    );
   if (error) return <p>Error: {error.message}</p>;
 
   const products = data?.products?.edges.map(({ node }) => ({
@@ -43,6 +49,8 @@ function CategoryPage() {
 
 function ProductCard({ product }) {
   const [currentImage, setCurrentImage] = useState(0);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const navigate = useNavigate();
   const images =
     product.images.length > 1
       ? product.images
@@ -61,6 +69,16 @@ function ProductCard({ product }) {
     if (touchStartX.current - touchEndX.current > 50) nextImage();
     else if (touchEndX.current - touchStartX.current > 50) prevImage();
   };
+  const [loading, setLoading] = useState(false);
+
+  const handleProductClick = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulating API load time
+    setLoading(false);
+    setIsNavigating(true);
+    navigate(`/products/${product.id}`);
+  };
 
   return (
     <div className="outline outline-1 outline-black rounded-none overflow-hidden p-4 relative group">
@@ -70,12 +88,26 @@ function ProductCard({ product }) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <Link to={`/products/${product.id}`} className="block">
+        {isNavigating && (
+          <div className="absolute top-2 right-2 z-10">
+            <CustomLoader />
+          </div>
+        )}
+        <Link
+          to={`/products/${product.id}`}
+          className="block"
+          onClick={handleProductClick}
+        >
           <img
             src={images[currentImage]}
             alt={product.name}
             className="w-full h-[32rem] object-cover transition-transform duration-300 ease-in-out"
           />
+          {loading && (
+            <div className="absolute top-2 right-2  p-2  ">
+              <CustomLoader className="animate-spin text-black" size={20} />
+            </div>
+          )}
         </Link>
         {images.length > 1 && (
           <>
@@ -105,18 +137,18 @@ function ProductCard({ product }) {
           ))}
         </div>
       </div>
-        <div className="text-center mt-2 text-sm relative h-12">
-          <div className="absolute w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-x-180">
-            <div className="absolute w-full text-center text-gray-600 group-hover:opacity-0 transition-opacity duration-300">
-              {product.name.toUpperCase()}
-              <br />
-              <p className="text-xs">${product.price.toFixed(2)}</p>
-            </div>
-            <button className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs">
-              ADD TO CART
-            </button>
+      <div className="text-center mt-2 text-sm relative h-12">
+        <div className="absolute w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-x-180">
+          <div className="absolute w-full text-center text-gray-600 group-hover:opacity-0 transition-opacity duration-300">
+            {product.name.toUpperCase()}
+            <br />
+            <p className="text-xs">${product.price.toFixed(2)}</p>
           </div>
+          <button className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs">
+            ADD TO CART
+          </button>
         </div>
+      </div>
     </div>
   );
 }

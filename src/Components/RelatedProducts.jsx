@@ -2,14 +2,19 @@ import React, { useState, useRef } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queries";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import CustomLoader from "./CustomLoader";
 export default function RelatedProducts({ productCategoryID }) {
   const { loading, error, data } = useQuery(GET_PRODUCTS_BY_CATEGORY, {
     variables: { categoryId: productCategoryID, channel: "default-channel" },
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center">
+        <CustomLoader />
+      </div>
+    );
   if (error) return <p>Error: {error.message}</p>;
 
   const products = data?.products?.edges.map(({ node }) => ({
@@ -38,6 +43,8 @@ export default function RelatedProducts({ productCategoryID }) {
 
 function ProductCard({ product }) {
   const [currentImage, setCurrentImage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const images =
     product.images.length > 1
       ? product.images
@@ -57,6 +64,13 @@ function ProductCard({ product }) {
     else if (touchEndX.current - touchStartX.current > 50) prevImage();
   };
 
+  const handleClick = async () => {
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulating API load time
+    setLoading(false);
+    navigate(`/products/${product.id}`);
+  };
+
   return (
     <div className="border border-black rounded-none overflow-hidden relative group">
       <div
@@ -65,13 +79,18 @@ function ProductCard({ product }) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <Link to={`/products/${product.id}`} className="block">
+        <button onClick={handleClick} className="block w-full">
           <img
             src={images[currentImage]}
             alt={product.name}
             className="w-full h-[32rem] object-cover transition-transform duration-300 ease-in-out"
           />
-        </Link>
+          {loading && (
+            <div className="absolute top-2 right-2  p-2  ">
+              <CustomLoader className="animate-spin text-black" size={20} />
+            </div>
+          )}
+        </button>
         {images.length > 1 && (
           <>
             <button
@@ -88,17 +107,6 @@ function ProductCard({ product }) {
             </button>
           </>
         )}
-        <div className="flex justify-center mt-2">
-          {images.map((_, index) => (
-            <span
-              key={index}
-              onClick={() => setCurrentImage(index)}
-              className={`w-1 h-1 mx-1 rounded-full cursor-pointer transition-all duration-300 ${
-                index === currentImage ? "bg-black scale-125" : "bg-gray-200"
-              }`}
-            ></span>
-          ))}
-        </div>
       </div>
       <div className="text-center mt-2 text-sm relative h-12">
         <div className="absolute w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-x-180">

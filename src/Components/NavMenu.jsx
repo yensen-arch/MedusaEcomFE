@@ -99,8 +99,8 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
           </ul>
 
           {/* Additional Links */}
-          <div className="px-8">
-            <ul className="flex flex-col gap-4">
+          <div className="px-8 border-t border-slate-300">
+            <ul className="flex flex-col gap-4 mt-10">
               {additionalLinks.map((link) => (
                 <li key={link.title} className="px-2 hover:translate-x-2">
                   <Link to={link.path} className="text-sm text-gray-600">
