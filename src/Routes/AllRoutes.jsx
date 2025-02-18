@@ -21,11 +21,14 @@ import Products from "./Products";
 import CategoryPage from "./CategoryPage";
 import Account from "./Account";
 import Checkout from "./Checkout";
+import Mission from "./Mission";
+
 const AllRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Homepage />}></Route>
       <Route path="about" element={<AboutUs />}></Route>
+      <Route path="mission" element={<Mission />}></Route>
       <Route path="/help" element={<Help />}></Route>
       <Route path="newsletter" element={<NewsLetter />}></Route>
       <Route path="/login" element={<LogIn />} />
