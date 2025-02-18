@@ -47,8 +47,8 @@ const LogIn = () => {
     <>
       <div className="text-xs">
         <div className="w-3/5 mx-auto h-screen mt-60 flex justify-between items-start">
-          <div className="w-full md:w-3/5 lg:w-2/5 pr-8">
-            <h2 className="text-sm mb-8">LOG IN</h2>
+          <div className="w-full md:w-3/5 lg:w-2/5 ">
+            <h2 className="text-sm text-center mb-8">LOG IN</h2>
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <form className="space-y-4" onSubmit={handleLogin}>
               <div>
