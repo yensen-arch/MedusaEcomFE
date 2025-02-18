@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import Footer from "../Components/Footer";
 import { REGISTER_MUTATION } from "../graphql/queries";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const SignIn = () => {
   const [data, setData] = useState({
@@ -14,6 +15,7 @@ const SignIn = () => {
     data.email.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) &&
     data.password.trim().length >= 8;
 
+  const [showPassword, setShowPassword] = useState(false);
   const [registerUser, { loading, error }] = useMutation(REGISTER_MUTATION);
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
@@ -65,34 +67,38 @@ const SignIn = () => {
         <div className="w-3/5">
           <h3 className="text-left mb-8 text-sm">CREATE ACCOUNT</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {[
-              {
-                label: "E-MAIL",
-                type: "email",
-                key: "email",
-                placeholder: "Enter Email",
-              },
-              {
-                label: "PASSWORD",
-                type: "password",
-                key: "password",
-                placeholder: "Minimum Length of 8 Characters",
-              },
-            ].map((field) => (
-              <div key={field.key}>
-                <label className="block text-xs mb-1">{field.label}</label>
-                <input
-                  type={field.type}
-                  placeholder={field.placeholder}
-                  value={data[field.key]}
-                  onChange={(e) =>
-                    setData({ ...data, [field.key]: e.target.value })
-                  }
-                  className="w-2/3 border-b border-black outline-none text-xs py-1 bg-white"
-                  required
-                />
-              </div>
-            ))}
+            {/* Email Input */}
+            <div>
+              <label className="block text-xs mb-1">E-MAIL</label>
+              <input
+                type="email"
+                placeholder="Enter Email"
+                value={data.email}
+                onChange={(e) => setData({ ...data, email: e.target.value })}
+                className="w-2/3 border-b border-black outline-none text-xs py-1 bg-white"
+                required
+              />
+            </div>
+
+            {/* Password Input with Toggle */}
+            <div className="relative">
+              <label className="block text-xs mb-1">PASSWORD</label>
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Minimum Length of 8 Characters"
+                value={data.password}
+                onChange={(e) => setData({ ...data, password: e.target.value })}
+                className="w-2/3 border-b border-black outline-none text-xs py-1 bg-white"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="relative right-5 "
+              >
+                {showPassword ? <FiEyeOff size={14} /> : <FiEye size={14} />}
+              </button>
+            </div>
 
             <button
               type="submit"
@@ -112,7 +118,7 @@ const SignIn = () => {
           </form>
         </div>
 
-        <div className="absolute top-40 right-60  hidden md:block w-full lg:w-1/5 h-full">
+        <div className="absolute top-40 right-60 hidden md:block w-full lg:w-1/5 h-full">
           <video
             src="https://res.cloudinary.com/dmjhto8sd/video/upload/v1739850601/B444A4EE-6BBA-437C-947E-155D4BE435FD_xrt6pf.mp4"
             autoPlay

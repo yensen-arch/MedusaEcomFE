@@ -1,10 +1,12 @@
 import { useMutation } from "@apollo/client";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Footer from "../Components/Footer";
 import { LOGIN_MUTATION } from "../graphql/queries";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const LogIn = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.state?.path || "/";
@@ -61,19 +63,23 @@ const LogIn = () => {
                   className="w-full  border-b border-black focus:outline-none focus:border-black pb-1"
                 />
               </div>
-              <div>
-                <label htmlFor="password" className="block mb-1">
-                  PASSWORD
-                </label>
+              <div className="relative">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   placeholder="Enter Password"
                   onChange={(e) =>
                     setData({ ...data, password: e.target.value })
                   }
-                  className="w-full border-b border-black focus:outline-none focus:border-black pb-1"
+                  className="w-full border-b border-black focus:outline-none focus:border-black pb-1 pr-10"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                >
+                  {showPassword ? <FiEyeOff size={14} /> : <FiEye size={14} />}
+                </button>
               </div>
               <button
                 type="submit"
