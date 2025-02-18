@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import Footer from "../Components/Footer";
-import { REGISTER_MUTATION } from "../graphql/queries";
+import { REGISTER_MUTATION, LOGIN_MUTATION } from "../graphql/queries";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const SignIn = () => {
@@ -16,13 +16,45 @@ const SignIn = () => {
     data.password.trim().length >= 8;
 
   const [showPassword, setShowPassword] = useState(false);
-  const [registerUser, { loading, error }] = useMutation(REGISTER_MUTATION);
+  const [registerUser, { loading: registerLoading }] = useMutation(REGISTER_MUTATION);
+  const [login, { loading: loginLoading }] = useMutation(LOGIN_MUTATION);
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const handleLogin = async (email, password) => {
+    try {
+      const response = await login({
+        variables: { 
+          email: email, 
+          password: password 
+        }
+      });
+
+      const { token, refreshToken, csrfToken, accountErrors } = response.data.tokenCreate;
+
+      if (accountErrors.length > 0) {
+        setErrorMessage(accountErrors[0].message);
+        return false;
+      }
+
+      // Store tokens
+      localStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("csrfToken", csrfToken);
+
+      return true;
+    } catch (err) {
+      console.error("Login Error:", err);
+      setErrorMessage("Error during login. Please try logging in manually.");
+      return false;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
 
     try {
       const response = await registerUser({
@@ -39,12 +71,15 @@ const SignIn = () => {
         const error = response.data.accountRegister.errors[0];
         setErrorMessage(`Error in ${error.field}: ${error.code}`);
       } else if (response.data?.accountRegister?.user) {
-        const user = response.data.accountRegister.user;
         setSuccessMessage("ACCOUNT CREATED");
-        if (!user.isConfirmed) {
-          setSuccessMessage("ACCOUNT CREATED");
+        
+        // Attempt to login automatically
+        const loginSuccess = await handleLogin(data.email, data.password);
+        
+        if (loginSuccess) {
+          setSuccessMessage("ACCOUNT CREATED - LOGGING IN...");
+          setTimeout(() => navigate("/"), 2000);
         }
-        setTimeout(() => navigate("/"), 3000);
       }
     } catch (err) {
       console.error("Registration Error:", err);
@@ -108,19 +143,15 @@ const SignIn = () => {
 
                 <button
                   type="submit"
-                  disabled={!isFormValid || loading}
+                  disabled={!isFormValid || registerLoading || loginLoading}
                   className={`w-full py-2 mt-8 text-xs border transition duration-300 ${
-                    isFormValid
+                    isFormValid && !registerLoading && !loginLoading
                       ? "bg-black text-white hover:bg-white hover:text-black border-black"
                       : "bg-gray-300 text-gray-600 cursor-not-allowed"
                   }`}
                 >
-                  {loading ? "CREATING..." : "CREATE ACCOUNT"}
+                  {registerLoading ? "CREATING..." : loginLoading ? "LOGGING IN..." : "CREATE ACCOUNT"}
                 </button>
-
-                {error && (
-                  <p className="text-red-500 text-xs mt-2">{error.message}</p>
-                )}
               </form>
             </div>
           </div>

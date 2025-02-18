@@ -21,6 +21,7 @@ const LogIn = () => {
       } else {
         localStorage.setItem("token", token);
         localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("csrfToken", csrfToken);
         navigate(path);
       }
     },

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Footer from "../Components/Footer";
+import { REFRESH_TOKEN_MUTATION, GET_USER_QUERY } from "../graphql/queries";
 function Account() {
   const [activeTab, setActiveTab] = useState("orders");
 
