@@ -43,11 +43,10 @@ const LogIn = () => {
 
   return (
     <>
-      <div className="h-60"></div>
-      <div className="w-4/5 mx-auto text-xs">
-        <div className="w-full flex justify-between items-start">
-          <div className="w-full md:w-1/2 lg:w-2/5 pr-8">
-            <h2 className="text-lg font-bold mb-4">LOG IN</h2>
+      <div className="text-xs">
+        <div className="w-3/5 mx-auto h-screen mt-60 flex justify-between items-start">
+          <div className="w-full md:w-3/5 lg:w-2/5 pr-8">
+            <h2 className="text-sm mb-8">LOG IN</h2>
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <form className="space-y-4" onSubmit={handleLogin}>
               <div>
@@ -59,7 +58,7 @@ const LogIn = () => {
                   id="email"
                   placeholder="Enter Email"
                   onChange={(e) => setData({ ...data, email: e.target.value })}
-                  className="w-full border-b border-gray-300 focus:outline-none focus:border-black pb-1"
+                  className="w-full  border-b border-black focus:outline-none focus:border-black pb-1"
                 />
               </div>
               <div>
@@ -73,13 +72,13 @@ const LogIn = () => {
                   onChange={(e) =>
                     setData({ ...data, password: e.target.value })
                   }
-                  className="w-full border-b border-gray-300 focus:outline-none focus:border-black pb-1"
+                  className="w-full border-b border-black focus:outline-none focus:border-black pb-1"
                 />
               </div>
               <button
                 type="submit"
                 disabled={!isFormValid || loading}
-                className={`w-full px-16 py-2 text-base cursor-pointer transition ${
+                className={`w-full px-16 py-2 text-xs cursor-pointer transition ${
                   isFormValid && !loading
                     ? "bg-black text-white hover:bg-slate-600"
                     : "bg-gray-300 text-gray-600 cursor-not-allowed"
@@ -89,16 +88,16 @@ const LogIn = () => {
               </button>
             </form>
 
-            <div className="mt-8">
+            <div className="mt-4">
               <button
                 onClick={() => navigate("/signin")}
-                className="w-full bg-white text-black px-4 py-2 text-base cursor-pointer border border-black hover:bg-black hover:text-white"
+                className="w-full bg-white text-black px-4 py-2 text-xs cursor-pointer border border-black hover:bg-black hover:text-white"
               >
                 REGISTER
               </button>
             </div>
           </div>
-          <div className="hidden md:block w-full lg:w-3/5 h-full">
+          <div className="absolute top-40 right-60  hidden md:block w-full lg:w-1/5 h-full">
             <video
               src="https://res.cloudinary.com/dmjhto8sd/video/upload/v1739850601/B444A4EE-6BBA-437C-947E-155D4BE435FD_xrt6pf.mp4"
               autoPlay
