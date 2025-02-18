@@ -94,7 +94,7 @@ const LogIn = () => {
           </div>
           <div className="hidden md:block w-full lg:w-3/5 h-full">
             <video
-              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+              src="https://res.cloudinary.com/dmjhto8sd/video/upload/v1739850601/B444A4EE-6BBA-437C-947E-155D4BE435FD_xrt6pf.mov"
               autoPlay
               muted
               playsInline
