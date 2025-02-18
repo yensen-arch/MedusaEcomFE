@@ -10,7 +10,7 @@ const LogIn = () => {
   const path = location.state?.path || "/";
   const [errorMessage, setErrorMessage] = useState("");
   const [data, setData] = useState({ email: "", password: "" });
-  
+
   const [login, { loading }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (response) => {
       const { token, refreshToken, accountErrors } = response.tokenCreate;
@@ -51,7 +51,9 @@ const LogIn = () => {
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <form className="space-y-4" onSubmit={handleLogin}>
               <div>
-                <label htmlFor="email" className="block mb-1">E-MAIL</label>
+                <label htmlFor="email" className="block mb-1">
+                  E-MAIL
+                </label>
                 <input
                   type="email"
                   id="email"
@@ -61,12 +63,16 @@ const LogIn = () => {
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block mb-1">PASSWORD</label>
+                <label htmlFor="password" className="block mb-1">
+                  PASSWORD
+                </label>
                 <input
                   type="password"
                   id="password"
                   placeholder="Enter Password"
-                  onChange={(e) => setData({ ...data, password: e.target.value })}
+                  onChange={(e) =>
+                    setData({ ...data, password: e.target.value })
+                  }
                   className="w-full border-b border-gray-300 focus:outline-none focus:border-black pb-1"
                 />
               </div>
@@ -79,7 +85,7 @@ const LogIn = () => {
                     : "bg-gray-300 text-gray-600 cursor-not-allowed"
                 }`}
               >
-                {loading ? "Logging in..." : "LOG IN"}
+                {loading ? "LOGGING IN..." : "LOG IN"}
               </button>
             </form>
 

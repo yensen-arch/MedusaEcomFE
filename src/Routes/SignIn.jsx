@@ -13,6 +13,7 @@ const SignIn = () => {
   const isFormValid =
     data.email.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) &&
     data.password.trim().length >= 8;
+
   const [registerUser, { loading, error }] = useMutation(REGISTER_MUTATION);
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
@@ -38,13 +39,11 @@ const SignIn = () => {
       } else if (response.data?.accountRegister?.user) {
         const user = response.data.accountRegister.user;
         setSuccessMessage("Account created successfully!");
-
         if (!user.isConfirmed) {
           setSuccessMessage(
             "Account created! Please check your email to confirm your account."
           );
         }
-
         setTimeout(() => navigate("/"), 4000);
       }
     } catch (err) {

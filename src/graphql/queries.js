@@ -206,16 +206,9 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
     }
   }
 `;
-
 export const REGISTER_MUTATION = gql`
-  mutation {
-    accountRegister(
-      input: {
-        email: "customer@example.com"
-        password: "secret"
-        channel: "default-channel"
-      }
-    ) {
+  mutation RegisterUser($input: AccountRegisterInput!) {
+    accountRegister(input: $input) {
       errors {
         field
         code
@@ -228,6 +221,7 @@ export const REGISTER_MUTATION = gql`
     }
   }
 `;
+
 
 export const LOGIN_MUTATION = gql`
   mutation TokenCreate($email: String!, $password: String!) {
