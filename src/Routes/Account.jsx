@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import Footer from "../Components/Footer";
-import { REFRESH_TOKEN_MUTATION, GET_USER_QUERY } from "../graphql/queries";
+import { REFRESH_TOKEN_MUTATION, GET_USER_QUERY, GET_CART_ITEMS } from "../graphql/queries";
 
 const Account = () => {
   const [activeTab, setActiveTab] = useState("orders");
   const [userData, setUserData] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-
   // Get stored tokens
   const accessToken = localStorage.getItem("token");
   const refreshToken = localStorage.getItem("refreshToken");
@@ -27,9 +26,9 @@ const Account = () => {
       if (data.me === null) {
         setIsAuthenticated(false);
         // Clear stored tokens as they're invalid
-        // localStorage.removeItem('token');
-        // localStorage.removeItem('refreshToken');
-        // window.location.href = '/login';
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/login';
       }
     },
     onError: async (error) => {
@@ -44,26 +43,38 @@ const Account = () => {
             refetch();
           } else {
             setIsAuthenticated(false);
-            // localStorage.removeItem('token');
-            // localStorage.removeItem('refreshToken');
-            // window.location.href = '/login';
+            localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken');
+            window.location.href = '/login';
           }
         } catch (refreshError) {
           console.error('Error refreshing token:', refreshError);
           setIsAuthenticated(false);
-          // localStorage.removeItem('token');
-          // localStorage.removeItem('refreshToken');
-          // window.location.href = '/login';
+          localStorage.removeItem('token');
+          localStorage.removeItem('refreshToken');
+          window.location.href = '/login';
         }
       }
     }
   });
-  
+  const checkoutId = typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
 
+  // Query for cart items
+  const { data: cartData, loading: cartLoading, error: cartError } = useQuery(GET_CART_ITEMS, {
+    variables: { checkoutId },
+    context: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    },
+    skip: !checkoutId, 
+    fetchPolicy: "network-only",
+  });
+console.log(cartData)
   useEffect(() => {
     if (!accessToken || !refreshToken) {
       setIsAuthenticated(false);
-      // window.location.href = '/login';
+      window.location.href = '/login';
       return;
     }
 
@@ -153,13 +164,41 @@ const Account = () => {
               </section>
             </div>
           ) : activeTab === "cart" ? (
-            <div className="flex flex-col items-center justify-center h-80 space-y-6">
-              <h2 className="text-sm">NO ITEMS IN CART</h2>
-              <button className="border text-sm text-white bg-black border-black py-3 px-6 hover:bg-white hover:text-black transition-colors">
-                CONTINUE SHOPPING
-              </button>
+            <div className="space-y-4 p-4">
+              <h2 className="text-sm text-center">YOUR CART</h2>
+              {cartLoading ? (
+                <p className="text-sm text-center">Loading cart...</p>
+              ) : cartError ? (
+                <p className="text-sm text-center text-red-500">Error loading cart</p>
+              ) : cartData?.checkout?.lines?.length > 0 ? (
+                <ul className="space-y-4">
+                  {cartData.checkout.lines.map((item) => (
+                    <li key={item.id} className="text-sm border-b pb-2">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-medium">{item.variant.product.name}</p>
+                          <p className="text-gray-600">Size: {item.variant.name}</p>
+                          <p className="text-gray-600">Quantity: {item.quantity}</p>
+                        </div>
+                        <div className="text-right">
+                          <p>${item.variant.pricing.price.amount}</p>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                  <div className="pt-4 border-t">
+                    <p className="text-sm font-medium flex justify-between">
+                      <span>Total:</span>
+                      <span>${cartData.checkout.totalPrice.gross.amount}</span>
+                    </p>
+                  </div>
+                </ul>
+              ) : (
+                <p className="text-sm text-center">NO ITEMS IN CART</p>
+              )}
             </div>
           ) : null}
+          
         </div>
       </div>
       <Footer />
