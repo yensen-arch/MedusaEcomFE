@@ -44,6 +44,23 @@ function ProductCard({ product }) {
     setLoading(false);
     navigate(`/products/${product.id}`);
   };
+
+  const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
+
+  console.log(product.variants[0].id)
+  const handleAddToCart = async () => {
+    if (!product.variants[0].id) {
+      console.error("No variant ID available for product:", product.name);
+      return;
+    }
+    try {
+      const { data } = await addToCart({
+        variables: { variantId: product.variants[0].id, quantity: 1 },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="outline outline-1 outline-black rounded-none overflow-hidden p-4 relative group">
       <div
@@ -105,8 +122,12 @@ function ProductCard({ product }) {
               ${product.pricing?.priceRange?.start?.gross?.amount.toFixed(2)}
             </p>
           </div>
-          <button className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs">
-            ADD TO CART
+          <button
+            onClick={handleAddToCart}
+            disabled={cartLoading}
+            className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs"
+          >
+            {cartLoading ? "ADDING..." : "ADD TO CART"}
           </button>
         </div>
       </div>
@@ -147,7 +168,6 @@ function SearchProducts({ selectedCategory }) {
       variants: node.variants,
       category: node.category,
     })) || [];
-  console.log(products);
   const filteredProducts = !searchQuery
     ? products
     : products.filter((product) => {
@@ -163,7 +183,6 @@ function SearchProducts({ selectedCategory }) {
           )
         );
       });
-console.log("filtered:",filteredProducts)
   const categorizedProducts = {};
   filteredProducts.forEach((product) => {
     const category = product.category?.name || "UNCATEGORIZED";
