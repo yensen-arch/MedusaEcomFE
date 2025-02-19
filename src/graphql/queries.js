@@ -392,3 +392,17 @@ export const CHECKOUT_PAYMENT_CREATE = gql`
     }
   }
 `;
+export const CHECKOUT_EMAIL_UPDATE = gql`
+  mutation CheckoutEmailUpdate($checkoutId: ID!, $email: String!) {
+    checkoutEmailUpdate(checkoutId: $checkoutId, email: $email) {
+      checkout {
+        id
+        email
+      }
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;

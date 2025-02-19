@@ -5,15 +5,32 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { CHECKOUT_PAYMENT_CREATE } from "../graphql/queries";
+import { CHECKOUT_PAYMENT_CREATE, CHECKOUT_EMAIL_UPDATE } from "../graphql/queries";
 import { useMutation } from "@apollo/client";
 
 const stripePromise = loadStripe("pk_test_51QtM2fAotN9X1sy17CBqLAFeybXj9BbKu1wKY8IQhY5PcAwy4kQNM23XYcTinaTASJIJNEpzd82seY8sEMpSzk8b00pTVhX3Qp");
 
-const CheckoutForm = ({ onSuccess, checkoutId, amount }) => {
+const CheckoutForm = ({ onSuccess, checkoutId, amount, userEmail }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [checkoutPaymentCreate, { loading, error }] = useMutation(CHECKOUT_PAYMENT_CREATE);
+  const [checkoutEmailUpdate] = useMutation(CHECKOUT_EMAIL_UPDATE);
+
+  const handleEmailUpdate = async () => {
+    const { data } = await checkoutEmailUpdate({
+      variables: {
+        checkoutId,
+        email: userEmail,
+      },
+    });
+
+    if (data?.checkoutEmailUpdate?.errors.length) {
+      console.error("Email Update Error:", data.checkoutEmailUpdate.errors);
+      alert("Failed to update email.");
+      return false;
+    }
+    return true;
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,6 +40,9 @@ const CheckoutForm = ({ onSuccess, checkoutId, amount }) => {
       alert("Checkout ID is missing.");
       return;
     }
+
+    const emailUpdated = await handleEmailUpdate();
+    if (!emailUpdated) return;
 
     const cardElement = elements.getElement(CardElement);
     try {
@@ -71,14 +91,14 @@ const CheckoutForm = ({ onSuccess, checkoutId, amount }) => {
   );
 };
 
-export default function CheckoutPayment({ activeSection, onPaymentSuccess, checkoutId, amount }) {
+export default function CheckoutPayment({ activeSection, onPaymentSuccess, checkoutId, totalAmount, userEmail }) {
   return (
     <section>
       <h2 className={activeSection === "payment" ? "font-medium" : "text-gray-400"}>3. PAYMENT</h2>
       {activeSection === "payment" && (
         <div className="mt-4 space-y-4">
           <Elements stripe={stripePromise}>
-            <CheckoutForm onSuccess={onPaymentSuccess} checkoutId={checkoutId} amount={amount} />
+            <CheckoutForm onSuccess={onPaymentSuccess} checkoutId={checkoutId} amount={totalAmount} userEmail={userEmail} />
           </Elements>
         </div>
       )}
