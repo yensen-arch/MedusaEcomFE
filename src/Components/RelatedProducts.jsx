@@ -94,6 +94,9 @@ function ProductCard({ product }) {
         console.error("Error adding to cart:", data.checkoutCreate.errors);
       } else {
         console.log("Added to cart:", data.checkoutCreate.checkout);
+        const checkoutId = data.checkoutCreate.checkout.id;
+        localStorage.setItem("checkoutId", checkoutId);
+        console.log("Added to cart, checkoutId saved:", checkoutId);
       }
     } catch (error) {
       console.error("Mutation error:", error);

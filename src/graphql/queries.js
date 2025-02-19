@@ -129,9 +129,6 @@ export const GET_PRODUCT_BY_ID = gql`
       media {
         url
       }
-      thumbnail {
-        url
-      }
       variants {
         id
         name
@@ -316,6 +313,36 @@ export const ADD_TO_CART = gql`
       }
       errors {
         message
+      }
+    }
+  }
+`;
+
+export const GET_CART_ITEMS = gql`
+  query GetCartItems($checkoutId: ID!) {
+    checkout(id: $checkoutId) {
+      id
+      totalPrice {
+        gross {
+          amount
+          currency
+        }
+      }
+      lines {
+        id
+        quantity
+        variant {
+          id
+          name
+          pricing {
+            price {
+              gross {
+                amount
+                currency
+              }
+            }
+          }
+        }
       }
     }
   }

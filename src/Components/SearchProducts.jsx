@@ -57,6 +57,13 @@ function ProductCard({ product }) {
       const { data } = await addToCart({
         variables: { variantId: product.variants[0].id, quantity: 1 },
       });
+      if (data?.checkoutCreate?.errors.length) {
+        console.error("Error adding to cart:", data.checkoutCreate.errors);
+      } else {
+        const checkoutId = data.checkoutCreate.checkout.id;
+        localStorage.setItem("checkoutId", checkoutId);
+        console.log("Added to cart, checkoutId saved:", checkoutId);
+      }
     } catch (error) {
       console.error(error);
     }
