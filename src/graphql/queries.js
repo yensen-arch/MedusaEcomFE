@@ -378,3 +378,17 @@ export const GET_SHIPPING_METHODS = gql`
     }
   }
 `;
+export const CHECKOUT_PAYMENT_CREATE = gql`
+  mutation CheckoutPaymentCreate($checkoutId: ID!, $input: PaymentInput!) {
+    checkoutPaymentCreate(checkoutId: $checkoutId, input: $input) {
+      payment {
+        id
+        chargeStatus
+      }
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;
