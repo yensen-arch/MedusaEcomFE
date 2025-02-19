@@ -361,3 +361,20 @@ export const GET_CART_ITEMS = gql`
     }
   }
 `;
+
+export const GET_SHIPPING_METHODS = gql`
+  query GetShippingMethods($checkoutId: ID!) {
+    checkout(id: $checkoutId) {
+      shippingMethods {
+        id
+        name
+        price {
+          amount
+          currency
+        }
+        minimumDeliveryDays
+        maximumDeliveryDays
+      }
+    }
+  }
+`;

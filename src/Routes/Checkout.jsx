@@ -12,10 +12,13 @@ import CheckoutShipping from "../Components/CheckoutShipping";
 function Checkout() {
   const [activeSection, setActiveSection] = useState("email");
   const [email, setEmail] = useState("");
-  
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-  const refreshToken = typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null;
-  const checkoutId = typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
+
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const refreshToken =
+    typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null;
+  const checkoutId =
+    typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
 
   // Token refresh mutation
   const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
@@ -59,7 +62,10 @@ function Checkout() {
   };
 
   if (loading) return <div className="min-h-screen mt-28 p-8">Loading...</div>;
-  if (error) return <div className="min-h-screen mt-28 p-8">Error loading cart items</div>;
+  if (error)
+    return (
+      <div className="min-h-screen mt-28 p-8">Error loading cart items</div>
+    );
 
   return (
     <div className="min-h-screen mt-28 grid md:grid-cols-[1fr,400px]">
@@ -115,16 +121,14 @@ function Checkout() {
         </section>
 
         {/* Shipping Section */}
-        <CheckoutShipping 
+        <CheckoutShipping
           activeSection={activeSection}
           setActiveSection={setActiveSection}
           handleContinue={handleContinue}
         />
 
         {/* Payment Section */}
-        <CheckoutPayment 
-          activeSection={activeSection}
-        />
+        <CheckoutPayment activeSection={activeSection} />
       </main>
 
       {/* Order Summary Sidebar */}
@@ -135,10 +139,10 @@ function Checkout() {
             {data?.checkout?.lines?.map((item) => (
               <div key={item.id} className="flex gap-4">
                 {item.variant.product.thumbnail?.url && (
-                  <img 
+                  <img
                     src={item.variant.product.thumbnail.url}
                     alt={item.variant.product.thumbnail?.alt || "Product Image"}
-                    className="w-20 h-20 object-cover bg-gray-100"
+                    className="w-20 h-20 object-cover"
                   />
                 )}
                 <div className="flex-1">
@@ -146,7 +150,9 @@ function Checkout() {
                   <p className="text-sm text-gray-600">
                     Category: {item.variant.product.category?.name}
                   </p>
-                  <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                  <p className="text-sm text-gray-600">
+                    Quantity: {item.quantity}
+                  </p>
                   <p className="text-sm text-gray-600">
                     Price: ${item.variant.pricing.price.gross.amount.toFixed(2)}
                   </p>
@@ -154,12 +160,14 @@ function Checkout() {
               </div>
             ))}
           </div>
-          
+
           <div className="space-y-2 border-b border-gray-200 pb-6">
             <div className="flex justify-between">
               <span>SUBTOTAL</span>
               <span>
-                ${data?.checkout?.subtotalPrice?.gross.amount.toFixed(2) || "0.00"}
+                $
+                {data?.checkout?.subtotalPrice?.gross.amount.toFixed(2) ||
+                  "0.00"}
               </span>
             </div>
             <div className="flex justify-between">
