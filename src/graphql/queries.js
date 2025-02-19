@@ -317,7 +317,6 @@ export const ADD_TO_CART = gql`
     }
   }
 `;
-
 export const GET_CART_ITEMS = gql`
   query GetCartItems($checkoutId: ID!) {
     checkout(id: $checkoutId) {
@@ -340,6 +339,16 @@ export const GET_CART_ITEMS = gql`
                 amount
                 currency
               }
+            }
+          }
+          product {
+            name
+            category {
+              name
+            }
+            thumbnail {
+              url
+              alt
             }
           }
         }
