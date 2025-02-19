@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useQuery } from "@apollo/client";
-import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queries";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_PRODUCTS_BY_CATEGORY, ADD_TO_CART } from "../graphql/queries";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import Footer from "../Components/Footer";
 import CustomLoader from "../Components/CustomLoader";
@@ -24,6 +24,7 @@ function CategoryPage() {
     id: node.id,
     name: node.name,
     price: node.pricing?.priceRange?.start?.gross?.amount || 0,
+    variantId: node.variants[0]?.id,
     images:
       node.media?.length > 0
         ? node.media.map((m) => m.url)
@@ -78,6 +79,29 @@ function ProductCard({ product }) {
     setLoading(false);
     setIsNavigating(true);
     navigate(`/products/${product.id}`);
+  };
+  const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
+  const handleAddToCart = async () => {
+    if (!product.variantId) {
+      console.error("No variant ID available for product:", product.name);
+      return;
+    }
+    try {
+      const { data } = await addToCart({
+        variables: {
+          variantId: product.variantId,
+          quantity: 1,
+        },
+      });
+
+      if (data?.checkoutCreate?.errors.length) {
+        console.error("Error adding to cart:", data.checkoutCreate.errors);
+      } else {
+        console.log("Added to cart:", data.checkoutCreate.checkout);
+      }
+    } catch (error) {
+      console.error("Mutation error:", error);
+    }
   };
 
   return (
@@ -144,9 +168,13 @@ function ProductCard({ product }) {
             <br />
             <p className="text-xs">${product.price.toFixed(2)}</p>
           </div>
-          <button className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs">
-            ADD TO CART
-          </button>
+          <button
+            onClick={handleAddToCart}
+            disabled={cartLoading}
+            className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs"
+          >
+            {cartLoading ? "Adding..." : "ADD TO CART"}
+            </button>
         </div>
       </div>
     </div>
