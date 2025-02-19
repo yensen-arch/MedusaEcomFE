@@ -2,19 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { REFRESH_TOKEN_MUTATION, GET_CART_ITEMS } from "../graphql/queries";
+import {
+  REFRESH_TOKEN_MUTATION,
+  GET_CART_ITEMS,
+} from "../graphql/queries";
 import CheckoutPayment from "../Components/CheckoutPayment";
 import CheckoutShipping from "../Components/CheckoutShipping";
+
 function Checkout() {
   const [activeSection, setActiveSection] = useState("email");
   const [email, setEmail] = useState("");
-
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
-  const refreshToken =
-    typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null;
-  const checkoutId =
-    typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
+  
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const refreshToken = typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null;
+  const checkoutId = typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
 
   // Token refresh mutation
   const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
@@ -58,10 +59,7 @@ function Checkout() {
   };
 
   if (loading) return <div className="min-h-screen mt-28 p-8">Loading...</div>;
-  if (error)
-    return (
-      <div className="min-h-screen mt-28 p-8">Error loading cart items</div>
-    );
+  if (error) return <div className="min-h-screen mt-28 p-8">Error loading cart items</div>;
 
   return (
     <div className="min-h-screen mt-28 grid md:grid-cols-[1fr,400px]">
@@ -117,99 +115,16 @@ function Checkout() {
         </section>
 
         {/* Shipping Section */}
-        <section className="border-b border-gray-200 pb-6">
-          <div className="flex items-center gap-4">
-            <h2
-              className={
-                activeSection === "shipping" ? "font-medium" : "text-gray-400"
-              }
-            >
-              2. SHIPPING
-            </h2>
-            {activeSection !== "shipping" && activeSection === "payment" && (
-              <button
-                onClick={() => setActiveSection("shipping")}
-                className="text-sm text-gray-500 hover:text-black"
-              >
-                Edit
-              </button>
-            )}
-          </div>
-          {activeSection === "shipping" && (
-            <div className="mt-4 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="First Name *"
-                  className="border border-gray-300 p-3"
-                />
-                <input
-                  type="text"
-                  placeholder="Last Name *"
-                  className="border border-gray-300 p-3"
-                />
-                <input
-                  type="text"
-                  placeholder="Address *"
-                  className="col-span-2 border border-gray-300 p-3"
-                />
-                <input
-                  type="text"
-                  placeholder="City *"
-                  className="border border-gray-300 p-3"
-                />
-                <input
-                  type="text"
-                  placeholder="Postal Code *"
-                  className="border border-gray-300 p-3"
-                />
-              </div>
-              <button
-                onClick={() => handleContinue("shipping")}
-                className="w-full bg-black text-white py-3 hover:bg-black/90"
-              >
-                CONTINUE TO PAYMENT
-              </button>
-            </div>
-          )}
-        </section>
+        <CheckoutShipping 
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+          handleContinue={handleContinue}
+        />
 
         {/* Payment Section */}
-        <section>
-          <h2
-            className={
-              activeSection === "payment" ? "font-medium" : "text-gray-400"
-            }
-          >
-            3. PAYMENT
-          </h2>
-          {activeSection === "payment" && (
-            <div className="mt-4 space-y-4">
-              <div className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Card Number *"
-                  className="w-full border border-gray-300 p-3"
-                />
-                <div className="grid grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    placeholder="Expiry Date *"
-                    className="border border-gray-300 p-3"
-                  />
-                  <input
-                    type="text"
-                    placeholder="CVV *"
-                    className="border border-gray-300 p-3"
-                  />
-                </div>
-              </div>
-              <button className="w-full bg-black text-white py-3 hover:bg-black/90">
-                PLACE ORDER
-              </button>
-            </div>
-          )}
-        </section>
+        <CheckoutPayment 
+          activeSection={activeSection}
+        />
       </main>
 
       {/* Order Summary Sidebar */}
@@ -220,10 +135,10 @@ function Checkout() {
             {data?.checkout?.lines?.map((item) => (
               <div key={item.id} className="flex gap-4">
                 {item.variant.product.thumbnail?.url && (
-                  <img
+                  <img 
                     src={item.variant.product.thumbnail.url}
                     alt={item.variant.product.thumbnail?.alt || "Product Image"}
-                    className="w-20 h-20 object-cover"
+                    className="w-20 h-20 object-cover bg-gray-100"
                   />
                 )}
                 <div className="flex-1">
@@ -231,9 +146,7 @@ function Checkout() {
                   <p className="text-sm text-gray-600">
                     Category: {item.variant.product.category?.name}
                   </p>
-                  <p className="text-sm text-gray-600">
-                    Quantity: {item.quantity}
-                  </p>
+                  <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
                   <p className="text-sm text-gray-600">
                     Price: ${item.variant.pricing.price.gross.amount.toFixed(2)}
                   </p>
@@ -241,14 +154,12 @@ function Checkout() {
               </div>
             ))}
           </div>
-
+          
           <div className="space-y-2 border-b border-gray-200 pb-6">
             <div className="flex justify-between">
               <span>SUBTOTAL</span>
               <span>
-                $
-                {data?.checkout?.subtotalPrice?.gross.amount.toFixed(2) ||
-                  "0.00"}
+                ${data?.checkout?.subtotalPrice?.gross.amount.toFixed(2) || "0.00"}
               </span>
             </div>
             <div className="flex justify-between">
