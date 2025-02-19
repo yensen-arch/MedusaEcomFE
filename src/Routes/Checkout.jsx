@@ -1,10 +1,53 @@
 "use client";
 
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { REFRESH_TOKEN_MUTATION, GET_CART_ITEMS } from "../graphql/queries";
+import CheckoutPayment from "../Components/CheckoutPayment";
+import CheckoutShipping from "../Components/CheckoutShipping";
 function Checkout() {
   const [activeSection, setActiveSection] = useState("email");
   const [email, setEmail] = useState("");
+
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const refreshToken =
+    typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null;
+  const checkoutId =
+    typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
+
+  // Token refresh mutation
+  const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
+
+  // Fetch cart items
+  const { data, loading, error, refetch } = useQuery(GET_CART_ITEMS, {
+    variables: { checkoutId },
+    context: {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    },
+    skip: !checkoutId,
+    fetchPolicy: "network-only",
+    onError: async (error) => {
+      if (error.message.includes("Signature has expired")) {
+        try {
+          const { data: refreshData } = await refreshTokenMutation({
+            variables: { refreshToken },
+          });
+
+          if (refreshData?.tokenRefresh?.token) {
+            localStorage.setItem("token", refreshData.tokenRefresh.token);
+            refetch();
+          } else {
+            console.error("Token refresh failed.");
+          }
+        } catch (refreshError) {
+          console.error("Error refreshing token:", refreshError);
+        }
+      }
+    },
+  });
 
   const handleContinue = (section) => {
     if (section === "email" && email) {
@@ -13,6 +56,12 @@ function Checkout() {
       setActiveSection("payment");
     }
   };
+
+  if (loading) return <div className="min-h-screen mt-28 p-8">Loading...</div>;
+  if (error)
+    return (
+      <div className="min-h-screen mt-28 p-8">Error loading cart items</div>
+    );
 
   return (
     <div className="min-h-screen mt-28 grid md:grid-cols-[1fr,400px]">
@@ -60,18 +109,6 @@ function Checkout() {
                 className="w-full bg-black text-white py-3 hover:bg-black/90"
               >
                 CONTINUE
-              </button>
-              <div className="relative text-center">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">OR</span>
-                </div>
-              </div>
-              <button className="w-full border border-gray-300 p-3 flex items-center justify-center gap-2">
-                <span className="text-[24px] leading-none">G</span>
-                LOGIN WITH GOOGLE
               </button>
             </div>
           ) : (
@@ -180,20 +217,39 @@ function Checkout() {
         <div className="space-y-6">
           <h2 className="font-medium">ORDER SUMMARY</h2>
           <div className="space-y-4 border-b border-gray-200 pb-6">
-            <div className="flex gap-4">
-              <div className="w-20 h-20 bg-gray-100" />
-              <div className="flex-1">
-                <h3 className="font-medium">LE CITY SMALL BAG WITH PINS</h3>
-                <p className="text-sm text-gray-600">Color: Black</p>
-                <p className="text-sm text-gray-600">Size: U</p>
-                <p className="text-sm text-gray-600">Quantity: 1</p>
+            {data?.checkout?.lines?.map((item) => (
+              <div key={item.id} className="flex gap-4">
+                {item.variant.product.thumbnail?.url && (
+                  <img
+                    src={item.variant.product.thumbnail.url}
+                    alt={item.variant.product.thumbnail?.alt || "Product Image"}
+                    className="w-20 h-20 object-cover"
+                  />
+                )}
+                <div className="flex-1">
+                  <h3 className="font-medium">{item.variant.product.name}</h3>
+                  <p className="text-sm text-gray-600">
+                    Category: {item.variant.product.category?.name}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Quantity: {item.quantity}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Price: ${item.variant.pricing.price.gross.amount.toFixed(2)}
+                  </p>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
+
           <div className="space-y-2 border-b border-gray-200 pb-6">
             <div className="flex justify-between">
               <span>SUBTOTAL</span>
-              <span>$ 4,150.00</span>
+              <span>
+                $
+                {data?.checkout?.subtotalPrice?.gross.amount.toFixed(2) ||
+                  "0.00"}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>SHIPPING</span>
@@ -205,7 +261,9 @@ function Checkout() {
             </div>
             <div className="flex justify-between font-medium pt-2">
               <span>TOTAL (TAX EXCL.)</span>
-              <span>$ 4,150.00</span>
+              <span>
+                ${data?.checkout?.totalPrice?.gross.amount.toFixed(2) || "0.00"}
+              </span>
             </div>
           </div>
 
@@ -213,7 +271,7 @@ function Checkout() {
             <li>Free shipping, returns and exchanges</li>
             <li>30 days free return</li>
             <li>30 days free online exchange</li>
-            <li>Balenciaga signature packaging</li>
+            <li>Signature packaging</li>
           </ul>
 
           <div className="space-y-4">

@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import Footer from "../Components/Footer";
-import { REFRESH_TOKEN_MUTATION, GET_USER_QUERY, GET_CART_ITEMS } from "../graphql/queries";
-
+import {
+  REFRESH_TOKEN_MUTATION,
+  GET_USER_QUERY,
+  GET_CART_ITEMS,
+} from "../graphql/queries";
+import { Link } from "react-router-dom";
 const Account = () => {
   const [activeTab, setActiveTab] = useState("orders");
   const [userData, setUserData] = useState(null);
@@ -19,62 +23,67 @@ const Account = () => {
   const { loading, error, data, refetch } = useQuery(GET_USER_QUERY, {
     context: {
       headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
     onCompleted: (data) => {
       if (data.me === null) {
         setIsAuthenticated(false);
         // Clear stored tokens as they're invalid
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        window.location.href = "/login";
       }
     },
     onError: async (error) => {
-      if (error.message.includes('Signature has expired')) {
+      if (error.message.includes("Signature has expired")) {
         try {
           const { data: refreshData } = await refreshTokenMutation({
-            variables: { refreshToken }
+            variables: { refreshToken },
           });
-  
+
           if (refreshData?.tokenRefresh?.token) {
-            localStorage.setItem('token', refreshData.tokenRefresh.token);
+            localStorage.setItem("token", refreshData.tokenRefresh.token);
             refetch();
           } else {
             setIsAuthenticated(false);
-            localStorage.removeItem('token');
-            localStorage.removeItem('refreshToken');
-            window.location.href = '/login';
+            localStorage.removeItem("token");
+            localStorage.removeItem("refreshToken");
+            window.location.href = "/login";
           }
         } catch (refreshError) {
-          console.error('Error refreshing token:', refreshError);
+          console.error("Error refreshing token:", refreshError);
           setIsAuthenticated(false);
-          localStorage.removeItem('token');
-          localStorage.removeItem('refreshToken');
-          window.location.href = '/login';
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+          window.location.href = "/login";
         }
       }
-    }
+    },
   });
-  const checkoutId = typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
+  const checkoutId =
+    typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
 
   // Query for cart items
-  const { data: cartData, loading: cartLoading, error: cartError } = useQuery(GET_CART_ITEMS, {
+  const {
+    data: cartData,
+    loading: cartLoading,
+    error: cartError,
+  } = useQuery(GET_CART_ITEMS, {
     variables: { checkoutId },
     context: {
       headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
-    skip: !checkoutId, 
+    skip: !checkoutId,
     fetchPolicy: "network-only",
   });
-console.log(cartData)
+  console.log(cartData);
   useEffect(() => {
     if (!accessToken || !refreshToken) {
       setIsAuthenticated(false);
-      window.location.href = '/login';
+      window.location.href = "/login";
       return;
     }
 
@@ -169,16 +178,24 @@ console.log(cartData)
               {cartLoading ? (
                 <p className="text-sm text-center">Loading cart...</p>
               ) : cartError ? (
-                <p className="text-sm text-center text-red-500">Error loading cart</p>
+                <p className="text-sm text-center text-red-500">
+                  Error loading cart
+                </p>
               ) : cartData?.checkout?.lines?.length > 0 ? (
                 <ul className="space-y-4">
                   {cartData.checkout.lines.map((item) => (
                     <li key={item.id} className="text-sm border-b pb-2">
                       <div className="flex justify-between items-center">
                         <div>
-                          <p className="font-medium">{item.variant.product.name}</p>
-                          <p className="text-gray-600">Size: {item.variant.name}</p>
-                          <p className="text-gray-600">Quantity: {item.quantity}</p>
+                          <p className="font-medium">
+                            {item.variant.product.name}
+                          </p>
+                          <p className="text-gray-600">
+                            Size: {item.variant.name}
+                          </p>
+                          <p className="text-gray-600">
+                            Quantity: {item.quantity}
+                          </p>
                         </div>
                         <div className="text-right">
                           <p>${item.variant.pricing.price.amount}</p>
@@ -196,9 +213,9 @@ console.log(cartData)
               ) : (
                 <p className="text-sm text-center">NO ITEMS IN CART</p>
               )}
+              <Link to="/checkout">checkout</Link>
             </div>
           ) : null}
-          
         </div>
       </div>
       <Footer />
