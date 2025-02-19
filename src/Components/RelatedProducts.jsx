@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
-import { useQuery } from "@apollo/client";
-import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queries";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_PRODUCTS_BY_CATEGORY, ADD_TO_CART } from "../graphql/queries";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import CustomLoader from "./CustomLoader";
+
 export default function RelatedProducts({ productCategoryID }) {
   const { loading, error, data } = useQuery(GET_PRODUCTS_BY_CATEGORY, {
     variables: { categoryId: productCategoryID, channel: "default-channel" },
@@ -31,8 +32,8 @@ export default function RelatedProducts({ productCategoryID }) {
 
   return (
     <div className="py-20">
-      <h2 className="text-md  mb-6 text-center">COMPLETE YOUR STYLE</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 ">
+      <h2 className="text-md mb-6 text-center">COMPLETE YOUR STYLE</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
@@ -42,6 +43,9 @@ export default function RelatedProducts({ productCategoryID }) {
 }
 
 function ProductCard({ product }) {
+  console.log(product)
+  const defaultVariant = product.variants?.edges[0]?.node;
+  const variantId = defaultVariant?.id;
   const [currentImage, setCurrentImage] = useState(0);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -71,6 +75,31 @@ function ProductCard({ product }) {
     navigate(`/products/${product.id}`);
   };
 
+  const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
+
+  const handleAddToCart = async () => {
+    if (!variantId) {
+      console.log("no varient id");
+      return;
+    }
+    try {
+      const { data } = await addToCart({
+        variables: {
+          productId: variantId,
+          quantity: 1,
+        },
+      });
+
+      if (data?.checkoutCreate?.errors.length) {
+        console.error("Error adding to cart:", data.checkoutCreate.errors);
+      } else {
+        console.log("Added to cart:", data.checkoutCreate.checkout);
+      }
+    } catch (error) {
+      console.error("Mutation error:", error);
+    }
+  };
+
   return (
     <div className="border border-black rounded-none overflow-hidden relative group">
       <div
@@ -86,7 +115,7 @@ function ProductCard({ product }) {
             className="w-full h-[32rem] object-cover transition-transform duration-300 ease-in-out"
           />
           {loading && (
-            <div className="absolute top-2 right-2  p-2  ">
+            <div className="absolute top-2 right-2 p-2">
               <CustomLoader className="animate-spin text-black" size={20} />
             </div>
           )}
@@ -115,8 +144,12 @@ function ProductCard({ product }) {
             <br />
             <p className="text-xs">${product.price.toFixed(2)}</p>
           </div>
-          <button className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs">
-            ADD TO CART
+          <button
+            onClick={handleAddToCart}
+            className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs"
+            disabled={cartLoading}
+          >
+            {cartLoading ? "Adding..." : "ADD TO CART"}
           </button>
         </div>
       </div>

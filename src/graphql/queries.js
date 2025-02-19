@@ -129,6 +129,26 @@ export const GET_PRODUCT_BY_ID = gql`
       thumbnail {
         url
       }
+      variants {
+        id
+        name
+        pricing {
+          price {
+            gross {
+              amount
+              currency
+            }
+          }
+        }
+        attributes {
+          attribute {
+            name
+          }
+          values {
+            name
+          }
+        }
+      }
     }
   }
 `;
@@ -167,44 +187,34 @@ export const GET_PRODUCT_BY_SLUG = gql`
 `;
 
 export const GET_PRODUCTS_BY_CATEGORY = gql`
-  query GetProductsByCategory($categoryId: ID!, $channel: String!) {
-    products(
-      first: 10
-      filter: { categories: [$categoryId] }
-      channel: $channel
-    ) {
-      edges {
-        node {
-          id
-          name
-          slug
-          description
-          pricing {
-            priceRange {
-              start {
-                gross {
-                  amount
-                  currency
-                }
-              }
-              stop {
-                gross {
-                  amount
-                  currency
-                }
+query GetProductsByCategory($categoryId: ID!, $channel: String!) {
+  products(first: 10, channel: $channel, filter: { categories: [$categoryId] }) {
+    edges {
+      node {
+        id
+        name
+        pricing {
+          priceRange {
+            start {
+              gross {
+                amount
               }
             }
           }
-          thumbnail {
-            url
-          }
-          category {
-            name
-          }
+        }
+        media {
+          url
+        }
+        thumbnail {
+          url
+        }
+        variants {
+          id
         }
       }
     }
   }
+}
 `;
 export const REGISTER_MUTATION = gql`
   mutation RegisterUser($input: AccountRegisterInput!) {
@@ -221,7 +231,6 @@ export const REGISTER_MUTATION = gql`
     }
   }
 `;
-
 
 export const LOGIN_MUTATION = gql`
   mutation TokenCreate($email: String!, $password: String!) {
@@ -257,16 +266,52 @@ export const GET_USER_QUERY = gql`
     me {
       id
       email
+      firstName
+      lastName
     }
   }
 `;
 
 export const REFRESH_TOKEN_MUTATION = gql`
-  mutation RefreshToken($refreshToken: String!) {
-    refreshToken(refreshToken: $refreshToken) {
-      accessToken
-      expiresIn
+  mutation TokenRefresh($refreshToken: String!) {
+    tokenRefresh(refreshToken: $refreshToken) {
+      token
+      errors {
+        field
+        message
+      }
     }
   }
 `;
 
+export const ADD_TO_CART = gql`
+  mutation AddToCart($productId: ID!, $quantity: Int!) {
+    checkoutCreate(
+      input: { lines: [{ quantity: $quantity, variantId: $productId }] }
+    ) {
+      checkout {
+        id
+        totalPrice {
+          gross {
+            amount
+            currency
+          }
+        }
+        lines {
+          id
+          quantity
+          variant {
+            id
+            product {
+              name
+            }
+          }
+        }
+      }
+      errors {
+        code
+        message
+      }
+    }
+  }
+`;

@@ -1,21 +1,94 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useQuery, useMutation } from "@apollo/client";
 import Footer from "../Components/Footer";
 import { REFRESH_TOKEN_MUTATION, GET_USER_QUERY } from "../graphql/queries";
-function Account() {
+
+const Account = () => {
   const [activeTab, setActiveTab] = useState("orders");
+  const [userData, setUserData] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+
+  // Get stored tokens
+  const accessToken = localStorage.getItem("token");
+  const refreshToken = localStorage.getItem("refreshToken");
+  const csrfToken = localStorage.getItem("csrfToken");
+
+  // Mutation for refreshing token
+  const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
+
+  // Query for user data with error handling
+  const { loading, error, data, refetch } = useQuery(GET_USER_QUERY, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    },
+    onCompleted: (data) => {
+      if (data.me === null) {
+        setIsAuthenticated(false);
+        // Clear stored tokens as they're invalid
+        // localStorage.removeItem('token');
+        // localStorage.removeItem('refreshToken');
+        // window.location.href = '/login';
+      }
+    },
+    onError: async (error) => {
+      if (error.message.includes('Signature has expired')) {
+        try {
+          const { data: refreshData } = await refreshTokenMutation({
+            variables: { refreshToken }
+          });
+  
+          if (refreshData?.tokenRefresh?.token) {
+            localStorage.setItem('token', refreshData.tokenRefresh.token);
+            refetch();
+          } else {
+            setIsAuthenticated(false);
+            // localStorage.removeItem('token');
+            // localStorage.removeItem('refreshToken');
+            // window.location.href = '/login';
+          }
+        } catch (refreshError) {
+          console.error('Error refreshing token:', refreshError);
+          setIsAuthenticated(false);
+          // localStorage.removeItem('token');
+          // localStorage.removeItem('refreshToken');
+          // window.location.href = '/login';
+        }
+      }
+    }
+  });
+  
+
+  useEffect(() => {
+    if (!accessToken || !refreshToken) {
+      setIsAuthenticated(false);
+      // window.location.href = '/login';
+      return;
+    }
+
+    if (data?.me) {
+      setUserData(data.me);
+      setIsAuthenticated(true);
+    }
+  }, [data, accessToken, refreshToken]);
+
+  if (!isAuthenticated) {
+    return null; // or a loading state while redirecting
+  }
 
   return (
     <>
       <div className="h-screen mt-4 flex flex-col items-center px-4 border border-black">
         <div className="w-full max-w-[600px] h-screen mt-16 space-y-12 border border-black border-y">
           <div className="text-center space-y-8">
-            <h1 className="text-sm py-2">WELCOME</h1>
+            <h1 className="text-sm py-2">WELCOME {userData?.email}</h1>
 
             <div className="flex justify-center border-y border-black">
-              <nav className="flex items-center ">
+              <nav className="flex items-center">
                 <button
                   onClick={() => setActiveTab("orders")}
-                  className={`px-4 py-3 text-xs hover:bg-slate-100  ${
+                  className={`px-4 py-3 text-xs hover:bg-slate-100 ${
                     activeTab === "orders" ? "bg-slate-200" : ""
                   }`}
                 >
@@ -41,7 +114,15 @@ function Account() {
             </div>
           </div>
 
-          {activeTab === "orders" ? (
+          {loading ? (
+            <div className="flex justify-center items-center h-80">
+              <p className="text-sm">Loading...</p>
+            </div>
+          ) : error && !error.message.includes("Signature has expired") ? (
+            <div className="flex justify-center items-center h-80">
+              <p className="text-sm text-red-500">Error loading account data</p>
+            </div>
+          ) : activeTab === "orders" ? (
             <div className="flex flex-col items-center justify-center h-80 space-y-6">
               <h2 className="text-sm">NO ORDERS YET</h2>
               <button className="border text-sm text-white bg-black border-black py-3 px-6 hover:bg-white hover:text-black transition-colors">
@@ -54,13 +135,9 @@ function Account() {
                 <h2 className="text-center text-sm">PERSONAL INFO</h2>
                 <div className="space-y-6 text-center">
                   <div className="space-y-1 px-2">
-                    <p className="text-xs text-black">First Name</p>
-                  </div>
-                  <div className="space-y-1 px-2">
-                    <p className="text-xs text-black">Last Name</p>
-                  </div>
-                  <div className="space-y-1 px-2">
-                    <p className="text-xs text-black">E-Mail address</p>
+                    <p className="text-xs text-black">
+                      Email: {userData?.email}
+                    </p>
                   </div>
                   <button className="w-full border text-sm text-white bg-black border-black py-3 hover:bg-white hover:text-black transition-colors">
                     EDIT PROFILE
@@ -68,7 +145,6 @@ function Account() {
                 </div>
               </section>
               <section className="space-y-6">
-                <h2 className="text-center text-xs">PASSWORD</h2>
                 <div className="space-y-6">
                   <button className="w-full border text-white bg-black text-sm border-black py-3 hover:bg-white hover:text-black transition-colors">
                     CHANGE PASSWORD
@@ -89,6 +165,6 @@ function Account() {
       <Footer />
     </>
   );
-}
+};
 
 export default Account;
