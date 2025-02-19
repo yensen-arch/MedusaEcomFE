@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useQuery } from "@apollo/client";
-import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queries";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_PRODUCTS_BY_CATEGORY, ADD_TO_CART } from "../graphql/queries";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import CustomLoader from "./CustomLoader";
@@ -14,9 +14,7 @@ function ProductCard({ product }) {
   const images =
     product.media?.length > 0
       ? product.media.map((m) => m.url)
-      : product.thumbnail?.url
-      ? [product.thumbnail.url]
-      : ["/placeholder.svg"];
+      : [product.thumbnail?.url || "/placeholder.svg"];
 
   // Duplicate the image if only one exists
   const displayImages = images.length > 1 ? images : Array(4).fill(images[0]);
@@ -139,9 +137,17 @@ function SearchProducts({ selectedCategory }) {
       </div>
     );
   if (error) return <p>Error: {error.message}</p>;
-
-  const products = data?.products?.edges.map(({ node }) => node) || [];
-
+  const products =
+    data?.products?.edges.map(({ node }) => ({
+      id: node.id,
+      name: node.name,
+      media: node.media,
+      thumbnail: node.thumbnail,
+      pricing: node.pricing,
+      variants: node.variants,
+      category: node.category,
+    })) || [];
+  console.log(products);
   const filteredProducts = !searchQuery
     ? products
     : products.filter((product) => {
@@ -157,7 +163,7 @@ function SearchProducts({ selectedCategory }) {
           )
         );
       });
-
+console.log("filtered:",filteredProducts)
   const categorizedProducts = {};
   filteredProducts.forEach((product) => {
     const category = product.category?.name || "UNCATEGORIZED";

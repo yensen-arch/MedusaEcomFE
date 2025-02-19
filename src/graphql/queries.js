@@ -126,6 +126,9 @@ export const GET_PRODUCT_BY_ID = gql`
         id
         name
       }
+      media {
+        url
+      }
       thumbnail {
         url
       }
@@ -187,34 +190,43 @@ export const GET_PRODUCT_BY_SLUG = gql`
 `;
 
 export const GET_PRODUCTS_BY_CATEGORY = gql`
-query GetProductsByCategory($categoryId: ID!, $channel: String!) {
-  products(first: 10, channel: $channel, filter: { categories: [$categoryId] }) {
-    edges {
-      node {
-        id
-        name
-        pricing {
-          priceRange {
-            start {
-              gross {
-                amount
+  query GetProductsByCategory($categoryId: ID!, $channel: String!) {
+    products(
+      first: 10
+      channel: $channel
+      filter: { categories: [$categoryId] }
+    ) {
+      edges {
+        node {
+          id
+          name
+          slug
+          description
+          pricing {
+            priceRange {
+              start {
+                gross {
+                  amount
+                }
               }
             }
           }
-        }
-        media {
-          url
-        }
-        thumbnail {
-          url
-        }
-        variants {
-          id
+          media {
+            url
+          }
+          thumbnail {
+            url
+          }
+          variants {
+            id
+          }
+          category {
+            name
+          }
         }
       }
     }
   }
-}
 `;
 export const REGISTER_MUTATION = gql`
   mutation RegisterUser($input: AccountRegisterInput!) {
