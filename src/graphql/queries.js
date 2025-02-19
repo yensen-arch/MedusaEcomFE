@@ -285,9 +285,9 @@ export const REFRESH_TOKEN_MUTATION = gql`
 `;
 
 export const ADD_TO_CART = gql`
-  mutation AddToCart($productId: ID!, $quantity: Int!) {
+  mutation AddToCart($variantId: ID!, $quantity: Int!) {
     checkoutCreate(
-      input: { lines: [{ quantity: $quantity, variantId: $productId }] }
+      input: { lines: [{ quantity: $quantity, variantId: $variantId }] }
     ) {
       checkout {
         id
@@ -300,16 +300,9 @@ export const ADD_TO_CART = gql`
         lines {
           id
           quantity
-          variant {
-            id
-            product {
-              name
-            }
-          }
         }
       }
       errors {
-        code
         message
       }
     }

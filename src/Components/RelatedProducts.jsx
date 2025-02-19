@@ -22,6 +22,7 @@ export default function RelatedProducts({ productCategoryID }) {
     id: node.id,
     name: node.name,
     price: node.pricing?.priceRange?.start?.gross?.amount || 0,
+    variantId: node.variants[0]?.id, 
     images:
       node.media?.length > 0
         ? node.media.map((m) => m.url)
@@ -43,9 +44,7 @@ export default function RelatedProducts({ productCategoryID }) {
 }
 
 function ProductCard({ product }) {
-  console.log(product)
-  const defaultVariant = product.variants?.edges[0]?.node;
-  const variantId = defaultVariant?.id;
+  
   const [currentImage, setCurrentImage] = useState(0);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -78,15 +77,16 @@ function ProductCard({ product }) {
   const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
 
   const handleAddToCart = async () => {
-    if (!variantId) {
-      console.log("no varient id");
+    if (!product.variantId) {
+      console.error("No variant ID available for product:", product.name);
       return;
     }
     try {
       const { data } = await addToCart({
         variables: {
-          productId: variantId,
+          variantId: product.variantId,
           quantity: 1,
+
         },
       });
 
