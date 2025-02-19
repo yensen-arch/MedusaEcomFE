@@ -52,7 +52,7 @@ function Cart({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose}>
-      <div className="fixed top-0 right-0 w-full sm:w-[400px] h-screen bg-white" onClick={(e) => e.stopPropagation()}>
+      <div className="overflow-y fixed top-0 right-0 w-full sm:w-[400px] h-screen bg-white" onClick={(e) => e.stopPropagation()}>
         <div>
           <h2>CART</h2>
           <button onClick={onClose}>

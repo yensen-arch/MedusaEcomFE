@@ -86,18 +86,21 @@ function ProductCard({ product }) {
       console.error("No variant ID available for product:", product.name);
       return;
     }
+    let checkoutId = localStorage.getItem("checkoutId");
+
     try {
       const { data } = await addToCart({
         variables: {
+          checkoutId,
           variantId: product.variantId,
           quantity: 1,
         },
       });
 
-      if (data?.checkoutCreate?.errors.length) {
-        console.error("Error adding to cart:", data.checkoutCreate.errors);
+      if (data?.checkoutLinesAdd?.errors.length) {
+        console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
       } else {
-        const checkoutId = data.checkoutCreate.checkout.id;
+        const checkoutId = data.checkoutLinesAdd.checkout.id;
         localStorage.setItem("checkoutId", checkoutId);
         console.log("Added to cart, checkoutId saved:", checkoutId);
       }

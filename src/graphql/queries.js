@@ -292,11 +292,11 @@ export const REFRESH_TOKEN_MUTATION = gql`
     }
   }
 `;
-
 export const ADD_TO_CART = gql`
-  mutation AddToCart($variantId: ID!, $quantity: Int!) {
-    checkoutCreate(
-      input: { lines: [{ quantity: $quantity, variantId: $variantId }] }
+  mutation AddToCart($checkoutId: ID!, $variantId: ID!, $quantity: Int!) {
+    checkoutLinesAdd(
+      checkoutId: $checkoutId
+      lines: [{ quantity: $quantity, variantId: $variantId }]
     ) {
       checkout {
         id
@@ -309,6 +309,10 @@ export const ADD_TO_CART = gql`
         lines {
           id
           quantity
+          variant {
+            id
+            name
+          }
         }
       }
       errors {
@@ -317,6 +321,7 @@ export const ADD_TO_CART = gql`
     }
   }
 `;
+
 export const GET_CART_ITEMS = gql`
   query GetCartItems($checkoutId: ID!) {
     checkout(id: $checkoutId) {
