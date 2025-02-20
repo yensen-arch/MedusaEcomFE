@@ -354,7 +354,6 @@ export const ADD_TO_NEW_CART = gql`
   }
 `;
 
-
 export const GET_CART_ITEMS = gql`
   query GetCartItems($checkoutId: ID!) {
     checkout(id: $checkoutId) {
@@ -411,6 +410,58 @@ export const GET_SHIPPING_METHODS = gql`
     }
   }
 `;
+export const SHIPPING_METHOD_UPDATE = gql`
+  mutation CheckoutShippingMethodUpdate(
+    $checkoutId: ID!
+    $shippingMethodId: ID!
+  ) {
+    checkoutShippingMethodUpdate(
+      checkoutId: $checkoutId
+      shippingMethodId: $shippingMethodId
+    ) {
+      checkout {
+        id
+        shippingMethod {
+          id
+          name
+        }
+      }
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const CHECKOUT_SHIPPING_ADDRESS_UPDATE = gql`
+  mutation CheckoutShippingAddressUpdate($checkoutId: ID!, $shippingAddress: AddressInput!) {
+    checkoutShippingAddressUpdate(checkoutId: $checkoutId, shippingAddress: $shippingAddress) {
+      checkout {
+        id
+        shippingAddress {
+          firstName
+          lastName
+          streetAddress1
+          streetAddress2
+          city
+          postalCode
+          country {
+            code
+            country
+          }
+          phone
+        }
+      }
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+
 export const CHECKOUT_PAYMENT_CREATE = gql`
   mutation CheckoutPaymentCreate($checkoutId: ID!, $input: PaymentInput!) {
     checkoutPaymentCreate(checkoutId: $checkoutId, input: $input) {

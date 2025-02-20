@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useQuery } from "@apollo/client";
-import { GET_SHIPPING_METHODS } from "../graphql/queries";
+import { useQuery,useMutation } from "@apollo/client";
+import { GET_SHIPPING_METHODS,CHECKOUT_SHIPPING_ADDRESS_UPDATE } from "../graphql/queries";
 import { zipToStateMap } from "../utils/constants";
 
 export default function CheckoutShipping({
