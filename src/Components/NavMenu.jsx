@@ -7,9 +7,7 @@ import {
   RiUserLine,
   RiShoppingBagLine,
   RiInstagramLine,
-  RiFacebookCircleLine,
-  RiTwitterXLine,
-  RiYoutubeLine,
+  RiTiktokFill,
 } from "react-icons/ri";
 import { useQuery } from "@apollo/client";
 import { GET_CATEGORIES } from "../graphql/queries";
@@ -38,10 +36,8 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
   ];
 
   const socialLinks = [
-    { Icon: RiInstagramLine, path: "https://instagram.com" },
-    { Icon: RiFacebookCircleLine, path: "https://facebook.com" },
-    { Icon: RiTwitterXLine, path: "https://twitter.com" },
-    { Icon: RiYoutubeLine, path: "https://youtube.com" },
+    { Icon: RiInstagramLine, path: "https://www.instagram.com/clothd.co/" },
+    { Icon: RiTiktokFill, path: "https://tiktok.com/@clothd" },
   ];
 
   return (
