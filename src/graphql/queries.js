@@ -322,6 +322,39 @@ export const ADD_TO_CART = gql`
   }
 `;
 
+export const ADD_TO_NEW_CART = gql`
+  mutation AddToNewCart($variantId: ID!, $quantity: Int!) {
+    checkoutCreate(
+      input: {
+        lines: [{ quantity: $quantity, variantId: $variantId }]
+        channel: "default-channel"
+      }
+    ) {
+      checkout {
+        id
+        totalPrice {
+          gross {
+            amount
+            currency
+          }
+        }
+        lines {
+          id
+          quantity
+          variant {
+            id
+            name
+          }
+        }
+      }
+      errors {
+        message
+      }
+    }
+  }
+`;
+
+
 export const GET_CART_ITEMS = gql`
   query GetCartItems($checkoutId: ID!) {
     checkout(id: $checkoutId) {

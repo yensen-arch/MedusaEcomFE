@@ -1,7 +1,11 @@
 import { useState, useRef } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { GET_PRODUCT_BY_ID, ADD_TO_CART } from "../graphql/queries";
+import {
+  GET_PRODUCT_BY_ID,
+  ADD_TO_CART,
+  ADD_TO_NEW_CART,
+} from "../graphql/queries";
 import RelatedProducts from "../Components/RelatedProducts";
 import Footer from "../Components/Footer";
 import {
@@ -24,6 +28,8 @@ const Product = () => {
   const slideRef = useRef(null);
   const [touchStart, setTouchStart] = useState(0);
   const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
+  const [addToNewCart, { loading: newCartLoading }] =
+    useMutation(ADD_TO_NEW_CART);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -85,6 +91,8 @@ const Product = () => {
             setIsCareOpen={setIsCareOpen}
             addToCart={addToCart}
             cartLoading={cartLoading}
+            addToNewCart={addToNewCart}
+            newCartLoading={newCartLoading}
           />
         </div>
       </div>
@@ -159,6 +167,8 @@ const Product = () => {
             setIsCareOpen={setIsCareOpen}
             addToCart={addToCart}
             cartLoading={cartLoading}
+            addToNewCart={addToNewCart}
+            newCartLoading={newCartLoading}
           />
         </div>
       </div>
@@ -192,7 +202,9 @@ const ProductInfo = ({
   isCareOpen,
   setIsCareOpen,
   addToCart,
+  addToNewCart,
   cartLoading,
+  newCartLoading,
 }) => {
   const handleAddToCart = async () => {
     if (!product.variants?.[0]) {
@@ -200,25 +212,41 @@ const ProductInfo = ({
       return;
     }
     let checkoutId = localStorage.getItem("checkoutId");
-
-    try {
-      const { data } = await addToCart({
+    if (!checkoutId) {
+      const { data } = await addToNewCart({
         variables: {
-          checkoutId,
           variantId: product.variants[0].id,
           quantity: 1,
         },
       });
-
-      if (data?.checkoutLinesAdd?.errors.length) {
-        console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
+      if (data?.checkoutCreate?.errors.length) {
+        console.error("Error adding to cart:", data.checkoutCreate.errors);
       } else {
-        const checkoutId = data.checkoutLinesAdd.checkout.id;
+        const checkoutId = data.checkoutCreate.checkout.id;
         localStorage.setItem("checkoutId", checkoutId);
         console.log("Added to cart, checkoutId saved:", checkoutId);
       }
-    } catch (error) {
-      console.error("Mutation error:", error);
+      localStorage.setItem("checkoutId", data.checkoutCreate.checkout.id);
+    } else {
+      try {
+        const { data } = await addToCart({
+          variables: {
+            checkoutId,
+            variantId: product.variants[0].id,
+            quantity: 1,
+          },
+        });
+
+        if (data?.checkoutLinesAdd?.errors.length) {
+          console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
+        } else {
+          const checkoutId = data.checkoutLinesAdd.checkout.id;
+          localStorage.setItem("checkoutId", checkoutId);
+          console.log("Added to cart, checkoutId saved:", checkoutId);
+        }
+      } catch (error) {
+        console.error("Mutation error:", error);
+      }
     }
   };
 
