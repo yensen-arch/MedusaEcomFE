@@ -31,7 +31,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
   }, [isMenuOpen]);
 
   const additionalLinks = [
-    { title: "CARE", path: "/care" },
+    { title: "DONATE", path: "/donations" },
     { title: "OUR MISSION", path: "/mission" },
     { title: "HELP", path: "/help" },
     { title: "WORK WITH US", path: "/careers" },
@@ -76,10 +76,13 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
       </div>
 
       {/* Items with custom scrollbar */}
-      <Scrollbar style={{ height: "calc(100vh - 280px)" }}>
-        <div className="flex flex-col gap-8">
+      <Scrollbar
+        style={{ height: "calc(100vh - 280px)" }}
+        trackYProps={{ style: { width: "4px" } }}
+      >
+        <div className="flex flex-col gap-2 sm:gap-4 px-4">
           {/* Main Categories */}
-          <ul className="flex flex-col gap-4 px-8 mt-10">
+          <ul className="flex flex-col gap-4 px-4 mt-6">
             {loading ? (
               <p className="text-center">Loading categories...</p>
             ) : error ? (
@@ -88,7 +91,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
               categories.map((category) => (
                 <li
                   key={category.id}
-                  className="px-2 hover:translate-x-2 hover:border-black hover:border-[1px]"
+                  className="px-2 hover:translate-x-2 hover:border-black hover:border-[1px] transition-transform"
                 >
                   <Link to={`/category/${category.id}`} className="text-sm">
                     {category.name.toUpperCase()}
@@ -99,10 +102,13 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
           </ul>
 
           {/* Additional Links */}
-          <div className="px-8 border-t border-slate-300">
-            <ul className="flex flex-col gap-4 mt-10">
+          <div className="px-4 border-t border-slate-300 mt-4">
+            <ul className="flex flex-col gap-2 mt-4">
               {additionalLinks.map((link) => (
-                <li key={link.title} className="px-2 hover:translate-x-2">
+                <li
+                  key={link.title}
+                  className="px-2 hover:translate-x-2 hover:border-gray-600 hover:border-[1px] transition-transform"
+                >
                   <Link to={link.path} className="text-sm text-gray-600">
                     {link.title}
                   </Link>
@@ -112,7 +118,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
           </div>
 
           {/* Social Media Icons */}
-          <div className="px-10">
+          <div className="px-4 mt-6">
             <div className="flex justify-start gap-6">
               {socialLinks.map((social, index) => (
                 <a
@@ -131,17 +137,17 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
       </Scrollbar>
 
       {/* Login & Help options at the bottom */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white md:hidden">
-        <div className="flex flex-col gap-4 p-4 pb-40 border-t border-black">
+      <div className="fixed bottom-0 left-0 right-0 bg-white md:hidden border-t border-black">
+        <div className="flex flex-col gap-4 p-4 pb-20">
           <Link
             to="/login"
-            className="w-full text-center border border-black py-2 rounded-none text-white bg-black"
+            className="w-full text-center border border-black py-2 text-white bg-black"
           >
             LOGIN
           </Link>
           <Link
             to="/register"
-            className="w-full text-center border border-black py-2 rounded-none"
+            className="w-full text-center border border-black py-2"
           >
             REGISTER
           </Link>

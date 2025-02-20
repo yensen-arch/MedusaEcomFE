@@ -159,9 +159,7 @@ const Account = () => {
                       Email: {userData?.email}
                     </p>
                   </div>
-                  <button className="w-full border text-sm text-white bg-black border-black py-3 hover:bg-white hover:text-black transition-colors">
-                    EDIT PROFILE
-                  </button>
+                  
                 </div>
               </section>
               <section className="space-y-6">

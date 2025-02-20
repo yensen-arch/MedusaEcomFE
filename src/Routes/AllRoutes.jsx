@@ -22,7 +22,7 @@ import CategoryPage from "./CategoryPage";
 import Account from "./Account";
 import Checkout from "./Checkout";
 import Mission from "./Mission";
-
+import Donations from "./Donations";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -34,6 +34,7 @@ const AllRoutes = () => {
       <Route path="/login" element={<LogIn />} />
       <Route path="/account" element={<Account />}></Route>
       <Route path="/checkout" element={<Checkout />}></Route>
+      <Route path="/donations" element={<Donations />}></Route>
       <Route
         path="/help/items-and-sizes"
         element={<ItemsAvailabilityHelp />}
