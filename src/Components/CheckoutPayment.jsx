@@ -10,6 +10,7 @@ import {
   CHECKOUT_EMAIL_UPDATE,
   CHECKOUT_BILLING_ADDRESS_UPDATE,
   SHIPPING_METHOD_UPDATE,
+  CHECKOUT_COMPLETE,
 } from "../graphql/queries";
 import { useMutation } from "@apollo/client";
 import { useEffect, useState } from "react";
@@ -35,7 +36,7 @@ const CheckoutForm = ({
   const [checkoutEmailUpdate] = useMutation(CHECKOUT_EMAIL_UPDATE);
   const [checkoutShippingMethodUpdate] = useMutation(SHIPPING_METHOD_UPDATE);
   const [updateBillingAddress] = useMutation(CHECKOUT_BILLING_ADDRESS_UPDATE);
-
+  const [checkoutComplete] = useMutation(CHECKOUT_COMPLETE);
   useEffect(() => {
     const updateBilling = async () => {
       try {
@@ -163,6 +164,19 @@ const CheckoutForm = ({
           .map((err) => err.message)
           .join(", ");
         setError(`Payment Creation Error: ${errorMessage}`);
+        return;
+      }
+
+      const { data: completeData } = await checkoutComplete({
+        variables: {
+          checkoutId,
+        },
+      });
+      if (completeData?.checkoutComplete?.errors.length) {
+        const errorMessage = completeData.checkoutComplete.errors
+          .map((err) => err.message)
+          .join(", ");
+        setError(`Checkout Completion Error: ${errorMessage}`);
         return;
       }
 

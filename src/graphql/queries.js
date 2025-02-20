@@ -515,7 +515,6 @@ export const CHECKOUT_PAYMENT_CREATE = gql`
   }
 `;
 
-
 export const CHECKOUT_EMAIL_UPDATE = gql`
   mutation CheckoutEmailUpdate($checkoutId: ID!, $email: String!) {
     checkoutEmailUpdate(checkoutId: $checkoutId, email: $email) {
@@ -526,6 +525,21 @@ export const CHECKOUT_EMAIL_UPDATE = gql`
       errors {
         field
         message
+      }
+    }
+  }
+`;
+export const CHECKOUT_COMPLETE = gql`
+  mutation CheckoutComplete($checkoutId: ID!) {
+    checkoutComplete(checkoutId: $checkoutId) {
+      order {
+        id
+        status
+      }
+      errors {
+        field
+        message
+        code
       }
     }
   }
