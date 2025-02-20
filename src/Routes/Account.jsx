@@ -159,7 +159,6 @@ const Account = () => {
                       Email: {userData?.email}
                     </p>
                   </div>
-                  
                 </div>
               </section>
               <section className="space-y-6">
