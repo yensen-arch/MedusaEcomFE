@@ -10,6 +10,7 @@ import CheckoutShipping from "../Components/CheckoutShipping";
 function Checkout() {
   const [activeSection, setActiveSection] = useState("email");
   const [email, setEmail] = useState("");
+  const [shippingMethodId, setShippingMethodId] = useState(null);
 
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -123,10 +124,11 @@ const totalAmount=data?.checkout?.totalPrice?.gross.amount.toFixed(2)
           activeSection={activeSection}
           setActiveSection={setActiveSection}
           handleContinue={handleContinue}
+          setShippingMethodId={setShippingMethodId}
         />
 
         {/* Payment Section */}
-        <CheckoutPayment activeSection={activeSection} checkoutId={checkoutId} amount={totalAmount} userEmail={email} />
+        <CheckoutPayment activeSection={activeSection} checkoutId={checkoutId} amount={totalAmount} userEmail={email} shippingMethodId={shippingMethodId} />
       </main>
 
       {/* Order Summary Sidebar */}

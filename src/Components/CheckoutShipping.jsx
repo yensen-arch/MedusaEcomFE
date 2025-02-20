@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import {
   GET_SHIPPING_METHODS,
@@ -10,9 +10,13 @@ export default function CheckoutShipping({
   activeSection,
   setActiveSection,
   handleContinue,
+  setShippingMethodId,
 }) {
   const [selectedMethod, setSelectedMethod] = useState(null);
-  console.log(selectedMethod)
+  useEffect(() => {
+    if (selectedMethod) setShippingMethodId(selectedMethod.id);
+  }, [selectedMethod]);
+
   const [address, setAddress] = useState({
     firstName: "",
     lastName: "",

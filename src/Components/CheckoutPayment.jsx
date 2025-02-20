@@ -123,6 +123,7 @@ export default function CheckoutPayment({
   checkoutId,
   totalAmount,
   userEmail,
+  shippingMethodId,
 }) {
   return (
     <section>
