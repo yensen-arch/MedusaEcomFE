@@ -2,7 +2,7 @@ export const categories = {
   V00: [
     {
       path: "v00",
-      img: "https://static.Clothd.net/assets/public/0f07/a1b5/4032449e93c9/afd2524e0ccc/image-landscape-default-fill-2d499829-5793-421f-abaa-3a4c14bc6f08-default_0/image-landscape-default-fill-2d499829-5793-421f-abaa-3a4c14bc6f08-default_0.jpg?ts=1738333082655&w=1458",
+      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023163/IMG_7129_ywagr1.jpg",
       productId: "UHJvZHVjdDoxNjA=",
     },
     {
