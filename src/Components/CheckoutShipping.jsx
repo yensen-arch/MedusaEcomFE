@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { useQuery,useMutation } from "@apollo/client";
-import { GET_SHIPPING_METHODS,CHECKOUT_SHIPPING_ADDRESS_UPDATE } from "../graphql/queries";
+import { useQuery, useMutation } from "@apollo/client";
+import {
+  GET_SHIPPING_METHODS,
+  CHECKOUT_SHIPPING_ADDRESS_UPDATE,
+} from "../graphql/queries";
 import { zipToStateMap } from "../utils/constants";
 
 export default function CheckoutShipping({
@@ -11,6 +14,15 @@ export default function CheckoutShipping({
   const [zipCode, setZipCode] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [selectedMethod, setSelectedMethod] = useState(null);
+  const [address, setAddress] = useState({
+    firstName: "",
+    lastName: "",
+    streetAddress: "",
+    city: "",
+    postalCode: "",
+    phone: "",
+  });
+
   const checkoutId =
     typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
 
@@ -19,10 +31,36 @@ export default function CheckoutShipping({
     skip: !checkoutId || activeSection !== "delivery",
   });
 
+  const [updateShippingAddress] = useMutation(CHECKOUT_SHIPPING_ADDRESS_UPDATE);
+
   const handleZipChange = (e) => {
     const zip = e.target.value;
     setZipCode(zip);
     setSelectedState(zipToStateMap[zip] || "");
+  };
+
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setAddress((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAddressUpdate = async () => {
+    if (!checkoutId) return;
+    try {
+      await updateShippingAddress({
+        variables: {
+          checkoutId,
+          shippingAddress: {
+            ...address,
+            state: selectedState,
+            postalCode: zipCode,
+          },
+        },
+      });
+      setActiveSection("delivery");
+    } catch (error) {
+      console.error("Error updating shipping address:", error);
+    }
   };
 
   return (
@@ -62,7 +100,7 @@ export default function CheckoutShipping({
             <option>{selectedState || "State"}</option>
           </select>
           <button
-            onClick={() => setActiveSection("delivery")}
+            onClick={handleAddressUpdate}
             className="w-full bg-black text-white py-3 hover:bg-black/90"
           >
             CONTINUE TO DELIVERY
@@ -117,33 +155,49 @@ export default function CheckoutShipping({
               type="text"
               placeholder="First Name *"
               className="border border-gray-300 p-3"
-              defaultValue="IADA"
+              name="firstName"
+              value={address.firstName}
+              onChange={handleAddressChange}
             />
             <input
               type="text"
               placeholder="Last Name *"
               className="border border-gray-300 p-3"
-              defaultValue="BADDI"
+              name="lastName"
+              value={address.lastName}
+              onChange={handleAddressChange}
             />
             <input
               type="text"
               placeholder="Address *"
               className="col-span-2 border border-gray-300 p-3"
+              name="streetAddress"
+              value={address.streetAddress}
+              onChange={handleAddressChange}
             />
             <input
               type="text"
               placeholder="City *"
               className="border border-gray-300 p-3"
+              name="city"
+              value={address.city}
+              onChange={handleAddressChange}
             />
             <input
               type="text"
               placeholder="Postal Code *"
               className="border border-gray-300 p-3"
+              name="postalCode"
+              value={address.postalCode}
+              onChange={handleAddressChange}
             />
             <input
               type="text"
               placeholder="Phone Number *"
               className="border border-gray-300 p-3"
+              name="phone"
+              value={address.phone}
+              onChange={handleAddressChange}
             />
           </div>
 
@@ -153,13 +207,13 @@ export default function CheckoutShipping({
             logo.
           </p>
           <p className="text-sm">
-            Buying a gift? Add a ribbon a personalised gift message
+            Buying a gift? Add a ribbon and a personalised gift message
           </p>
 
           <button
             onClick={() => handleContinue("shipping")}
-            // disabled={!selectedMethod}
             className="w-full bg-black text-white py-3 hover:bg-black/90 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            disabled={!selectedMethod}
           >
             CONTINUE TO PAYMENT
           </button>
