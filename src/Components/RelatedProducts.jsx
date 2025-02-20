@@ -1,6 +1,10 @@
 import React, { useState, useRef } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_PRODUCTS_BY_CATEGORY, ADD_TO_CART } from "../graphql/queries";
+import {
+  GET_PRODUCTS_BY_CATEGORY,
+  ADD_TO_CART,
+  ADD_TO_NEW_CART,
+} from "../graphql/queries";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import CustomLoader from "./CustomLoader";
@@ -22,7 +26,7 @@ export default function RelatedProducts({ productCategoryID }) {
     id: node.id,
     name: node.name,
     price: node.pricing?.priceRange?.start?.gross?.amount || 0,
-    variantId: node.variants[0]?.id, 
+    variantId: node.variants?.length ? node.variants[0].id : "", // Safe check
     images:
       node.media?.length > 0
         ? node.media.map((m) => m.url)
@@ -44,7 +48,6 @@ export default function RelatedProducts({ productCategoryID }) {
 }
 
 function ProductCard({ product }) {
-  
   const [currentImage, setCurrentImage] = useState(0);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -75,33 +78,50 @@ function ProductCard({ product }) {
   };
 
   const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
-
+  const [addToNewCart, { loading: newCartLoading }] =
+    useMutation(ADD_TO_NEW_CART);
   const handleAddToCart = async () => {
     if (!product.variantId) {
       console.error("No variant ID available for product:", product.name);
       return;
     }
     let checkoutId = localStorage.getItem("checkoutId");
-    try {
-      const { data } = await addToCart({
+    if (!checkoutId) {
+      const { data } = await addToNewCart({
         variables: {
-          checkoutId,
-          variantId: product.variantId,
+          variantId: product.variants.id,
           quantity: 1,
-
         },
       });
-
-      if (data?.checkoutLinesAdd?.errors.length) {
-        console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
+      if (data?.checkoutCreate?.errors.length) {
+        console.error("Error adding to cart:", data.checkoutCreate.errors);
       } else {
-        console.log("Added to cart:", data.checkoutLinesAdd.checkout);
-        checkoutId = data.checkoutLinesAdd.checkout.id;
+        const checkoutId = data.checkoutCreate.checkout.id;
         localStorage.setItem("checkoutId", checkoutId);
         console.log("Added to cart, checkoutId saved:", checkoutId);
       }
-    } catch (error) {
-      console.error("Mutation error:", error);
+      localStorage.setItem("checkoutId", data.checkoutCreate.checkout.id);
+    } else {
+      try {
+        const { data } = await addToCart({
+          variables: {
+            checkoutId,
+            variantId: product.variantId,
+            quantity: 1,
+          },
+        });
+
+        if (data?.checkoutLinesAdd?.errors.length) {
+          console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
+        } else {
+          console.log("Added to cart:", data.checkoutLinesAdd.checkout);
+          checkoutId = data.checkoutLinesAdd.checkout.id;
+          localStorage.setItem("checkoutId", checkoutId);
+          console.log("Added to cart, checkoutId saved:", checkoutId);
+        }
+      } catch (error) {
+        console.error("Mutation error:", error);
+      }
     }
   };
 

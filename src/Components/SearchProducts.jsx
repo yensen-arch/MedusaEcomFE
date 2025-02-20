@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_PRODUCTS_BY_CATEGORY, ADD_TO_CART } from "../graphql/queries";
+import {
+  GET_PRODUCTS_BY_CATEGORY,
+  ADD_TO_CART,
+  ADD_TO_NEW_CART,
+} from "../graphql/queries";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import CustomLoader from "./CustomLoader";
@@ -46,27 +50,49 @@ function ProductCard({ product }) {
   };
 
   const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
-
-  console.log(product.variants[0].id)
+  const [addToNewCart, { loading: newCartLoading }] =
+    useMutation(ADD_TO_NEW_CART);
   const handleAddToCart = async () => {
     if (!product.variants[0].id) {
       console.error("No variant ID available for product:", product.name);
       return;
     }
-    try {
-      let checkoutId = localStorage.getItem("checkoutId");
-      const { data } = await addToCart({
-        variables: { checkoutId, variantId: product.variants[0].id, quantity: 1 },
+    let checkoutId = localStorage.getItem("checkoutId");
+    if (!checkoutId) {
+      console.log("varID:",product.variants)
+      const { data } = await addToNewCart({
+        variables: {
+          variantId: product.variants[0].id,
+          quantity: 1,
+        },
       });
-      if (data?.checkoutLinesAdd?.errors.length) {
-        console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
+      if (data?.checkoutCreate?.errors.length) {
+        console.error("Error adding to cart:", data.checkoutCreate.errors);
       } else {
-        checkoutId = data.checkoutLinesAdd.checkout.id;
+        const checkoutId = data.checkoutCreate.checkout.id;
         localStorage.setItem("checkoutId", checkoutId);
         console.log("Added to cart, checkoutId saved:", checkoutId);
       }
-    } catch (error) {
-      console.error(error);
+      localStorage.setItem("checkoutId", data.checkoutCreate.checkout.id);
+    } else {
+      try {
+        const { data } = await addToCart({
+          variables: {
+            checkoutId,
+            variantId: product.variants[0].id,
+            quantity: 1,
+          },
+        });
+        if (data?.checkoutLinesAdd?.errors.length) {
+          console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
+        } else {
+          checkoutId = data.checkoutLinesAdd.checkout.id;
+          localStorage.setItem("checkoutId", checkoutId);
+          console.log("Added to cart, checkoutId saved:", checkoutId);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
   return (

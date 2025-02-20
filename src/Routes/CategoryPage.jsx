@@ -1,7 +1,11 @@
 import React, { useState, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_PRODUCTS_BY_CATEGORY, ADD_TO_CART } from "../graphql/queries";
+import {
+  GET_PRODUCTS_BY_CATEGORY,
+  ADD_TO_CART,
+  ADD_TO_NEW_CART,
+} from "../graphql/queries";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import Footer from "../Components/Footer";
 import CustomLoader from "../Components/CustomLoader";
@@ -81,31 +85,49 @@ function ProductCard({ product }) {
     navigate(`/products/${product.id}`);
   };
   const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
+  const [addToNewCart, { loading: newCartLoading }] =
+    useMutation(ADD_TO_NEW_CART);
   const handleAddToCart = async () => {
     if (!product.variantId) {
       console.error("No variant ID available for product:", product.name);
       return;
     }
     let checkoutId = localStorage.getItem("checkoutId");
-
-    try {
-      const { data } = await addToCart({
+    if (!checkoutId) {
+      const { data } = await addToNewCart({
         variables: {
-          checkoutId,
           variantId: product.variantId,
           quantity: 1,
         },
       });
-
-      if (data?.checkoutLinesAdd?.errors.length) {
-        console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
+      if (data?.checkoutCreate?.errors.length) {
+        console.error("Error adding to cart:", data.checkoutCreate.errors);
       } else {
-        const checkoutId = data.checkoutLinesAdd.checkout.id;
+        const checkoutId = data.checkoutCreate.checkout.id;
         localStorage.setItem("checkoutId", checkoutId);
         console.log("Added to cart, checkoutId saved:", checkoutId);
       }
-    } catch (error) {
-      console.error("Mutation error:", error);
+      localStorage.setItem("checkoutId", data.checkoutCreate.checkout.id);
+    } else {
+      try {
+        const { data } = await addToCart({
+          variables: {
+            checkoutId,
+            variantId: product.variantId,
+            quantity: 1,
+          },
+        });
+
+        if (data?.checkoutLinesAdd?.errors.length) {
+          console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
+        } else {
+          const checkoutId = data.checkoutLinesAdd.checkout.id;
+          localStorage.setItem("checkoutId", checkoutId);
+          console.log("Added to cart, checkoutId saved:", checkoutId);
+        }
+      } catch (error) {
+        console.error("Mutation error:", error);
+      }
     }
   };
 
@@ -179,7 +201,7 @@ function ProductCard({ product }) {
             className="hover:scale-110 transition-transform duration-300 absolute rounded-none opacity-0 border border-black text-black px-1 py-1 group-hover:opacity-100 text-xs"
           >
             {cartLoading ? "Adding..." : "ADD TO CART"}
-            </button>
+          </button>
         </div>
       </div>
     </div>

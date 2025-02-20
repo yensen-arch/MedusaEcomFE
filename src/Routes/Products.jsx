@@ -35,11 +35,20 @@ const Product = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   const product = data.product;
-  const description = product.description || "";
+  // const description = product.description || "";
   const variation = product.variants || [];
   const images = product?.media?.length
     ? product.media.map((img) => img.url)
     : Array(4).fill(product?.thumbnail?.url || "/placeholder.svg");
+  let description = "";
+  try {
+    const parsedDescription = JSON.parse(product.description);
+    description = parsedDescription.blocks
+      .map((block) => block.data.text)
+      .join(" ");
+  } catch (error) {
+    console.error("Invalid JSON:", error);
+  }
 
   const handleTouchStart = (e) => {
     setTouchStart(e.touches[0].clientX);
