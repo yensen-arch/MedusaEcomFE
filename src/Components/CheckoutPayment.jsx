@@ -24,12 +24,14 @@ const CheckoutForm = ({
   amount,
   userEmail,
   shippingMethodId,
-  billingAddress
+  billingAddress,
 }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState("");
-  const [checkoutPaymentCreate, { loading }] = useMutation(CHECKOUT_PAYMENT_CREATE);
+  const [checkoutPaymentCreate, { loading }] = useMutation(
+    CHECKOUT_PAYMENT_CREATE
+  );
   const [checkoutEmailUpdate] = useMutation(CHECKOUT_EMAIL_UPDATE);
   const [checkoutShippingMethodUpdate] = useMutation(SHIPPING_METHOD_UPDATE);
   const [updateBillingAddress] = useMutation(CHECKOUT_BILLING_ADDRESS_UPDATE);
@@ -56,7 +58,7 @@ const CheckoutForm = ({
 
         if (data?.checkoutBillingAddressUpdate?.errors?.length) {
           const errorMessage = data.checkoutBillingAddressUpdate.errors
-            .map(err => `${err.field}: ${err.message}`)
+            .map((err) => `${err.field}: ${err.message}`)
             .join(", ");
           setError(`Billing Address Error: ${errorMessage}`);
         }
@@ -80,7 +82,7 @@ const CheckoutForm = ({
 
     if (data?.checkoutShippingMethodUpdate?.errors.length) {
       const errorMessage = data.checkoutShippingMethodUpdate.errors
-        .map(err => err.message)
+        .map((err) => err.message)
         .join(", ");
       setError(`Shipping Method Error: ${errorMessage}`);
       return false;
@@ -98,7 +100,7 @@ const CheckoutForm = ({
 
     if (data?.checkoutEmailUpdate?.errors.length) {
       const errorMessage = data.checkoutEmailUpdate.errors
-        .map(err => err.message)
+        .map((err) => err.message)
         .join(", ");
       setError(`Email Update Error: ${errorMessage}`);
       return false;
@@ -122,13 +124,25 @@ const CheckoutForm = ({
     if (!shippingUpdated) return;
 
     const cardElement = elements.getElement(CardElement);
-    const { error: stripeError, paymentMethod } = await stripe.createPaymentMethod({
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: cardElement,
+      billing_details: {
+        name: billingAddress.firstName + " " + billingAddress.lastName,
+        email: userEmail,
+        phone: billingAddress.phone,
+        address: {
+          line1: billingAddress.streetAddress1,
+          line2: billingAddress.streetAddress2,
+          city: billingAddress.city,
+          postal_code: billingAddress.postalCode,
+          country: billingAddress.country,
+        },
+      },
     });
 
-    if (stripeError) {
-      setError(`Payment Error: ${stripeError.message}`);
+    if (error) {
+      setError(`Payment Error: ${error.message}`);
       return;
     }
 
@@ -146,7 +160,7 @@ const CheckoutForm = ({
 
       if (data?.checkoutPaymentCreate?.errors.length) {
         const errorMessage = data.checkoutPaymentCreate.errors
-          .map(err => err.message)
+          .map((err) => err.message)
           .join(", ");
         setError(`Payment Creation Error: ${errorMessage}`);
         return;
@@ -161,9 +175,7 @@ const CheckoutForm = ({
   return (
     <div className="space-y-4">
       {error && (
-        <div className="p-3 bg-red-100 text-red-700 rounded">
-          {error}
-        </div>
+        <div className="p-3 bg-red-100 text-red-700 rounded">{error}</div>
       )}
       <form onSubmit={handleSubmit}>
         <CardElement
@@ -173,13 +185,13 @@ const CheckoutForm = ({
                 fontSize: "16px",
                 color: "#424770",
                 "::placeholder": {
-                  color: "#aab7c4"
-                }
+                  color: "#aab7c4",
+                },
               },
               invalid: {
-                color: "#9e2146"
-              }
-            }
+                color: "#9e2146",
+              },
+            },
           }}
         />
         <button
@@ -198,12 +210,11 @@ export default function CheckoutPayment({
   activeSection,
   onPaymentSuccess,
   checkoutId,
-  totalAmount,
+  amount,
   userEmail,
   shippingMethodId,
-  billingAddress
+  billingAddress,
 }) {
-  console.log("totalamt:",totalAmount)
   return (
     <section className="border-b border-gray-200 pb-6">
       <h2
@@ -219,7 +230,7 @@ export default function CheckoutPayment({
             <CheckoutForm
               onSuccess={onPaymentSuccess}
               checkoutId={checkoutId}
-              amount={totalAmount}
+              amount={amount}
               userEmail={userEmail}
               shippingMethodId={shippingMethodId}
               billingAddress={billingAddress}
