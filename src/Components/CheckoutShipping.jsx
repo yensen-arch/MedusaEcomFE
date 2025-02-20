@@ -11,54 +11,110 @@ export default function CheckoutShipping({
   setActiveSection,
   handleContinue,
 }) {
-  const [zipCode, setZipCode] = useState("");
-  const [selectedState, setSelectedState] = useState("");
   const [selectedMethod, setSelectedMethod] = useState(null);
+  console.log(selectedMethod)
   const [address, setAddress] = useState({
     firstName: "",
     lastName: "",
-    streetAddress: "",
+    streetAddress1: "",
+    streetAddress2: "",
     city: "",
     postalCode: "",
+    country: "US",
+    countryArea: "",
     phone: "",
   });
+  const [addressError, setAddressError] = useState("");
+  const [shippingMethods, setShippingMethods] = useState([]);
 
   const checkoutId =
     typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
 
-  const { data, loading } = useQuery(GET_SHIPPING_METHODS, {
+  const { refetch: refetchShippingMethods } = useQuery(GET_SHIPPING_METHODS, {
     variables: { checkoutId },
-    skip: !checkoutId || activeSection !== "delivery",
+    skip: true,
   });
 
   const [updateShippingAddress] = useMutation(CHECKOUT_SHIPPING_ADDRESS_UPDATE);
 
-  const handleZipChange = (e) => {
-    const zip = e.target.value;
-    setZipCode(zip);
-    setSelectedState(zipToStateMap[zip] || "");
-  };
-
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
-    setAddress((prev) => ({ ...prev, [name]: value }));
+    setAddress((prev) => {
+      const newAddress = { ...prev, [name]: value };
+      // Update countryArea (state) if postalCode changes
+      if (name === "postalCode") {
+        newAddress.countryArea = zipToStateMap[value] || prev.countryArea;
+      }
+      return newAddress;
+    });
+    setAddressError("");
+  };
+
+  const validateAddress = () => {
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "streetAddress1",
+      "city",
+      "postalCode",
+      "countryArea",
+      "phone",
+    ];
+    const missingFields = requiredFields.filter((field) => !address[field]);
+
+    if (missingFields.length > 0) {
+      setAddressError(
+        `Please fill in all required fields: ${missingFields.join(", ")}`
+      );
+      return false;
+    }
+
+    // Validate phone number format (should start with + and contain only numbers)
+    if (!address.phone.startsWith("+")) {
+      setAddressError("Phone number must start with +");
+      return false;
+    }
+
+    return true;
   };
 
   const handleAddressUpdate = async () => {
-    if (!checkoutId) return;
+    if (!checkoutId) {
+      setAddressError("No checkout ID found");
+      return;
+    }
+
+    if (!validateAddress()) {
+      return;
+    }
+
     try {
-      await updateShippingAddress({
+      const response = await updateShippingAddress({
         variables: {
           checkoutId,
-          shippingAddress: {
-            ...address,
-            state: selectedState,
-            postalCode: zipCode,
-          },
+          shippingAddress: address,
         },
       });
-      setActiveSection("delivery");
+
+      if (response.data?.checkoutShippingAddressUpdate?.errors?.length > 0) {
+        const errors = response.data.checkoutShippingAddressUpdate.errors;
+        setAddressError(errors.map((err) => err.message).join(", "));
+        return;
+      }
+
+      const shippingMethodsResponse = await refetchShippingMethods({
+        checkoutId,
+      });
+
+      if (shippingMethodsResponse.data?.checkout?.shippingMethods) {
+        setShippingMethods(
+          shippingMethodsResponse.data.checkout.shippingMethods
+        );
+        setActiveSection("delivery");
+        setAddressError("");
+      }
     } catch (error) {
+      setAddressError(error.message || "Error updating shipping address");
       console.error("Error updating shipping address:", error);
     }
   };
@@ -83,73 +139,14 @@ export default function CheckoutShipping({
         )}
       </div>
 
-      {activeSection === "shipping" && (
-        <div className="mt-4 space-y-4">
-          <input
-            type="text"
-            placeholder="ZIP Code *"
-            className="border border-gray-300 p-3 w-full"
-            value={zipCode}
-            onChange={handleZipChange}
-          />
-          <select
-            className="border border-gray-300 p-3 w-full"
-            value={selectedState}
-            readOnly
-          >
-            <option>{selectedState || "State"}</option>
-          </select>
-          <button
-            onClick={handleAddressUpdate}
-            className="w-full bg-black text-white py-3 hover:bg-black/90"
-          >
-            CONTINUE TO DELIVERY
-          </button>
+      {addressError && (
+        <div className="mt-4 p-3 bg-red-100 text-red-700 rounded">
+          {addressError}
         </div>
       )}
 
-      {activeSection === "delivery" && (
+      {activeSection === "shipping" && (
         <div className="mt-4 space-y-4">
-          <h3 className="font-medium">Shipping Options</h3>
-          {loading ? (
-            <p className="text-gray-600">Loading shipping methods...</p>
-          ) : (
-            <div className="space-y-4">
-              {data?.checkout?.shippingMethods?.map((method) => (
-                <label
-                  key={method.id}
-                  className="block border border-gray-200 p-4 cursor-pointer"
-                >
-                  <div className="flex items-start gap-3">
-                    <input
-                      type="radio"
-                      name="shipping"
-                      value={method.id}
-                      checked={selectedMethod?.id === method.id}
-                      onChange={() => setSelectedMethod(method)}
-                      className="mt-1"
-                    />
-                    <div className="flex-1">
-                      <div className="flex justify-between">
-                        <span className="font-medium">{method.name}</span>
-                        <span>
-                          {method.price.amount === 0
-                            ? "Free"
-                            : `$${method.price.amount}`}
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        Delivery in {method.minimumDeliveryDays}-
-                        {method.maximumDeliveryDays} business days
-                      </p>
-                    </div>
-                  </div>
-                </label>
-              ))}
-            </div>
-          )}
-
-          <h3 className="font-medium mt-6">Shipping Address</h3>
           <div className="grid grid-cols-2 gap-4">
             <input
               type="text"
@@ -169,10 +166,26 @@ export default function CheckoutShipping({
             />
             <input
               type="text"
-              placeholder="Address *"
+              placeholder="Address Line 1 *"
               className="col-span-2 border border-gray-300 p-3"
-              name="streetAddress"
-              value={address.streetAddress}
+              name="streetAddress1"
+              value={address.streetAddress1}
+              onChange={handleAddressChange}
+            />
+            <input
+              type="text"
+              placeholder="Address Line 2 (Optional)"
+              className="col-span-2 border border-gray-300 p-3"
+              name="streetAddress2"
+              value={address.streetAddress2}
+              onChange={handleAddressChange}
+            />
+            <input
+              type="text"
+              placeholder="ZIP Code *"
+              className="border border-gray-300 p-3"
+              name="postalCode"
+              value={address.postalCode}
               onChange={handleAddressChange}
             />
             <input
@@ -185,30 +198,66 @@ export default function CheckoutShipping({
             />
             <input
               type="text"
-              placeholder="Postal Code *"
-              className="border border-gray-300 p-3"
-              name="postalCode"
-              value={address.postalCode}
-              onChange={handleAddressChange}
+              readOnly
+              placeholder="State *"
+              className="border border-gray-300 p-3 bg-gray-50"
+              name="countryArea"
+              value={address.countryArea}
             />
             <input
               type="text"
-              placeholder="Phone Number *"
-              className="border border-gray-300 p-3"
+              placeholder="Phone Number * (e.g., +11234567890)"
+              className="col-span-2 border border-gray-300 p-3"
               name="phone"
               value={address.phone}
               onChange={handleAddressChange}
             />
           </div>
+          <button
+            onClick={handleAddressUpdate}
+            className="w-full bg-black text-white py-3 hover:bg-black/90"
+          >
+            CONTINUE TO DELIVERY
+          </button>
+        </div>
+      )}
 
-          <p className="text-xs text-gray-600 uppercase">
-            Clothd Orders arrive in signature grey packaging that ensures
-            product safety and provides optional storage, marked with a centered
-            logo.
-          </p>
-          <p className="text-sm">
-            Buying a gift? Add a ribbon and a personalised gift message
-          </p>
+      {activeSection === "delivery" && (
+        <div className="mt-4 space-y-4">
+          <h3 className="font-medium">Shipping Options</h3>
+          <div className="space-y-4">
+            {shippingMethods.map((method) => (
+              <label
+                key={method.id}
+                className="block border border-gray-200 p-4 cursor-pointer"
+              >
+                <div className="flex items-start gap-3">
+                  <input
+                    type="radio"
+                    name="shipping"
+                    value={method.id}
+                    checked={selectedMethod?.id === method.id}
+                    onChange={() => setSelectedMethod(method)}
+                    className="mt-1"
+                  />
+                  <div className="flex-1">
+                    <div className="flex justify-between">
+                      <span className="font-medium">{method.name}</span>
+                      <span>
+                        {method.price.amount === 0
+                          ? "Free"
+                          : `$${method.price.amount}`}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      Delivery in {method.minimumDeliveryDays}-
+                      {method.maximumDeliveryDays} business days
+                    </p>
+                  </div>
+                </div>
+              </label>
+            ))}
+          </div>
 
           <button
             onClick={() => handleContinue("shipping")}
