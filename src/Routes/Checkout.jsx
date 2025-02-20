@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import {
-  REFRESH_TOKEN_MUTATION,
-  GET_CART_ITEMS,
-} from "../graphql/queries";
+import { REFRESH_TOKEN_MUTATION, GET_CART_ITEMS } from "../graphql/queries";
 import CheckoutPayment from "../Components/CheckoutPayment";
 import CheckoutShipping from "../Components/CheckoutShipping";
 
@@ -11,6 +8,7 @@ function Checkout() {
   const [activeSection, setActiveSection] = useState("email");
   const [email, setEmail] = useState("");
   const [shippingMethodId, setShippingMethodId] = useState(null);
+  const [billingAddress, setBillingAddress] = useState(null);
 
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -65,7 +63,7 @@ function Checkout() {
     return (
       <div className="min-h-screen mt-28 p-8">Error loading cart items</div>
     );
-const totalAmount=data?.checkout?.totalPrice?.gross.amount.toFixed(2)
+  const totalAmount = data?.checkout?.totalPrice?.gross.amount.toFixed(2);
   return (
     <div className="min-h-screen mt-28 grid md:grid-cols-[1fr,400px]">
       {/* Main Checkout Form */}
@@ -125,10 +123,18 @@ const totalAmount=data?.checkout?.totalPrice?.gross.amount.toFixed(2)
           setActiveSection={setActiveSection}
           handleContinue={handleContinue}
           setShippingMethodId={setShippingMethodId}
+          setBillingAddress={setBillingAddress}
         />
 
         {/* Payment Section */}
-        <CheckoutPayment activeSection={activeSection} checkoutId={checkoutId} amount={totalAmount} userEmail={email} shippingMethodId={shippingMethodId} />
+        <CheckoutPayment
+          activeSection={activeSection}
+          checkoutId={checkoutId}
+          amount={totalAmount}
+          userEmail={email}
+          shippingMethodId={shippingMethodId}
+          billingAddress={billingAddress}
+        />
       </main>
 
       {/* Order Summary Sidebar */}
@@ -180,9 +186,7 @@ const totalAmount=data?.checkout?.totalPrice?.gross.amount.toFixed(2)
             </div>
             <div className="flex justify-between font-medium pt-2">
               <span>TOTAL (TAX EXCL.)</span>
-              <span>
-                ${totalAmount || "0.00"}
-              </span>
+              <span>${totalAmount || "0.00"}</span>
             </div>
           </div>
 

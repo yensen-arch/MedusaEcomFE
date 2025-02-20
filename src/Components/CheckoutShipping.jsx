@@ -11,6 +11,7 @@ export default function CheckoutShipping({
   setActiveSection,
   handleContinue,
   setShippingMethodId,
+  setBillingAddress,
 }) {
   const [selectedMethod, setSelectedMethod] = useState(null);
   useEffect(() => {
@@ -28,9 +29,11 @@ export default function CheckoutShipping({
     countryArea: "",
     phone: "",
   });
+  useEffect(() => {
+    if (address) setBillingAddress(address);
+  }, [address]); //for the payment component
   const [addressError, setAddressError] = useState("");
   const [shippingMethods, setShippingMethods] = useState([]);
-
   const checkoutId =
     typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
 

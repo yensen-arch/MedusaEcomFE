@@ -461,6 +461,34 @@ export const CHECKOUT_SHIPPING_ADDRESS_UPDATE = gql`
   }
 `;
 
+export const CHECKOUT_BILLING_ADDRESS_UPDATE = gql`
+  mutation CheckoutBillingAddressUpdate($checkoutId: ID!, $billingAddress: AddressInput!) {
+    checkoutBillingAddressUpdate(checkoutId: $checkoutId, billingAddress: $billingAddress) {
+      checkout {
+        id
+        billingAddress {
+          firstName
+          lastName
+          streetAddress1
+          streetAddress2
+          city
+          postalCode
+          country {
+            code
+            country
+          }
+          phone
+        }
+      }
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+
 
 export const CHECKOUT_PAYMENT_CREATE = gql`
   mutation CheckoutPaymentCreate($checkoutId: ID!, $input: PaymentInput!) {

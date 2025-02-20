@@ -8,6 +8,7 @@ import {
 import {
   CHECKOUT_PAYMENT_CREATE,
   CHECKOUT_EMAIL_UPDATE,
+  CHECKOUT_BILLING_ADDRESS_UPDATE,
   SHIPPING_METHOD_UPDATE,
 } from "../graphql/queries";
 import { useMutation } from "@apollo/client";
@@ -16,7 +17,14 @@ const stripePromise = loadStripe(
   "pk_test_51QtM2fAotN9X1sy17CBqLAFeybXj9BbKu1wKY8IQhY5PcAwy4kQNM23XYcTinaTASJIJNEpzd82seY8sEMpSzk8b00pTVhX3Qp"
 );
 
-const CheckoutForm = ({ onSuccess, checkoutId, amount, userEmail }) => {
+const CheckoutForm = ({
+  onSuccess,
+  checkoutId,
+  amount,
+  userEmail,
+  shippingMethodId,
+  billingAddress
+}) => {
   const stripe = useStripe();
   const elements = useElements();
   const [checkoutPaymentCreate, { loading, error }] = useMutation(
@@ -29,7 +37,7 @@ const CheckoutForm = ({ onSuccess, checkoutId, amount, userEmail }) => {
     const { data } = await checkoutShippingMethodUpdate({
       variables: {
         checkoutId,
-        shippingMethodId: "your_shipping_method_id", // Replace with actual ID
+        shippingMethodId: shippingMethodId,
       },
     });
 
@@ -88,6 +96,14 @@ const CheckoutForm = ({ onSuccess, checkoutId, amount, userEmail }) => {
           gateway: "saleor.payments.stripe",
           token: paymentMethod.id,
           amount,
+          // billingAddress: {
+          //   firstName: billingAddress.firstName,
+          //   lastName: billingAddress.lastName,
+          //   streetAddress1: billingAddress.streetAddress1,
+          //   city: billingAddress.city,
+          //   postalCode: billingAddress.postalCode,
+          //   country: billingAddress.country,
+          // },
         },
       },
     });
@@ -124,6 +140,7 @@ export default function CheckoutPayment({
   totalAmount,
   userEmail,
   shippingMethodId,
+  billingAddress
 }) {
   return (
     <section>
@@ -142,6 +159,8 @@ export default function CheckoutPayment({
               checkoutId={checkoutId}
               amount={totalAmount}
               userEmail={userEmail}
+              shippingMethodId={shippingMethodId}
+              billingAddress={billingAddress}
             />
           </Elements>
         </div>
