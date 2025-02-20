@@ -147,7 +147,7 @@ const CheckoutForm = ({
     }
 
     try {
-      const { data } = await checkoutPaymentCreate({
+      const { data: createData } = await checkoutPaymentCreate({
         variables: {
           checkoutId,
           input: {
@@ -158,8 +158,8 @@ const CheckoutForm = ({
         },
       });
 
-      if (data?.checkoutPaymentCreate?.errors.length) {
-        const errorMessage = data.checkoutPaymentCreate.errors
+      if (createData?.checkoutPaymentCreate?.errors.length) {
+        const errorMessage = createData.checkoutPaymentCreate.errors
           .map((err) => err.message)
           .join(", ");
         setError(`Payment Creation Error: ${errorMessage}`);

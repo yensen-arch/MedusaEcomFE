@@ -435,8 +435,14 @@ export const SHIPPING_METHOD_UPDATE = gql`
 `;
 
 export const CHECKOUT_SHIPPING_ADDRESS_UPDATE = gql`
-  mutation CheckoutShippingAddressUpdate($checkoutId: ID!, $shippingAddress: AddressInput!) {
-    checkoutShippingAddressUpdate(checkoutId: $checkoutId, shippingAddress: $shippingAddress) {
+  mutation CheckoutShippingAddressUpdate(
+    $checkoutId: ID!
+    $shippingAddress: AddressInput!
+  ) {
+    checkoutShippingAddressUpdate(
+      checkoutId: $checkoutId
+      shippingAddress: $shippingAddress
+    ) {
       checkout {
         id
         shippingAddress {
@@ -462,8 +468,14 @@ export const CHECKOUT_SHIPPING_ADDRESS_UPDATE = gql`
 `;
 
 export const CHECKOUT_BILLING_ADDRESS_UPDATE = gql`
-  mutation CheckoutBillingAddressUpdate($checkoutId: ID!, $billingAddress: AddressInput!) {
-    checkoutBillingAddressUpdate(checkoutId: $checkoutId, billingAddress: $billingAddress) {
+  mutation CheckoutBillingAddressUpdate(
+    $checkoutId: ID!
+    $billingAddress: AddressInput!
+  ) {
+    checkoutBillingAddressUpdate(
+      checkoutId: $checkoutId
+      billingAddress: $billingAddress
+    ) {
       checkout {
         id
         billingAddress {
@@ -488,8 +500,6 @@ export const CHECKOUT_BILLING_ADDRESS_UPDATE = gql`
   }
 `;
 
-
-
 export const CHECKOUT_PAYMENT_CREATE = gql`
   mutation CheckoutPaymentCreate($checkoutId: ID!, $input: PaymentInput!) {
     checkoutPaymentCreate(checkoutId: $checkoutId, input: $input) {
@@ -504,6 +514,8 @@ export const CHECKOUT_PAYMENT_CREATE = gql`
     }
   }
 `;
+
+
 export const CHECKOUT_EMAIL_UPDATE = gql`
   mutation CheckoutEmailUpdate($checkoutId: ID!, $email: String!) {
     checkoutEmailUpdate(checkoutId: $checkoutId, email: $email) {

@@ -58,6 +58,10 @@ function Checkout() {
     }
   };
 
+  const handlePaymentSuccess = () => {
+    console.log("wow finally huh.");
+  };
+
   if (loading) return <div className="min-h-screen mt-28 p-8">Loading...</div>;
   if (error)
     return (
@@ -131,6 +135,7 @@ function Checkout() {
           activeSection={activeSection}
           checkoutId={checkoutId}
           amount={totalAmount}
+          onPaymentSuccess={handlePaymentSuccess}
           userEmail={email}
           shippingMethodId={shippingMethodId}
           billingAddress={billingAddress}
