@@ -91,7 +91,7 @@ export default function Donations() {
     Distribution Timeline
   </h2>
   <div className="relative overflow-x-auto">
-    <div className="absolute top-6 left-24 right-24 h-0.5 bg-green-500 min-w-[600px]" />
+    <div className="absolute top-6 left-24 right-24 h-0.5 bg-green-300 min-w-[600px]" />
     <div className="flex justify-between min-w-[600px]">
       {timelineEvents.map((event, index) => (
         <div key={event.date} className="relative">

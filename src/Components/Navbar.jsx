@@ -11,6 +11,7 @@ import {
 } from "react-icons/ri";
 import NavMenu from "./NavMenu";
 import Cart from "./Cart";
+import { use } from "framer-motion/client";
 
 const Navbar = ({
   activeCategory,
@@ -27,6 +28,8 @@ const Navbar = ({
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [hovered, setHovered] = useState(null);
+  const disabledCategories = ["WOMEN", "MEN", "ARCHIVE"]; //for the 1st drop
 
   const currentItem =
     categories?.[activeCategory]?.[swiperRef?.current?.swiper?.activeIndex];
@@ -109,15 +112,33 @@ const Navbar = ({
             </button>
 
             {/* Desktop Categories */}
-            <div className="hidden md:flex items-center space-x-6 ">
-              {["V00", "WOMEN", "MEN", "ARCHIVE"].map((category) => (
-                <button
+            <div className="hidden md:flex items-center space-x-6">
+              {["V00", ...disabledCategories].map((category) => (
+                <div
+                  className="relative"
                   key={category}
-                  className="text-xs hover:font-bold transition-all"
-                  onMouseEnter={() => handleCategoryHover(category)}
+                  onMouseEnter={() => {
+                    setHovered(category);
+                  }}
+                  onMouseLeave={() => setHovered(null)}
                 >
-                  {category}
-                </button>
+                  <button
+                    className={`text-xs hover:font-bold transition-all ${
+                      disabledCategories.includes(category)
+                        ? "cursor-wait"
+                        : ""
+                    }`}
+                    disabled={disabledCategories.includes(category)}
+                  >
+                    {category}
+                  </button>
+                  {hovered === category &&
+                    disabledCategories.includes(category) && (
+                      <div className="absolute top-6 left-0 z-50 p-2 text-red-500 text-xs bg-white border border-black">
+                        MAKING STUFF...
+                      </div>
+                    )}
+                </div>
               ))}
             </div>
 
@@ -131,7 +152,7 @@ const Navbar = ({
 
             {/* Right: User links */}
             <div className="flex items-center space-x-6">
-            <Link to="/donations" className="text-xs hidden md:block">
+              <Link to="/donations" className="text-xs hidden md:block">
                 DONATE
               </Link>
               <Link to="/account" className="text-xs hidden md:block">
