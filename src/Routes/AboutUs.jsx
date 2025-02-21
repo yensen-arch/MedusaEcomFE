@@ -10,7 +10,7 @@ const AboutUs = () => {
     setEmail(e.target.value)
     if (e.target.value.length > 0 && !showAdditionalFields) {
       setShowAdditionalFields(true)
-    } else if (e.target.value.length === 0 && showAdditionalFields) {
+    } else if (e.target.value.length === 0 && showAdditionalFields) { 
       setShowAdditionalFields(false)
     }
   }
