@@ -2,7 +2,7 @@ export const categories = {
   V00: [
     {
       path: "v00",
-      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023163/IMG_7129_ywagr1.jpg",
+      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740108059/Main_nkxa4i.webp",
       productId: "UHJvZHVjdDoxNjA=",
     },
     {
@@ -69,12 +69,12 @@ export const categoriesMobile = {
   V00: [
     {
       path: "v00",
-      img: "https://static.Clothd.net/assets/public/6549/7977/a94e492a8015/c0e0b4ca18b5/image-portrait-52e121c2-7181-49cf-903b-2c2c04811cfd-default_0/image-portrait-52e121c2-7181-49cf-903b-2c2c04811cfd-default_0.jpg?ts=1738572131894&w=824",
+      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023164/IMG_7134_gypfm4.jpg",
       productId: "UHJvZHVjdDoxNjA=",
     },
     {
       video:
-        "https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381101/gett0nihpxj7tgkg4tg3.mp4",
+        "https://res.cloudinary.com/dmjhto8sd/video/upload/v1740108755/B444A4EE-6BBA-437C-947E-155D4BE435FD_keoyu7.mp4",
       productId: "UHJvZHVjdDoxNjA=",
     },
     { type: "footer" },
