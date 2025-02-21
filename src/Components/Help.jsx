@@ -17,7 +17,7 @@ const Help = () => {
         className="bg-cover bg-center w-full h-screen"
         style={{
           backgroundImage:
-            "url('https://res.cloudinary.com/dmjhto8sd/image/upload/v1740025797/IMG_7130_bhcew6.webp')",
+            "url('https://res.cloudinary.com/dmjhto8sd/image/upload/v1740108059/Main_nkxa4i.webp')",
         }}
       ></div>
       <div className="flex flex-col my-20 mx-auto w-[90%] md:w-[76%] gap-10 ">
