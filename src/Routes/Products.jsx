@@ -72,7 +72,7 @@ const Product = () => {
   return (
     <div className="min-h-screen mt-20">
       {/* Desktop Layout */}
-      <div className="hidden md:grid md:grid-cols-2 border-b border-black container mx-auto ">
+      <div className="hidden md:grid md:grid-cols-[70%_30%] border-b border-black container mx-auto ">
         <div className="flex flex-col ">
           {images.map((image, index) => (
             <div
@@ -82,13 +82,13 @@ const Product = () => {
               <img
                 src={image}
                 alt={`${product.name} view ${index + 1}`}
-                className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
+                className="w-full h-full object-cover transition-transform cursor-pointer"
                 onClick={() => setIsLightboxOpen(true)}
               />
             </div>
           ))}
         </div>
-        <div className="sticky top-24 h-fit px-8 ">
+        <div className="sticky top-24 h-fit  ">
           <ProductInfo
             product={product}
             description={description}
@@ -146,7 +146,7 @@ const Product = () => {
             ))}
           </div>
           <button
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2  p-2 rounded-full"
             onClick={() =>
               currentImageIndex > 0 &&
               setCurrentImageIndex(currentImageIndex - 1)
@@ -155,7 +155,7 @@ const Product = () => {
             <FiChevronLeft className="w-6 h-6" />
           </button>
           <button
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 rounded-full"
             onClick={() =>
               currentImageIndex < images.length - 1 &&
               setCurrentImageIndex(currentImageIndex + 1)
@@ -265,15 +265,13 @@ const ProductInfo = ({
         {product.name.toUpperCase()}
       </h1>
       <p className="text-sm text-center">
-        {product.pricing.priceRange.start.gross.amount}{" "}
-        {product.pricing.priceRange.start.gross.currency}
+        ${product.pricing.priceRange.start.gross.amount}{" "}
       </p>
-      <div className="w-[90%] md:w-[80%] lg:w-[60%]">
+      <div className="w-[90%] md:w-[80%] lg:w-[90%]">
         <div
           dangerouslySetInnerHTML={{ __html: description }}
           className="text-sm py-4"
         />
-
         <div className="flex flex-col items-center space-y-2 ">
           <div className="relative w-full group">
             <select className="w-full py-2 bg-white text-sm text-black border border-black hover:bg-white hover:text-black transition-colors appearance-none px-2">
