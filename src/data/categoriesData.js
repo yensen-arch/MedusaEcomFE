@@ -69,7 +69,7 @@ export const categoriesMobile = {
   V00: [
     {
       path: "v00",
-      img: "https://static.Clothd.net/assets/public/6549/7977/a94e492a8015/c0e0b4ca18b5/image-portrait-52e121c2-7181-49cf-903b-2c2c04811cfd-default_0/image-portrait-52e121c2-7181-49cf-903b-2c2c04811cfd-default_0.jpg?ts=1738572131894&w=824",
+      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023164/IMG_7134_gypfm4.jpg",
       productId: "UHJvZHVjdDoxNjA=",
     },
     {
