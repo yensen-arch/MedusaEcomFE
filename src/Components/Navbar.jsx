@@ -11,8 +11,7 @@ import {
 } from "react-icons/ri";
 import NavMenu from "./NavMenu";
 import Cart from "./Cart";
-import { use } from "framer-motion/client";
-
+import MatrixText from "./MatrixText";
 const Navbar = ({
   activeCategory,
   setActiveCategory,
@@ -112,7 +111,7 @@ const Navbar = ({
             </button>
 
             {/* Desktop Categories */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:flex items-center space-x-6 text-xs">
               {["V00", ...disabledCategories].map((category) => (
                 <div
                   className="relative"
@@ -124,19 +123,18 @@ const Navbar = ({
                   onMouseLeave={() => setHovered(null)}
                 >
                   <button
-                    className={`text-xs hover:font-bold transition-all ${
-                      disabledCategories.includes(category) ? "cursor-wait" : ""
-                    }`}
+                    className=" hover:font-bold transition-all"
                     disabled={disabledCategories.includes(category)}
                   >
-                    {category}
-                  </button>
-                  {hovered === category &&
-                    disabledCategories.includes(category) && (
-                      <div className="absolute top-6 left-0 z-50 p-2 text-red-500 text-xs bg-white border border-black">
-                        MAKING STUFF...
-                      </div>
+                    {disabledCategories.includes(category) ? (
+                      <MatrixText
+                        originalText={category}
+                        finalText="COMING SOON"
+                      />
+                    ) : (
+                      category
                     )}
+                  </button>
                 </div>
               ))}
             </div>

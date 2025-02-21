@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Scrollbar } from "react-scrollbars-custom";
 import { useEffect, useState } from "react";
+import MatrixText from "./MatrixText";
 import {
   RiCloseLine,
   RiSearchLine,
@@ -43,9 +44,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
   return (
     <div
       className={`fixed inset-0 md:top-20 bg-white z-40 w-full h-full md:w-1/3 md:border-black md:border-[1px] overflow-hidden transition-transform duration-300 ease-in-out ${
-        isMenuOpen
-          ? "translate-x-0 opacity-100"
-          : "-translate-x-full opacity-0"
+        isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
       }`}
     >
       {/* Mobile Header */}
