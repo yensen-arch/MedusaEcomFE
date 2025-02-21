@@ -14,7 +14,6 @@ import {
 } from "../graphql/queries";
 import { useMutation } from "@apollo/client";
 import { useEffect, useState } from "react";
-
 const stripePromise = loadStripe(
   "pk_test_51QtM2fAotN9X1sy17CBqLAFeybXj9BbKu1wKY8IQhY5PcAwy4kQNM23XYcTinaTASJIJNEpzd82seY8sEMpSzk8b00pTVhX3Qp"
 );
@@ -158,6 +157,17 @@ const CheckoutForm = ({
           },
         },
       });
+      // After checkoutPaymentCreate
+     
+
+
+
+
+
+
+
+
+      
 
       if (createData?.checkoutPaymentCreate?.errors.length) {
         const errorMessage = createData.checkoutPaymentCreate.errors
