@@ -171,47 +171,52 @@ const Account = () => {
             </div>
           ) : activeTab === "cart" ? (
             <div className="space-y-4 p-4">
-              <h2 className="text-sm text-center">YOUR CART</h2>
-              {cartLoading ? (
-                <p className="text-sm text-center">Loading cart...</p>
-              ) : cartError ? (
-                <p className="text-sm text-center text-red-500">
-                  Error loading cart
-                </p>
-              ) : cartData?.checkout?.lines?.length > 0 ? (
-                <ul className="space-y-4">
-                  {cartData.checkout.lines.map((item) => (
-                    <li key={item.id} className="text-sm border-b pb-2">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-medium">
-                            {item.variant.product.name}
-                          </p>
-                          <p className="text-gray-600">
-                            Size: {item.variant.name}
-                          </p>
-                          <p className="text-gray-600">
-                            Quantity: {item.quantity}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p>${item.variant.pricing.price.amount}</p>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                  <div className="pt-4 border-t">
-                    <p className="text-sm font-medium flex justify-between">
-                      <span>Total:</span>
-                      <span>${cartData.checkout.totalPrice.gross.amount}</span>
-                    </p>
-                  </div>
-                </ul>
-              ) : (
-                <p className="text-sm text-center">NO ITEMS IN CART</p>
-              )}
-              <Link to="/checkout">checkout</Link>
+  <h2 className="text-sm text-center">YOUR CART</h2>
+  {cartLoading ? (
+    <p className="text-sm text-center">Loading cart...</p>
+  ) : cartError ? (
+    <p className="text-sm text-center text-red-500">Error loading cart</p>
+  ) : cartData?.checkout?.lines?.length > 0 ? (
+    <ul className="space-y-4">
+      {cartData.checkout.lines.map((item) => (
+        <li key={item.id} className="text-sm border-b pb-2">
+          <div className="flex justify-between items-center">
+            <img
+              src={item.variant.product.thumbnail.url}
+              alt={item.variant.product.thumbnail.alt || "Product Image"}
+              className="w-16 h-16 object-cover rounded"
+            />
+            <div className="ml-4">
+              <p className="font-medium">{item.variant.product.name}</p>
+              <p className="text-gray-600">Category: {item.variant.product.category.name}</p>
+              <p className="text-gray-600">Size: {item.variant.name}</p>
+              <p className="text-gray-600">Quantity: {item.quantity}</p>
             </div>
+            <div className="text-right">
+              <p>
+                {item.variant.pricing.price.gross.currency} ${item.variant.pricing.price.gross.amount}
+              </p>
+            </div>
+          </div>
+        </li>
+      ))}
+      <div className="pt-4 border-t">
+        <p className="text-sm font-medium flex justify-between">
+          <span>Total:</span>
+          <span>
+            {cartData.checkout.totalPrice.gross.currency} ${cartData.checkout.totalPrice.gross.amount}
+          </span>
+        </p>
+      </div>
+    </ul>
+  ) : (
+    <p className="text-sm text-center">NO ITEMS IN CART</p>
+  )}
+  <Link to="/checkout" className="block text-center bg-black text-white py-2 rounded">
+    Checkout
+  </Link>
+</div>
+
           ) : null}
         </div>
       </div>

@@ -82,12 +82,12 @@ const Navbar = ({
   }, [lastScrollY, swiperRef, location.pathname]);
 
   const handleCategoryHover = (category) => {
-    if (hoveredCategory !== category) {
-      setHoveredCategory(category);
-      setActiveCategory(category);
-      setIsVisible(true);
-      setIsMenuOpen(true);
-    }
+    // if (hoveredCategory !== category) {
+    // setHoveredCategory(category);
+    // setActiveCategory(category);
+    setIsVisible(true);
+    setIsMenuOpen(true);
+    // }
   };
 
   const toggleCart = () => setIsCartOpen(!isCartOpen);
@@ -119,14 +119,13 @@ const Navbar = ({
                   key={category}
                   onMouseEnter={() => {
                     setHovered(category);
+                    handleCategoryHover(category);
                   }}
                   onMouseLeave={() => setHovered(null)}
                 >
                   <button
                     className={`text-xs hover:font-bold transition-all ${
-                      disabledCategories.includes(category)
-                        ? "cursor-wait"
-                        : ""
+                      disabledCategories.includes(category) ? "cursor-wait" : ""
                     }`}
                     disabled={disabledCategories.includes(category)}
                   >
@@ -213,7 +212,7 @@ const Navbar = ({
         activeCategory={hoveredCategory || activeCategory}
         setActiveCategory={setActiveCategory}
         isMenuOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
+        onClose={() => setIsMenuOpen(!isMenuOpen)}
       />
 
       {/* Dark overlay when menu is open */}
