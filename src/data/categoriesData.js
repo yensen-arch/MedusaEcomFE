@@ -74,7 +74,7 @@ export const categoriesMobile = {
     },
     {
       video:
-        "https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381101/gett0nihpxj7tgkg4tg3.mp4",
+        "https://res.cloudinary.com/dmjhto8sd/video/upload/v1739850601/B444A4EE-6BBA-437C-947E-155D4BE435FD_xrt6pf.mov",
       productId: "UHJvZHVjdDoxNjA=",
     },
     { type: "footer" },
