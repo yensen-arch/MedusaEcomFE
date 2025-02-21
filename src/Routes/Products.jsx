@@ -20,6 +20,12 @@ const Product = () => {
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
     variables: { id: productId, channel: "default-channel" },
   });
+
+  const sizes = data?.product?.variants.map(
+    (variant) =>
+      variant.attributes.find((attr) => attr.attribute.name === "Size")
+        ?.values[0]?.name
+  );
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(false);
@@ -102,6 +108,7 @@ const Product = () => {
             cartLoading={cartLoading}
             addToNewCart={addToNewCart}
             newCartLoading={newCartLoading}
+            sizes={sizes}
           />
         </div>
       </div>
@@ -178,6 +185,7 @@ const Product = () => {
             cartLoading={cartLoading}
             addToNewCart={addToNewCart}
             newCartLoading={newCartLoading}
+            sizes={sizes}
           />
         </div>
       </div>
@@ -214,6 +222,7 @@ const ProductInfo = ({
   addToNewCart,
   cartLoading,
   newCartLoading,
+  sizes,
 }) => {
   const handleAddToCart = async () => {
     if (!product.variants?.[0]) {
@@ -258,6 +267,7 @@ const ProductInfo = ({
       }
     }
   };
+  const [selectedSize, setSelectedSize] = useState("");
 
   return (
     <div className="space-y-1 mt-14 items-center flex flex-col">
@@ -270,23 +280,26 @@ const ProductInfo = ({
       <div className="w-[90%] md:w-[80%] lg:w-[90%]">
         <div
           dangerouslySetInnerHTML={{ __html: description }}
-          className="text-sm py-4"
+          className="text-xs py-4"
         />
         <div className="flex flex-col items-center space-y-2 ">
           <div className="relative w-full group">
-            <select className="w-full py-2 bg-white text-sm text-black border border-black hover:bg-white hover:text-black transition-colors appearance-none px-2">
-              <option className="text-black bg-white" value="">
-                SELECT SIZE
+            <select
+              className="w-full py-2 bg-white text-xs text-black border border-black hover:bg-white hover:text-black transition-colors appearance-none px-2"
+              onChange={(e) => setSelectedSize(e.target.value)}
+            >
+              <option className="text-black bg-white" value="" disabled>
+                SIZES
               </option>
-              <option className="text-black bg-white text-xs" value="s">
-                SMALL
-              </option>
-              <option className="text-black bg-white text-xs" value="m">
-                MEDIUM
-              </option>
-              <option className="text-black bg-white text-xs" value="l">
-                LARGE
-              </option>
+              {sizes?.map((size) => (
+                <option
+                  className="text-black bg-white text-xs"
+                  value={size}
+                  key={size}
+                >
+                  {size}
+                </option>
+              ))}
             </select>
             <span className="absolute right-2 text-xs top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
               ▼
@@ -295,7 +308,7 @@ const ProductInfo = ({
           <button
             onClick={handleAddToCart}
             disabled={cartLoading}
-            className="w-full py-2 bg-black text-sm text-white hover:bg-white hover:text-black border hover:border-black transition-colors"
+            className="w-full py-2 bg-black text-xs text-white hover:bg-white hover:text-black border hover:border-black transition-colors"
           >
             {cartLoading ? "ADDING..." : "ADD TO CART"}
           </button>
