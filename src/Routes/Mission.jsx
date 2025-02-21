@@ -21,7 +21,7 @@ const AboutUs = () => {
   }
   return (
     <>
-      <div className='mt-40 mb-[800px] mx-auto w-[76%] flex flex-col gap-3'>
+      <div className='mt-50 mb-[500px] mx-auto w-[76%] flex flex-col gap-3'>
         <h2 className='text-[15px] font-semibold tracking-[0.8px] [font-stretch:condensed] font-aboutUs'>Our Mission</h2>
         <p className='text-[13px] font-aboutUs font-light leading-[20px]'>
           At Clothd, we aim to foster a community by supplying sustainable, high-quality clothing and cultivating 
