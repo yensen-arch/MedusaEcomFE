@@ -69,7 +69,7 @@ function Cart({ isOpen, onClose }) {
           </button>
         </div>
 
-        <div className="px-6">
+        <div className="px-6 relative">
           {loading ? (
             <p className="text-center py-4">Loading...</p>
           ) : error ? (
@@ -129,7 +129,7 @@ function Cart({ isOpen, onClose }) {
         </div>
 
         {data?.checkout?.totalPrice && (
-          <div className="sticky bottom-0 left-0 px-6 py-4 bg-white border-t border-gray-200">
+          <div className="absolute w-full bottom-0 left-0 px-6 py-4 bg-white border-t border-gray-200">
             <div className="border-t border-gray-200 pt-4">
               <h3 className="text-xs font-bold mb-4">
                 OUR SIGNATURE PACKAGING
@@ -151,10 +151,10 @@ function Cart({ isOpen, onClose }) {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <button className="w-full py-2 text-sm border border-black text-center hover:bg-gray-100">
-                  CHECKOUT ({data.checkout.lines.length})
+                <button className="w-full py-2 text-sm border border-black text-center hover:bg-black hover:text-white">
+                  CHECKOUT NOW ({data.checkout.lines.length})
                 </button>
-                <button className="w-full py-2 text-sm bg-black text-white text-center hover:bg-gray-900">
+                <button className="w-full py-2 text-sm bg-black text-white text-center hover:bg-white border border-black hover:text-black">
                   VIEW CART
                 </button>
               </div>

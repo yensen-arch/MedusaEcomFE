@@ -79,7 +79,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
       >
         <div className="flex flex-col gap-2 sm:gap-4 px-4">
           {/* Main Categories */}
-          <ul className="flex flex-col gap-4 px-4 mt-6">
+          <ul className="flex flex-col gap-4 px-4 mt-8">
             {loading ? (
               <p className="text-center text-xs">LOADING.</p>
             ) : error ? (
@@ -89,6 +89,8 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
                 <li
                   key={category.id}
                   className="px-2 hover:translate-x-2 hover:border-black hover:border-[1px] transition-transform"
+                  onMouseEnter={() => setHovered(category.id)}
+                  onMouseLeave={() => setHovered(null)}
                 >
                   <div
                     onClick={
@@ -100,14 +102,16 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
                     {disabledCategories.includes(
                       category.name.toUpperCase()
                     ) ? (
-                      <div
-                        onClick={() => setHovered(category.id)}
-                        className="text-sm cursor-default"
-                      >
-                        <MatrixText
-                          originalText={category.name}
-                          finalText="COMING SOON"
-                        />
+                      <div className="text-sm cursor-default">
+                        {hovered === category.id ? (
+                          <MatrixText
+                            originalText={category.name.toUpperCase()}
+                            finalText="COMING SOON"
+                            isHovering={hovered === category.id}
+                          />
+                        ) : (
+                          category.name.toUpperCase()
+                        )}
                       </div>
                     ) : (
                       <Link to={`/category/${category.id}`} className="text-sm">

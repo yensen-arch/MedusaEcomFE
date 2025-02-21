@@ -123,13 +123,14 @@ const Navbar = ({
                   onMouseLeave={() => setHovered(null)}
                 >
                   <button
-                    className=" hover:font-bold transition-all"
+                    className="hover:font-bold transition-all"
                     disabled={disabledCategories.includes(category)}
                   >
                     {disabledCategories.includes(category) ? (
                       <MatrixText
                         originalText={category}
                         finalText="COMING SOON"
+                        isHovering={hovered === category}
                       />
                     ) : (
                       category
@@ -176,13 +177,13 @@ const Navbar = ({
             {/* Search bar */}
             <Link
               to={"/search/home"}
-              className="px-6 py-3 flex items-center border-b border-black"
+              className="px-6 py-3 flex items-center justify-center  border-b border-black"
             >
-              <RiSearchLine className="w-5 h-5 text-black" />
+              <RiSearchLine className="w-5 h-5 text-gray-400 text-black" />
               <input
                 type="text"
                 placeholder="WHAT ARE YOU LOOKING FOR?"
-                className="w-full ml-4 outline-none text-sm placeholder:text-black"
+                className=" ml-4 text-center outline-none text-sm placeholder:text-gray-400"
               />
             </Link>
           </div>
@@ -193,12 +194,15 @@ const Navbar = ({
               isVisible ? "max-h-10 opacity-100" : "max-h-0 opacity-0"
             }`}
           >
-            <Link to={"/search/home"} className="px-6 py-3 flex items-center">
-              <RiSearchLine className="w-5 h-5 text-black" />
+            <Link
+              to={"/search/home"}
+              className="px-6 py-3 flex items-center justify-center"
+            >
+              <RiSearchLine className="w-5 h-5 text-gray-400" />
               <input
                 type="text"
                 placeholder="WHAT ARE YOU LOOKING FOR?"
-                className="w-full ml-4 outline-none text-sm"
+                className="ml-4 outline-none text-sm text-center"
               />
             </Link>
           </div>

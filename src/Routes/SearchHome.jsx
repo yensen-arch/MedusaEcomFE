@@ -7,6 +7,7 @@ import Navbar from "../Components/Navbar";
 import SearchProducts from "../Components/SearchProducts";
 import { useQuery } from "@apollo/client";
 import { GET_CATEGORIES } from "../graphql/queries";
+import CustomLoader from "../Components/CustomLoader";
 
 const SearchHome = () => {
   const { loading, error, data } = useQuery(GET_CATEGORIES);
@@ -91,22 +92,24 @@ const SearchHome = () => {
       <Navbar
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
-        categoryNames={categories.length ? categories : ["Loading..."]}
+        categoryNames={categories.length ? categories : <CustomLoader />}
       />
       <div className="relative mx-auto mt-28 flex flex-col min-h-screen">
         <Link
           to="/"
-          className="absolute z-20 hidden md:block right-14 px-4 py-2 bg-black text-white text-sm rounded-none hover:bg-white border border-black hover:text-black transition"
+          className="absolute z-20 hidden md:block right-14 px-4 py-2 bg-black text-white text-xs rounded-none hover:bg-white border border-black hover:text-black transition"
         >
           BACK HOME
         </Link>
         <div className="flex flex-col justify-center items-center">
-          <p className="text-lg">WHAT ARE YOU LOOKING FOR?</p>
+          <p className="text-sm">WHAT ARE YOU LOOKING FOR?</p>
 
           {loading ? (
-            <p className="mt-10 text-gray-500">Loading categories...</p>
+            <p className="mt-10 text-gray-500">
+              <CustomLoader />
+            </p>
           ) : error ? (
-            <p className="mt-10 text-red-500">Error: {error.message}</p>
+            <p className="mt-10 text-red-500">ERROR: {error.message}</p>
           ) : (
             <div className="relative w-full max-w-4xl">
               <div className="pointer-events-none absolute inset-0 w-full">
@@ -129,7 +132,7 @@ const SearchHome = () => {
                 {repeatedCategories.map((category, index) => (
                   <span
                     key={`${category.name}-${index}`}
-                    className="mx-2 py-1 px-3 text-sm border border-black hover:bg-gray-300 cursor-pointer whitespace-nowrap"
+                    className="mx-2 py-1 px-3 text-xs border border-black hover:bg-gray-300 cursor-pointer whitespace-nowrap"
                     onClick={() => setSelectedCategory(category)}
                   >
                     {category.name}
@@ -140,7 +143,7 @@ const SearchHome = () => {
           )}
         </div>
 
-        <div >
+        <div>
           <SearchProducts selectedCategory={selectedCategory} />
         </div>
       </div>

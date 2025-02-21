@@ -59,7 +59,7 @@ function ProductCard({ product }) {
     }
     let checkoutId = localStorage.getItem("checkoutId");
     if (!checkoutId) {
-      console.log("varID:",product.variants)
+      console.log("varID:", product.variants);
       const { data } = await addToNewCart({
         variables: {
           variantId: product.variants[0].id,
@@ -147,7 +147,7 @@ function ProductCard({ product }) {
           ))}
         </div>
       </div>
-      <div className="text-center mt-2 text-sm relative h-12">
+      <div className="text-center mt-2 text-xs relative h-12">
         <div className="absolute w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-x-180">
           <div className="absolute w-full text-center text-gray-600 group-hover:opacity-0 transition-opacity duration-300">
             {product.name.toUpperCase()}
@@ -234,16 +234,17 @@ function SearchProducts({ selectedCategory }) {
           type="text"
           placeholder="SEARCH"
           value={searchQuery}
+          autoFocus
           onChange={(e) => setSearchQuery(e.target.value)}
           className="border-b border-black text-center text-lg outline-none px-2 py-1 w-full sm:w-3/4 md:w-1/2"
         />
       </div>
-      <p className="text-lg pb-8 px-6">YOU MAY BE LOOKING FOR</p>
+      <p className="text-sm pb-8 px-6">YOU MAY BE LOOKING FOR-</p>
 
       {/* Product Categories */}
       {Object.entries(categorizedProducts).map(([category, products]) => (
         <div key={category} className="mb-8">
-          <h3 className="text-2xl font-semibold px-6 mb-4">
+          <h3 className="text-xl font-semibold px-6 mb-4">
             {category.toUpperCase()}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
