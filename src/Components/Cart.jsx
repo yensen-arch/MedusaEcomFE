@@ -2,11 +2,17 @@
 import { useEffect, useState } from "react";
 import { RiCloseFill } from "react-icons/ri";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_CART_ITEMS, REFRESH_TOKEN_MUTATION } from "../graphql/queries";
+import {
+  GET_CART_ITEMS,
+  REFRESH_TOKEN_MUTATION,
+  CHECKOUT_LINES_UPDATE,
+} from "../graphql/queries";
+import CustomLoader from "./CustomLoader";
 
 function Cart({ isOpen, onClose }) {
-  // ... existing state and query logic ...
   const [isVisible, setIsVisible] = useState(isOpen);
+  const [isLoading, setIsLoading] = useState(false);
+
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const refreshToken =
@@ -14,10 +20,9 @@ function Cart({ isOpen, onClose }) {
   const checkoutId =
     typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
 
-  // Token refresh mutation
   const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
+  const [updateCheckoutLines] = useMutation(CHECKOUT_LINES_UPDATE);
 
-  // Fetch cart items
   const { data, loading, error, refetch } = useQuery(GET_CART_ITEMS, {
     variables: { checkoutId },
     context: {
@@ -30,18 +35,21 @@ function Cart({ isOpen, onClose }) {
     onError: async (error) => {
       if (error.message.includes("Signature has expired")) {
         try {
+          setIsLoading(true);
           const { data: refreshData } = await refreshTokenMutation({
             variables: { refreshToken },
           });
 
           if (refreshData?.tokenRefresh?.token) {
             localStorage.setItem("token", refreshData.tokenRefresh.token);
-            refetch(); // Retry fetching cart items
+            refetch();
           } else {
             console.error("Token refresh failed.");
           }
         } catch (refreshError) {
           console.error("Error refreshing token:", refreshError);
+        } finally {
+          setIsLoading(false);
         }
       }
     },
@@ -51,6 +59,28 @@ function Cart({ isOpen, onClose }) {
     if (isOpen) setIsVisible(true);
     else setTimeout(() => setIsVisible(false), 300);
   }, [isOpen]);
+
+  const handleQuantityChange = async (variantId, quantity) => {
+    try {
+      setIsLoading(true);
+      await updateCheckoutLines({
+        variables: {
+          checkoutId,
+          lines: [{ variantId, quantity }],
+        },
+        context: {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        },
+      });
+      refetch();
+    } catch (err) {
+      console.error("Error updating cart:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (!isVisible) return null;
 
@@ -62,7 +92,7 @@ function Cart({ isOpen, onClose }) {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between border-b border-black items-center p-4 bg-[#00FF00]">
+        <div className="flex justify-between border-black items-center p-4 bg-[#00FF00]">
           <h2 className="text-sm font-bold tracking-wider">CART</h2>
           <button onClick={onClose} className="hover:opacity-70">
             <RiCloseFill size={24} />
@@ -70,15 +100,17 @@ function Cart({ isOpen, onClose }) {
         </div>
 
         <div className="px-6 relative">
-          {loading ? (
-            <p className="text-center py-4">Loading...</p>
+          {isLoading || loading ? (
+            <div className="flex  mt-10 justify-center items-center h-full w-full">
+              <CustomLoader />
+            </div>
           ) : error ? (
             <p className="text-center text-red-500 py-4">
               Error fetching cart items
             </p>
           ) : data?.checkout?.lines?.length > 0 ? (
             data.checkout.lines.map((item) => (
-              <div key={item.id} className="py-6 border-b border-gray-200">
+              <div key={item.id} className="py-6 border-b border-black">
                 <div className="flex gap-4">
                   {item.variant.product.thumbnail?.url && (
                     <img
@@ -104,19 +136,28 @@ function Cart({ isOpen, onClose }) {
                     <p className="mb-2 text-xs uppercase">Size: U</p>
                     <div className="flex items-center gap-4 mb-4">
                       <span className="text-xs uppercase">Quantity:</span>
-                      <button className="px-2 hover:opacity-70">−</button>
+                      <button
+                        className="px-2 hover:opacity-70"
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.variant.id,
+                            item.quantity - 1
+                          )
+                        }
+                      >
+                        −
+                      </button>
                       <span>{item.quantity}</span>
-                      <button className="px-2 hover:opacity-70">+</button>
-                    </div>
-                    <div className="flex gap-6 text-sm">
-                      <button className="underline hover:opacity-70">
-                        Save for later
-                      </button>
-                      <button className="underline hover:opacity-70">
-                        Edit
-                      </button>
-                      <button className="underline hover:opacity-70">
-                        Delete
+                      <button
+                        className="px-2 hover:opacity-70"
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.variant.id,
+                            item.quantity + 1
+                          )
+                        }
+                      >
+                        +
                       </button>
                     </div>
                   </div>
@@ -129,8 +170,8 @@ function Cart({ isOpen, onClose }) {
         </div>
 
         {data?.checkout?.totalPrice && (
-          <div className="absolute w-full bottom-0 left-0 px-6 py-4 bg-white border-t border-gray-200">
-            <div className="border-t border-gray-200 pt-4">
+          <div className="absolute w-full bottom-0 left-0 px-6 py-4 bg-white border-t border-black">
+            <div className="pt-4">
               <h3 className="text-xs font-bold mb-4">
                 OUR SIGNATURE PACKAGING
               </h3>

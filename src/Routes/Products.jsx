@@ -299,7 +299,7 @@ const ProductInfo = ({
             disabled={cartLoading}
             className="w-full py-2 bg-black text-sm text-white hover:bg-white hover:text-black border hover:border-black transition-colors"
           >
-            {cartLoading ? "Adding..." : "ADD TO CART"}
+            {cartLoading ? "ADDING..." : "ADD TO CART"}
           </button>
         </div>
 

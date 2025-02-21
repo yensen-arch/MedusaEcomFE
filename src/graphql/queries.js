@@ -433,6 +433,26 @@ export const SHIPPING_METHOD_UPDATE = gql`
     }
   }
 `;
+export const CHECKOUT_LINES_UPDATE = gql`
+  mutation CheckoutLinesUpdate(
+    $checkoutId: ID!
+    $lines: [CheckoutLineUpdateInput!]!
+  ) {
+    checkoutLinesUpdate(checkoutId: $checkoutId, lines: $lines) {
+      checkout {
+        id
+        lines {
+          id
+          quantity
+        }
+      }
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;
 
 export const CHECKOUT_SHIPPING_ADDRESS_UPDATE = gql`
   mutation CheckoutShippingAddressUpdate(
