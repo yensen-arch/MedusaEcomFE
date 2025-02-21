@@ -180,7 +180,7 @@ const Homepage = () => {
     return activeCategories[activeCategory]?.map((ele, index) => (
       <SwiperSlide
         key={`${activeCategory}-${index}`}
-        className="w-full h-screen"
+        className="w-full h-screen mt-20"
       >
         {ele.type === "footer" ? (
           <FooterLP />
