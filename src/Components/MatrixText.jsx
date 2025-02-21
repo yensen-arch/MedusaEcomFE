@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 const MatrixText = ({ originalText, finalText }) => {
   const [text, setText] = useState(originalText);
   const [isHovering, setIsHovering] = useState(false);
+
   const randomChar = () => {
     const chars = "AB^(~`>)Zxgyu0123456789@#$%&";
     return chars[Math.floor(Math.random() * chars.length)];
@@ -31,7 +32,10 @@ const MatrixText = ({ originalText, finalText }) => {
 
       for (let i = 0; i < iterations; i++) {
         for (let pos = 0; pos < maxLength; pos++) {
-          if (!isHovering) return;
+          if (!isHovering) {
+            setText(originalText);
+            return;
+          }
 
           setText((current) => {
             const chars = current.split("");
@@ -44,9 +48,11 @@ const MatrixText = ({ originalText, finalText }) => {
         }
       }
 
-      // Sequential final text reveal
       for (let i = 0; i < finalText.length; i++) {
-        if (!isHovering) return;
+        if (!isHovering) {
+          setText(originalText);
+          return;
+        }
         setText((current) => {
           const chars = current.split("");
           chars[i] = finalText[i];
@@ -58,7 +64,6 @@ const MatrixText = ({ originalText, finalText }) => {
 
     animateText();
   }, [isHovering, originalText, finalText]);
-
   return (
     <span
       onMouseEnter={() => setIsHovering(true)}

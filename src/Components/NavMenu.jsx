@@ -16,6 +16,7 @@ import { GET_CATEGORIES } from "../graphql/queries";
 export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
   const { loading, error, data } = useQuery(GET_CATEGORIES);
   const [categories, setCategories] = useState([]);
+  const [hovered, setHovered] = useState(null);
 
   useEffect(() => {
     if (data?.categories?.edges?.length) {
@@ -40,6 +41,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
     { Icon: RiInstagramLine, path: "https://www.instagram.com/clothd.co/" },
     { Icon: RiTiktokFill, path: "https://tiktok.com/@clothd" },
   ];
+  const disabledCategories = ["WOMAN", "MAN", "ARCHIVE"]; //for the 1st drop
 
   return (
     <div
@@ -88,10 +90,30 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
                   key={category.id}
                   className="px-2 hover:translate-x-2 hover:border-black hover:border-[1px] transition-transform"
                 >
-                  <div onClick={onClose}>
-                    <Link to={`/category/${category.id}`} className="text-sm">
-                      {category.name.toUpperCase()}
-                    </Link>
+                  <div
+                    onClick={
+                      category.name.toUpperCase() !== "V00"
+                        ? undefined
+                        : onClose
+                    }
+                  >
+                    {disabledCategories.includes(
+                      category.name.toUpperCase()
+                    ) ? (
+                      <div
+                        onClick={() => setHovered(category.id)}
+                        className="text-sm cursor-default"
+                      >
+                        <MatrixText
+                          originalText={category.name}
+                          finalText="COMING SOON"
+                        />
+                      </div>
+                    ) : (
+                      <Link to={`/category/${category.id}`} className="text-sm">
+                        {category.name.toUpperCase()}
+                      </Link>
+                    )}
                   </div>
                 </li>
               ))

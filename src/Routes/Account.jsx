@@ -79,7 +79,6 @@ const Account = () => {
     skip: !checkoutId,
     fetchPolicy: "network-only",
   });
-  console.log(cartData);
   useEffect(() => {
     if (!accessToken || !refreshToken) {
       setIsAuthenticated(false);
