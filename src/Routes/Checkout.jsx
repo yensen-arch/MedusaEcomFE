@@ -4,11 +4,13 @@ import { REFRESH_TOKEN_MUTATION, GET_CART_ITEMS } from "../graphql/queries";
 import CheckoutPayment from "../Components/CheckoutPayment";
 import CheckoutShipping from "../Components/CheckoutShipping";
 import CustomLoader from "../Components/CustomLoader";
+
 function Checkout() {
   const [activeSection, setActiveSection] = useState("email");
   const [email, setEmail] = useState("");
   const [shippingMethodId, setShippingMethodId] = useState(null);
   const [billingAddress, setBillingAddress] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -17,10 +19,8 @@ function Checkout() {
   const checkoutId =
     typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
 
-  // Token refresh mutation
   const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
 
-  // Fetch cart items
   const { data, loading, error, refetch } = useQuery(GET_CART_ITEMS, {
     variables: { checkoutId },
     context: {
@@ -32,6 +32,7 @@ function Checkout() {
     fetchPolicy: "network-only",
     onError: async (error) => {
       if (error.message.includes("Signature has expired")) {
+        setIsProcessing(true);
         try {
           const { data: refreshData } = await refreshTokenMutation({
             variables: { refreshToken },
@@ -45,6 +46,8 @@ function Checkout() {
           }
         } catch (refreshError) {
           console.error("Error refreshing token:", refreshError);
+        } finally {
+          setIsProcessing(false);
         }
       }
     },
@@ -59,15 +62,25 @@ function Checkout() {
   };
 
   const handlePaymentSuccess = () => {
-    console.log("wow finally huh.");
+    window.location.href = "/account?tab=order";
   };
 
-  if (loading) return <div className="h-screen w-full flex justify-center items-center"><CustomLoader/></div>;
-  if (error)
+  if (loading || isProcessing) {
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <CustomLoader />
+      </div>
+    );
+  }
+
+  if (error) {
     return (
       <div className="min-h-screen mt-28 p-8">Error loading cart items</div>
     );
+  }
+
   const totalAmount = data?.checkout?.totalPrice?.gross.amount.toFixed(2);
+
   return (
     <div className="min-h-screen mt-28 grid md:grid-cols-[1fr,400px]">
       {/* Main Checkout Form */}
@@ -79,7 +92,7 @@ function Checkout() {
             {activeSection !== "email" && email && (
               <button
                 onClick={() => setActiveSection("email")}
-                className="text-xs  text-gray-500 hover:text-black"
+                className="text-xs text-gray-500 hover:text-black"
               >
                 Edit
               </button>
@@ -88,13 +101,13 @@ function Checkout() {
 
           {activeSection === "email" ? (
             <div className="space-y-4">
-              <p className="text-xs  text-gray-600">
+              <p className="text-xs text-gray-600">
                 Please enter your email address to log in or checkout as guest.
                 If you would like to create an account, you will be able to do
                 it later.
               </p>
               <div className="space-y-1">
-                <div className="flex justify-between text-xs ">
+                <div className="flex justify-between text-xs">
                   <label htmlFor="email">
                     Email Address (for order updates)
                   </label>
@@ -117,7 +130,7 @@ function Checkout() {
               </button>
             </div>
           ) : (
-            <p className="text-xs  text-gray-600">{email}</p>
+            <p className="text-xs text-gray-600">{email}</p>
           )}
         </section>
 
@@ -158,13 +171,13 @@ function Checkout() {
                 )}
                 <div className="flex-1">
                   <h3 className="font-medium">{item.variant.product.name}</h3>
-                  <p className="text-xs  text-gray-600">
+                  <p className="text-xs text-gray-600">
                     Category: {item.variant.product.category?.name}
                   </p>
-                  <p className="text-xs  text-gray-600">
+                  <p className="text-xs text-gray-600">
                     Quantity: {item.quantity}
                   </p>
-                  <p className="text-xs  text-gray-600">
+                  <p className="text-xs text-gray-600">
                     Price: ${item.variant.pricing.price.gross.amount.toFixed(2)}
                   </p>
                 </div>
@@ -188,7 +201,7 @@ function Checkout() {
             </div>
             <div className="flex text-xs justify-between">
               <span>SALES TAX</span>
-              <span className="text-xs ">CALCULATED AT CHECKOUT</span>
+              <span className="text-xs">CALCULATED AT CHECKOUT</span>
             </div>
             <div className="flex text-xs justify-between font-medium pt-2">
               <span>TOTAL (TAX EXCL.)</span>
@@ -196,7 +209,7 @@ function Checkout() {
             </div>
           </div>
 
-          <ul className="space-y-2 text-xs ">
+          <ul className="space-y-2 text-xs">
             <li>Free shipping, returns and exchanges</li>
             <li>30 days free return</li>
             <li>30 days free online exchange</li>
@@ -215,7 +228,7 @@ function Checkout() {
                 "bitpay",
                 "apple-pay",
               ].map((payment) => (
-                <div key={payment} className="w-10 h-6 bg-black " />
+                <div key={payment} className="w-10 h-6 bg-black" />
               ))}
             </div>
           </div>

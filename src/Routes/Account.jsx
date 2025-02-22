@@ -98,13 +98,12 @@ const Account = () => {
   if (!isAuthenticated) {
     return null; // or a loading state while redirecting
   }
-
   return (
     <>
       <div className="h-screen mt-4 flex flex-col items-center px-4 border border-black">
         <div className="w-full max-w-[600px] h-screen mt-16 space-y-12 border border-black border-y">
           <div className="text-center space-y-8">
-            <h1 className="text-xs py-2">WELCOME {userData?.name}</h1>
+            <h1 className="text-xs py-2">{userData?.email}</h1>
 
             <div className="flex justify-center border-y border-black">
               <nav className="flex items-center">

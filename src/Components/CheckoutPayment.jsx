@@ -111,17 +111,22 @@ const CheckoutForm = ({
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
-
+    setIsProcessing(true);
     if (!stripe || !elements) {
       setError("Payment system not initialized");
       return;
     }
 
     const emailUpdated = await handleEmailUpdate();
-    if (!emailUpdated) return;
-
+    if (!emailUpdated) {
+      setIsProcessing(false);
+      return;
+    }
     const shippingUpdated = await handleShippingUpdate();
-    if (!shippingUpdated) return;
+    if (!shippingUpdated) {
+      setIsProcessing(false);
+      return;
+    }
 
     const cardElement = elements.getElement(CardElement);
     const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -143,6 +148,7 @@ const CheckoutForm = ({
 
     if (error) {
       setError(`Payment Error: ${error.message}`);
+      setIsProcessing(false);
       return;
     }
 
@@ -162,6 +168,7 @@ const CheckoutForm = ({
           .map((err) => err.message)
           .join(", ");
         setError(`Payment Creation Error: ${errorMessage}`);
+        setIsProcessing(false);
         return;
       }
 
@@ -184,6 +191,7 @@ const CheckoutForm = ({
 
         if (confirmError) {
           setError(`Payment confirmation failed: ${confirmError.message}`);
+          setIsProcessing(false);
           return;
         }
       }
@@ -192,12 +200,14 @@ const CheckoutForm = ({
           .map((err) => err.message)
           .join(", ");
         setError(`Checkout Completion Error: ${errorMessage}`);
+        setIsProcessing(false);
         return;
       }
-
+      localStorage.removeItem("checkoutId");
       onSuccess();
     } catch (err) {
       setError(`Payment failed: ${err.message}`);
+      setIsProcessing(false);
     }
   };
 
@@ -225,10 +235,10 @@ const CheckoutForm = ({
         />
         <button
           type="submit"
-          className="w-full bg-black text-white py-3 mt-4 hover:bg-black/90 disabled:bg-gray-300 disabled:cursor-not-allowed"
-          disabled={!stripe || loading}
+          className="w-full bg-black text-xs text-white py-3 mt-4 hover:bg-black/90 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          disabled={!stripe || isProcessing}
         >
-          {loading ? "Processing..." : "PLACE ORDER"}
+          {isProcessing ? "PROCESSING..." : "PLACE ORDER"}
         </button>
       </form>
     </div>
