@@ -360,12 +360,29 @@ export const zipCodeRanges = {
 
 // Helper function to get state from ZIP code
 export const getStateFromZip = (zipCode) => {
-  const zip = parseInt(zipCode);
+  // Handle invalid inputs
+  if (!zipCode || typeof zipCode !== 'string') {
+    return null;
+  }
+
+  // Clean the input: remove spaces and ensure 5 digits
+  const cleanZip = zipCode.trim().slice(0, 5);
+  if (!/^\d{5}$/.test(cleanZip)) {
+    return null;
+  }
+
+  const zip = parseInt(cleanZip);
+  
+  // Check each state's range
   for (const [state, range] of Object.entries(zipCodeRanges)) {
-    if (zip >= parseInt(range.min) && zip <= parseInt(range.max)) {
+    const minZip = parseInt(range.min);
+    const maxZip = parseInt(range.max);
+    
+    if (zip >= minZip && zip <= maxZip) {
       return state;
     }
   }
+  
   return null;
 };
 
