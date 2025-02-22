@@ -433,6 +433,7 @@ export const SHIPPING_METHOD_UPDATE = gql`
     }
   }
 `;
+
 export const CHECKOUT_LINES_UPDATE = gql`
   mutation CheckoutLinesUpdate(
     $checkoutId: ID!

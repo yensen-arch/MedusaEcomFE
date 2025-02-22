@@ -174,7 +174,6 @@ const Account = () => {
             </div>
           ) : activeTab === "cart" ? (
             <div className="space-y-4 p-4">
-              <h2 className="text-sm text-center">YOUR CART</h2>
               {cartLoading ? (
                 <p className="text-sm text-center">
                   <CustomLoader />
@@ -232,12 +231,14 @@ const Account = () => {
               ) : (
                 <p className="text-xs text-center">NO ITEMS IN CART</p>
               )}
-              <Link
-                to="/checkout"
-                className="block text-center bg-black text-white py-2 rounded"
-              >
-                Checkout
-              </Link>
+              {cartData?.checkout?.lines?.length > 0 && (
+                <Link
+                  to="/checkout"
+                  className="block text-center bg-black text-white py-2 rounded"
+                >
+                  Checkout
+                </Link>
+              )}
             </div>
           ) : null}
         </div>

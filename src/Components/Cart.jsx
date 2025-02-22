@@ -193,9 +193,13 @@ function Cart({ isOpen, onClose }) {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <button className="w-full py-2 text-sm border border-black text-center hover:bg-black hover:text-white">
+                <Link
+                  to="/checkout"
+                  className="w-full py-2 text-sm border border-black text-center hover:bg-black hover:text-white"
+                  onClick={onClose}
+                >
                   CHECKOUT NOW ({data.checkout.lines.length})
-                </button>
+                </Link>
                 <Link
                   to="/account?tab=cart"
                   className="w-full py-2 text-sm bg-black text-white text-center hover:bg-white border border-black hover:text-black"

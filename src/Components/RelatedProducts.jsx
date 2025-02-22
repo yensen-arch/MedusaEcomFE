@@ -91,7 +91,7 @@ function ProductCard({ product }) {
     if (!checkoutId) {
       const { data } = await addToNewCart({
         variables: {
-          variantId: product.variants.id,
+          variantId: product.variants[0].id,
           quantity: 1,
         },
       });
