@@ -37,30 +37,37 @@ const OrdersTab = () => {
           </Link>
         </>
       ) : (
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 h-80">
           {orders.map(({ node }) => (
-            <div key={node.id} className="border p-4 rounded">
-              <h3 className="text-sm font-semibold">Order #{node.number}</h3>
-              <p>Status: {node.status}</p>
-              <p>Placed on: {new Date(node.created).toLocaleDateString()}</p>
-              <p>
+            <div
+              key={node.id}
+              className="border border-gray-300 p-4 rounded shadow-sm"
+            >
+              <h3 className="text-sm font-bold">Order #{node.number}</h3>
+              <p className="text-xs">Status: {node.status}</p>
+              <p className="text-xs">
+                Placed on: {new Date(node.created).toLocaleDateString()}
+              </p>
+              <p className="text-xs mb-2">
                 Total: {node.total.gross.amount} {node.total.gross.currency}
               </p>
-              <div className="mt-2">
-                <h4 className="text-xs font-medium">Items:</h4>
-
+              <div className="mt-2 space-y-2">
+                <h4 className="text-xs font-semibold">Items:</h4>
                 {node.lines.map((line, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <img
-                      src={line.variant.product.thumbnail.url}
-                      alt={line.productName}
-                      className="w-12 h-12 object-cover rounded"
-                    />
-                    <p>
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
+                    <p className="text-sm">
                       {line.productName} x {line.quantity} —{" "}
                       {line.unitPrice.gross.amount}{" "}
                       {line.unitPrice.gross.currency}
                     </p>
+                    <img
+                      src={line.variant.product.thumbnail.url}
+                      alt={line.productName}
+                      className="w-16 h-16 object-cover rounded border"
+                    />
                   </div>
                 ))}
               </div>
