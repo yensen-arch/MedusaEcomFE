@@ -39,7 +39,7 @@ function CategoryPage() {
 
   return (
     <div className="py-28">
-      <h1 className="text-xl font-semibold px-6 mb-4">
+      <h1 className="text-lg font-semibold px-6 mb-4">
         {data?.products?.edges[0]?.node?.category?.name.toUpperCase()}
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ">
@@ -188,7 +188,7 @@ function ProductCard({ product }) {
           ))}
         </div>
       </div>
-      <div className="text-center mt-2 text-sm relative h-12">
+      <div className="text-center mt-2 text-xs relative h-12">
         <div className="absolute w-full h-full flex items-center justify-center group overflow-hidden">
           <div className="absolute w-full text-center text-gray-600 transition-transform duration-300 group-hover:-translate-y-full  group-hover:opacity-0">
             {product.name.toUpperCase()}

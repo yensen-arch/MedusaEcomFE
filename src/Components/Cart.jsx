@@ -86,23 +86,23 @@ function Cart({ isOpen, onClose }) {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose}>
+    <div className="fixed inset-0 bg-black/50 z-50 " onClick={onClose}>
       <div
-        className={`overflow-y-auto fixed top-0 right-0 w-full sm:w-[500px] h-screen bg-white transform transition-transform duration-300 ease-in-out ${
+        className={`border border-black overflow-y-auto fixed top-0 right-0 w-full sm:w-[500px] h-screen bg-white transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between border-black items-center p-4 bg-[#00FF00]">
-          <h2 className="text-sm font-bold tracking-wider">CART</h2>
+        <div className="flex justify-between border-b border-black items-center p-2.5 bg-[#00FF00]">
+          <h2 className="text-xs font-bold tracking-wider">CART</h2>
           <button onClick={onClose} className="hover:opacity-70">
             <RiCloseFill size={24} />
           </button>
         </div>
 
-        <div className="px-6 relative">
+        <div className=" relative">
           {isLoading || loading ? (
-            <div className="flex  mt-10 justify-center items-center h-full w-full">
+            <div className="flex mt-10 justify-center items-center h-full w-full">
               <CustomLoader />
             </div>
           ) : error ? (
@@ -128,7 +128,7 @@ function Cart({ isOpen, onClose }) {
                     <h3 className="font-bold mb-1 uppercase text-xs">
                       {item.variant.product.name}
                     </h3>
-                    <p className="text-sm font-bold mb-2">
+                    <p className="text-xs font-bold mb-2">
                       $ {item.variant.pricing.price.gross.amount.toFixed(2)}
                     </p>
                     <p className="mb-1 uppercase text-xs">
@@ -166,7 +166,7 @@ function Cart({ isOpen, onClose }) {
               </div>
             ))
           ) : (
-            <p className="text-center py-8">YOUR CART IS EMPTY</p>
+            <p className="text-center text-xs py-8">YOUR CART IS EMPTY</p>
           )}
         </div>
 
@@ -195,14 +195,14 @@ function Cart({ isOpen, onClose }) {
               <div className="grid grid-cols-2 gap-4">
                 <Link
                   to="/checkout"
-                  className="w-full py-2 text-sm border border-black text-center hover:bg-black hover:text-white"
+                  className="w-full py-2 text-xs border border-black text-center hover:bg-black hover:text-white"
                   onClick={onClose}
                 >
                   CHECKOUT NOW ({data.checkout.lines.length})
                 </Link>
                 <Link
                   to="/account?tab=cart"
-                  className="w-full py-2 text-sm bg-black text-white text-center hover:bg-white border border-black hover:text-black"
+                  className="w-full py-2 text-xs bg-black text-white text-center hover:bg-white border border-black hover:text-black"
                   onClick={onClose}
                 >
                   VIEW CART
