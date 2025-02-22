@@ -7,7 +7,7 @@ export const categories = {
     },
     {
       path: "v00",
-      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740200553/Image_2_f5mxep.webp",
+      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740201635/main-3_oio6zu.webp",
       productId: "UHJvZHVjdDoxNjA=",
     },
     // {
