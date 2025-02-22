@@ -109,24 +109,24 @@ const Account = () => {
               <nav className="flex items-center">
                 <button
                   onClick={() => setActiveTab("orders")}
-                  className={`px-4 py-3 text-xs hover:bg-slate-100 ${
-                    activeTab === "orders" ? "bg-slate-200" : ""
+                  className={`px-4 py-3 text-xs ${
+                    activeTab === "orders" ? "bg-black text-white" : ""
                   }`}
                 >
                   ORDERS
                 </button>
                 <button
                   onClick={() => setActiveTab("account")}
-                  className={`px-4 py-3 text-xs hover:bg-slate-100 ${
-                    activeTab === "account" ? "bg-slate-200" : ""
+                  className={`px-4 py-3 text-xs ${
+                    activeTab === "account" ? "bg-black text-white" : ""
                   }`}
                 >
                   ACCOUNT
                 </button>
                 <button
                   onClick={() => setActiveTab("cart")}
-                  className={`px-4 py-3 text-xs hover:bg-slate-100 ${
-                    activeTab === "cart" ? "bg-slate-300" : ""
+                  className={`px-4 py-3 text-xs  ${
+                    activeTab === "cart" ? "bg-black text-white" : ""
                   }`}
                 >
                   CART

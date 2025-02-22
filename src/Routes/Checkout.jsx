@@ -62,7 +62,7 @@ function Checkout() {
   };
 
   const handlePaymentSuccess = () => {
-    window.location.href = "/account?tab=order";
+    window.location.href = "/account?tab=orders";
   };
 
   if (loading || isProcessing) {
