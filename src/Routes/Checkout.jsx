@@ -3,7 +3,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { REFRESH_TOKEN_MUTATION, GET_CART_ITEMS } from "../graphql/queries";
 import CheckoutPayment from "../Components/CheckoutPayment";
 import CheckoutShipping from "../Components/CheckoutShipping";
-
+import CustomLoader from "../Components/CustomLoader";
 function Checkout() {
   const [activeSection, setActiveSection] = useState("email");
   const [email, setEmail] = useState("");
@@ -62,7 +62,7 @@ function Checkout() {
     console.log("wow finally huh.");
   };
 
-  if (loading) return <div className="min-h-screen mt-28 p-8">Loading...</div>;
+  if (loading) return <div className="h-screen w-full flex justify-center items-center"><CustomLoader/></div>;
   if (error)
     return (
       <div className="min-h-screen mt-28 p-8">Error loading cart items</div>
