@@ -358,22 +358,50 @@ export const zipCodeRanges = {
   Wyoming: { min: "82001", max: "83128" }
 };
 
-// Helper function to get state from ZIP code
+// Add Canadian provinces mapping
+export const canadianPostalCodePrefixes = {
+  "Alberta": ["T"],
+  "British Columbia": ["V"],
+  "Manitoba": ["R"],
+  "New Brunswick": ["E"],
+  "Newfoundland and Labrador": ["A"],
+  "Northwest Territories": ["X"],
+  "Nova Scotia": ["B"],
+  "Nunavut": ["X"],
+  "Ontario": ["K", "L", "M", "N", "P"],
+  "Prince Edward Island": ["C"],
+  "Quebec": ["G", "H", "J"],
+  "Saskatchewan": ["S"],
+  "Yukon": ["Y"]
+};
+
+// Modified helper function to handle both US and Canadian codes
 export const getStateFromZip = (zipCode) => {
   // Handle invalid inputs
   if (!zipCode || typeof zipCode !== 'string') {
     return null;
   }
 
-  // Clean the input: remove spaces and ensure 5 digits
-  const cleanZip = zipCode.trim().slice(0, 5);
+  // Clean the input: remove spaces
+  const cleanZip = zipCode.trim().toUpperCase();
+
+  // Check if it's a Canadian postal code (Letter-Number-Letter format)
+  if (/^[A-Z]\d[A-Z]?\d[A-Z]\d$/.test(cleanZip) || /^[A-Z]\d[A-Z]$/.test(cleanZip)) {
+    const prefix = cleanZip[0];
+    for (const [province, prefixes] of Object.entries(canadianPostalCodePrefixes)) {
+      if (prefixes.includes(prefix)) {
+        return province;
+      }
+    }
+    return null;
+  }
+
+  // US ZIP code handling (existing code)
   if (!/^\d{5}$/.test(cleanZip)) {
     return null;
   }
 
   const zip = parseInt(cleanZip);
-  
-  // Check each state's range
   for (const [state, range] of Object.entries(zipCodeRanges)) {
     const minZip = parseInt(range.min);
     const maxZip = parseInt(range.max);

@@ -2,12 +2,12 @@ export const categories = {
   V00: [
     {
       path: "v00",
-      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740198936/V00-Main_zsfrgn.webp",
+      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/main_minified_dvrel3.webp",
       productId: "UHJvZHVjdDoxNjA=",
     },
     {
       path: "v00",
-      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740201635/main-3_oio6zu.webp",
+      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/second-minified_wkqogr.webp",
       productId: "UHJvZHVjdDoxNjA=",
     },
     // {
