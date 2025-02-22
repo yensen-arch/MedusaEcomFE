@@ -2,7 +2,7 @@ export const categories = {
   V00: [
     {
       path: "v00",
-      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740188615/upscalemedia-transformed_1_qlvp8m.png",
+      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740198936/V00-Main_zsfrgn.webp",
       productId: "UHJvZHVjdDoxNjA=",
     },
     {
