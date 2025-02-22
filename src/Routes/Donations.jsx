@@ -36,7 +36,7 @@ export default function Donations() {
         <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-2">
           <div className="space-y-8">
             <div className="space-y-4">
-              <h1 className="text-sm font-medium uppercase tracking-wider">
+              <h1 className="text-xs font-medium uppercase tracking-wider">
                 Clothd. Donation Initiative
               </h1>
               <p className="text-xs uppercase leading-relaxed text-muted-foreground">
@@ -49,7 +49,7 @@ export default function Donations() {
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-sm font-medium uppercase tracking-wider">
+              <h2 className="text-xs font-medium uppercase tracking-wider">
                 How It Works
               </h2>
               <p className="text-xs uppercase leading-relaxed text-muted-foreground">
@@ -61,7 +61,7 @@ export default function Donations() {
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-sm font-medium uppercase tracking-wider">
+              <h2 className="text-xs font-medium uppercase tracking-wider">
                 Impact Statistics
               </h2>
               <p className="text-xs uppercase leading-relaxed text-muted-foreground">
@@ -74,9 +74,9 @@ export default function Donations() {
             </div>
           </div>
 
-          <div className="space-y-8">
-            <div className="rounded-sm border text-center border-black p-6">
-              <h2 className="mb-4 text-sm font-medium uppercase tracking-wider">
+          <div className="">
+            <div className="text-center p-6">
+              <h2 className="mb-4 text-xs font-medium uppercase tracking-wider">
                 Make a Donation
               </h2>
             </div>
@@ -87,7 +87,7 @@ export default function Donations() {
         <Separator className="my-12" />
 
         <div className="mx-auto max-w-6xl">
-  <h2 className="mb-8 text-sm font-medium uppercase tracking-wider">
+  <h2 className="mb-8 text-xs font-medium uppercase tracking-wider">
     Distribution Timeline
   </h2>
   <div className="relative overflow-x-auto">

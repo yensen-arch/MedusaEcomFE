@@ -7,8 +7,11 @@ import {
   GET_CART_ITEMS,
 } from "../graphql/queries";
 import { Link } from "react-router-dom";
+import CustomLoader from "../Components/CustomLoader";
 const Account = () => {
-  const [activeTab, setActiveTab] = useState(() => new URLSearchParams(window.location.search).get("tab") || "orders");
+  const [activeTab, setActiveTab] = useState(
+    () => new URLSearchParams(window.location.search).get("tab") || "orders"
+  );
   const [userData, setUserData] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   // Get stored tokens
@@ -101,7 +104,7 @@ const Account = () => {
       <div className="h-screen mt-4 flex flex-col items-center px-4 border border-black">
         <div className="w-full max-w-[600px] h-screen mt-16 space-y-12 border border-black border-y">
           <div className="text-center space-y-8">
-            <h1 className="text-sm py-2">WELCOME {userData?.email}</h1>
+            <h1 className="text-xs py-2">WELCOME {userData?.name}</h1>
 
             <div className="flex justify-center border-y border-black">
               <nav className="flex items-center">
@@ -135,11 +138,13 @@ const Account = () => {
 
           {loading ? (
             <div className="flex justify-center items-center h-80">
-              <p className="text-sm">Loading...</p>
+              <CustomLoader />
             </div>
           ) : error && !error.message.includes("Signature has expired") ? (
             <div className="flex justify-center items-center h-80">
-              <p className="text-sm text-red-500">Error loading account data</p>
+              <p className="text-xs text-red-500 uppercase">
+                Error loading account data
+              </p>
             </div>
           ) : activeTab === "orders" ? (
             <div className="flex flex-col items-center justify-center h-80 space-y-6">
@@ -170,52 +175,71 @@ const Account = () => {
             </div>
           ) : activeTab === "cart" ? (
             <div className="space-y-4 p-4">
-  <h2 className="text-sm text-center">YOUR CART</h2>
-  {cartLoading ? (
-    <p className="text-sm text-center">Loading cart...</p>
-  ) : cartError ? (
-    <p className="text-sm text-center text-red-500">Error loading cart</p>
-  ) : cartData?.checkout?.lines?.length > 0 ? (
-    <ul className="space-y-4">
-      {cartData.checkout.lines.map((item) => (
-        <li key={item.id} className="text-sm border-b pb-2">
-          <div className="flex justify-between items-center">
-            <img
-              src={item.variant.product.thumbnail.url}
-              alt={item.variant.product.thumbnail.alt || "Product Image"}
-              className="w-16 h-16 object-cover rounded"
-            />
-            <div className="ml-4">
-              <p className="font-medium">{item.variant.product.name}</p>
-              <p className="text-gray-600">Category: {item.variant.product.category.name}</p>
-              <p className="text-gray-600">Size: {item.variant.name}</p>
-              <p className="text-gray-600">Quantity: {item.quantity}</p>
+              <h2 className="text-sm text-center">YOUR CART</h2>
+              {cartLoading ? (
+                <p className="text-sm text-center">
+                  <CustomLoader />
+                </p>
+              ) : cartError ? (
+                <p className="text-xs uppercase text-center text-red-500">
+                  Error loading cart
+                </p>
+              ) : cartData?.checkout?.lines?.length > 0 ? (
+                <ul className="space-y-4">
+                  {cartData.checkout.lines.map((item) => (
+                    <li key={item.id} className="text-sm border-b pb-2">
+                      <div className="flex justify-between items-center">
+                        <img
+                          src={item.variant.product.thumbnail.url}
+                          alt={
+                            item.variant.product.thumbnail.alt ||
+                            "Product Image"
+                          }
+                          className="w-16 h-16 object-cover rounded"
+                        />
+                        <div className="ml-4">
+                          <p className="font-medium">
+                            {item.variant.product.name}
+                          </p>
+                          <p className="text-gray-600 text-xs uppercase">
+                            Category: {item.variant.product.category.name}
+                          </p>
+                          <p className="text-gray-600 text-xs uppercase">
+                            Size: {item.variant.name}
+                          </p>
+                          <p className="text-gray-600 text-xs uppercase">
+                            Quantity: {item.quantity}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p>
+                            {item.variant.pricing.price.gross.currency} $
+                            {item.variant.pricing.price.gross.amount}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                  <div className="pt-4 border-t">
+                    <p className="text-sm font-medium flex justify-between">
+                      <span>Total:</span>
+                      <span>
+                        {cartData.checkout.totalPrice.gross.currency} $
+                        {cartData.checkout.totalPrice.gross.amount}
+                      </span>
+                    </p>
+                  </div>
+                </ul>
+              ) : (
+                <p className="text-xs text-center">NO ITEMS IN CART</p>
+              )}
+              <Link
+                to="/checkout"
+                className="block text-center bg-black text-white py-2 rounded"
+              >
+                Checkout
+              </Link>
             </div>
-            <div className="text-right">
-              <p>
-                {item.variant.pricing.price.gross.currency} ${item.variant.pricing.price.gross.amount}
-              </p>
-            </div>
-          </div>
-        </li>
-      ))}
-      <div className="pt-4 border-t">
-        <p className="text-sm font-medium flex justify-between">
-          <span>Total:</span>
-          <span>
-            {cartData.checkout.totalPrice.gross.currency} ${cartData.checkout.totalPrice.gross.amount}
-          </span>
-        </p>
-      </div>
-    </ul>
-  ) : (
-    <p className="text-sm text-center">NO ITEMS IN CART</p>
-  )}
-  <Link to="/checkout" className="block text-center bg-black text-white py-2 rounded">
-    Checkout
-  </Link>
-</div>
-
           ) : null}
         </div>
       </div>
