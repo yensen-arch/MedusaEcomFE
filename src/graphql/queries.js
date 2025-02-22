@@ -569,3 +569,42 @@ export const CHECKOUT_COMPLETE = gql`
     }
   }
 `;
+export const GET_CUSTOMER_ORDERS = gql`
+  query GetCustomerOrders {
+    me {
+      orders(first: 20) {
+        edges {
+          node {
+            id
+            number
+            status
+            created
+            total {
+              gross {
+                amount
+                currency
+              }
+            }
+            lines {
+              productName
+              quantity
+              unitPrice {
+                gross {
+                  amount
+                  currency
+                }
+              }
+              variant {
+                product {
+                  thumbnail {
+                    url
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

@@ -19,7 +19,6 @@ const Account = () => {
   );
   const [userData, setUserData] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-
   const accessToken = localStorage.getItem("token");
   const refreshToken = localStorage.getItem("refreshToken");
   const checkoutId =
