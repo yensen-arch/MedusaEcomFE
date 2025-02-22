@@ -1,20 +1,38 @@
+import { width } from "@mui/system";
+
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: "dmjhto8sd",
+  secure: true
+});
+
+// Helper function to generate optimized Cloudinary URLs
+const getOptimizedUrl = (originalUrl) => {
+  // Extract public ID from the original URL
+  const publicId = originalUrl.split('/upload/')[1];
+  
+  return cloudinary.url(publicId, {
+    transformation: [
+      { quality: 'auto' },
+      { fetch_format: 'auto' },
+      { width: 1280 }
+    ]
+  });
+};
+
 export const categories = {
   V00: [
     {
       path: "v00",
-      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/main_minified_dvrel3.webp",
+      img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/main_minified_dvrel3.webp"),
       productId: "UHJvZHVjdDoxNjA=",
     },
     {
       path: "v00",
-      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/second-minified_wkqogr.webp",
+      img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/second-minified_wkqogr.webp"),
       productId: "UHJvZHVjdDoxNjA=",
     },
-    // {
-    //   video:
-    //     "https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381101/gett0nihpxj7tgkg4tg3.mp4",
-    //   productId: "UHJvZHVjdDoxNjA=",
-    // },
     { type: "footer" },
   ],
   // WOMEN: [
@@ -70,16 +88,30 @@ export const categories = {
   // ],
 };
 
+// Helper function to generate optimized Cloudinary URLs
+const getMobileOptimizedUrl = (originalUrl) => {
+  // Extract public ID from the original URL
+  const publicId = originalUrl.split('/upload/')[1];
+  
+  return cloudinary.url(publicId, {
+    transformation: [
+      { quality: 'auto' },
+      { fetch_format: 'auto' },
+      { width: 640 }
+    ]
+  });
+};
+
 export const categoriesMobile = {
   V00: [
     {
       path: "v00",
-      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023164/IMG_7134_gypfm4.jpg",
+      img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023164/IMG_7134_gypfm4.jpg"),
       productId: "UHJvZHVjdDoxNjA=",
     },
     {
-      video:
-        "https://res.cloudinary.com/dmjhto8sd/video/upload/v1740108755/B444A4EE-6BBA-437C-947E-155D4BE435FD_keoyu7.mp4",
+      video: getMobileOptimizedUrl(
+        "https://res.cloudinary.com/dmjhto8sd/video/upload/v1740108755/B444A4EE-6BBA-437C-947E-155D4BE435FD_keoyu7.mp4"),
       productId: "UHJvZHVjdDoxNjA=",
     },
     { type: "footer" },
