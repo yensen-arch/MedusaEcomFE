@@ -369,9 +369,4 @@ export const getStateFromZip = (zipCode) => {
   return null;
 };
 
-// Maintain backward compatibility
-export const zipToStateMap = Object.fromEntries(
-  Object.entries(zipCodeRanges).map(([state, range]) => [range.min, state])
-);
-
 
