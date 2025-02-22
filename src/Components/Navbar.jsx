@@ -183,7 +183,7 @@ const Navbar = ({
               <input
                 type="text"
                 placeholder="WHAT ARE YOU LOOKING FOR"
-                className=" ml-4 text-center outline-none text-sm placeholder:text-gray-400"
+                className=" ml-4 text-center outline-none text-xs placeholder:text-gray-400"
               />
             </Link>
           </div>
@@ -202,7 +202,7 @@ const Navbar = ({
               <input
                 type="text"
                 placeholder="WHAT ARE YOU LOOKING FOR"
-                className="ml-4 outline-none text-sm text-center"
+                className="ml-4 outline-none text-xs text-center"
               />
             </Link>
           </div>

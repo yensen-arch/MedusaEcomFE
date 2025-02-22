@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Scrollbar } from "react-scrollbars-custom";
 import { useEffect, useState } from "react";
 import MatrixText from "./MatrixText";
+import CustomLoader from "./CustomLoader"
 import {
   RiCloseLine,
   RiSearchLine,
@@ -81,7 +82,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
           {/* Main Categories */}
           <ul className="flex flex-col gap-4 px-4 mt-8">
             {loading ? (
-              <p className="text-center text-xs">LOADING.</p>
+              <p className="flex items-center justify-center"><CustomLoader/></p>
             ) : error ? (
               <p className="text-red-500 text-xs">ERROR: {error.message}</p>
             ) : (

@@ -8,7 +8,7 @@ import {
 } from "../graphql/queries";
 import { Link } from "react-router-dom";
 const Account = () => {
-  const [activeTab, setActiveTab] = useState("orders");
+  const [activeTab, setActiveTab] = useState(() => new URLSearchParams(window.location.search).get("tab") || "orders");
   const [userData, setUserData] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   // Get stored tokens

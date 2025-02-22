@@ -96,7 +96,7 @@ function ProductCard({ product }) {
     }
   };
   return (
-    <div className="outline outline-1 outline-black rounded-none overflow-hidden p-4 relative group">
+    <div className="outline outline-1 outline-black rounded-none overflow-hidden relative group">
       <div
         className="relative"
         onTouchStart={handleTouchStart}

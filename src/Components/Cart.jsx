@@ -1,4 +1,5 @@
 "use client";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { RiCloseFill } from "react-icons/ri";
 import { useQuery, useMutation } from "@apollo/client";
@@ -195,9 +196,13 @@ function Cart({ isOpen, onClose }) {
                 <button className="w-full py-2 text-sm border border-black text-center hover:bg-black hover:text-white">
                   CHECKOUT NOW ({data.checkout.lines.length})
                 </button>
-                <button className="w-full py-2 text-sm bg-black text-white text-center hover:bg-white border border-black hover:text-black">
+                <Link
+                  to="/account?tab=cart"
+                  className="w-full py-2 text-sm bg-black text-white text-center hover:bg-white border border-black hover:text-black"
+                  onClick={onClose}
+                >
                   VIEW CART
-                </button>
+                </Link>
               </div>
             </div>
           </div>

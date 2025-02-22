@@ -555,7 +555,11 @@ export const CHECKOUT_COMPLETE = gql`
       order {
         id
         status
+        userEmail
+        created
       }
+      confirmationNeeded
+      confirmationData
       errors {
         field
         message

@@ -79,7 +79,7 @@ function Checkout() {
             {activeSection !== "email" && email && (
               <button
                 onClick={() => setActiveSection("email")}
-                className="text-sm text-gray-500 hover:text-black"
+                className="text-xs  text-gray-500 hover:text-black"
               >
                 Edit
               </button>
@@ -88,13 +88,13 @@ function Checkout() {
 
           {activeSection === "email" ? (
             <div className="space-y-4">
-              <p className="text-sm text-gray-600">
+              <p className="text-xs  text-gray-600">
                 Please enter your email address to log in or checkout as guest.
                 If you would like to create an account, you will be able to do
                 it later.
               </p>
               <div className="space-y-1">
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs ">
                   <label htmlFor="email">
                     Email Address (for order updates)
                   </label>
@@ -117,7 +117,7 @@ function Checkout() {
               </button>
             </div>
           ) : (
-            <p className="text-sm text-gray-600">{email}</p>
+            <p className="text-xs  text-gray-600">{email}</p>
           )}
         </section>
 
@@ -158,13 +158,13 @@ function Checkout() {
                 )}
                 <div className="flex-1">
                   <h3 className="font-medium">{item.variant.product.name}</h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs  text-gray-600">
                     Category: {item.variant.product.category?.name}
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs  text-gray-600">
                     Quantity: {item.quantity}
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs  text-gray-600">
                     Price: ${item.variant.pricing.price.gross.amount.toFixed(2)}
                   </p>
                 </div>
@@ -173,29 +173,30 @@ function Checkout() {
           </div>
 
           <div className="space-y-2 border-b border-gray-200 pb-6">
-            <div className="flex justify-between">
+            <div className="flex justify-between text-xs">
               <span>SUBTOTAL</span>
               <span>
                 $
-                {data?.checkout?.subtotalPrice?.gross.amount.toFixed(2) ||
-                  "0.00"}
+                {data?.checkout?.lines?.[0]?.variant?.pricing?.price?.gross?.amount.toFixed(
+                  2
+                ) || "0.00"}
               </span>
             </div>
             <div className="flex justify-between">
               <span>SHIPPING</span>
               <span>$ 0.00</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex text-xs justify-between">
               <span>SALES TAX</span>
-              <span className="text-sm">CALCULATED AT CHECKOUT</span>
+              <span className="text-xs ">CALCULATED AT CHECKOUT</span>
             </div>
-            <div className="flex justify-between font-medium pt-2">
+            <div className="flex text-xs justify-between font-medium pt-2">
               <span>TOTAL (TAX EXCL.)</span>
               <span>${totalAmount || "0.00"}</span>
             </div>
           </div>
 
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-2 text-xs ">
             <li>Free shipping, returns and exchanges</li>
             <li>30 days free return</li>
             <li>30 days free online exchange</li>
@@ -203,7 +204,7 @@ function Checkout() {
           </ul>
 
           <div className="space-y-4">
-            <p className="font-medium text-center">WE ACCEPT</p>
+            <p className="font-medium text-center text-xs">WE ACCEPT</p>
             <div className="flex justify-center gap-2">
               {[
                 "visa",
@@ -214,13 +215,13 @@ function Checkout() {
                 "bitpay",
                 "apple-pay",
               ].map((payment) => (
-                <div key={payment} className="w-10 h-6 bg-black rounded" />
+                <div key={payment} className="w-10 h-6 bg-black " />
               ))}
             </div>
           </div>
 
           <div className="text-center">
-            <p className="font-medium">CUSTOMER SUPPORT</p>
+            <p className="font-medium text-xs">CUSTOMER SUPPORT</p>
           </div>
         </div>
       </aside>

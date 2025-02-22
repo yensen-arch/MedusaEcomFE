@@ -146,7 +146,7 @@ const CheckoutForm = ({
       return;
     }
 
-    try {
+    try {console.log("amt from payment:",amount)
       const { data: createData } = await checkoutPaymentCreate({
         variables: {
           checkoutId,
