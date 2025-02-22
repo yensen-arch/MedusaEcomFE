@@ -4,7 +4,7 @@ import CustomLoader from "../CustomLoader";
 
 const CartTab = ({ cartData, cartLoading, cartError }) => {
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4 ">
       {cartLoading ? (
         <p className="text-sm text-center">
           <CustomLoader />
@@ -24,7 +24,9 @@ const CartTab = ({ cartData, cartLoading, cartError }) => {
                   className="w-16 h-16 object-cover rounded"
                 />
                 <div className="ml-4">
-                  <p className="font-medium">{item.variant.product.name}</p>
+                  <p className="font-medium uppercase">
+                    {item.variant.product.name}
+                  </p>
                   <p className="text-gray-600 text-xs uppercase">
                     Category: {item.variant.product.category.name}
                   </p>
@@ -35,22 +37,16 @@ const CartTab = ({ cartData, cartLoading, cartError }) => {
                     Quantity: {item.quantity}
                   </p>
                 </div>
-                <div className="text-right">
-                  <p>
-                    {item.variant.pricing.price.gross.currency} $
-                    {item.variant.pricing.price.gross.amount}
-                  </p>
+                <div className="text-right text-xs">
+                  <p>${item.variant.pricing.price.gross.amount}</p>
                 </div>
               </div>
             </li>
           ))}
           <div className="pt-4 border-t">
-            <p className="text-sm font-medium flex justify-between">
-              <span>Total:</span>
-              <span>
-                {cartData.checkout.totalPrice.gross.currency} $
-                {cartData.checkout.totalPrice.gross.amount}
-              </span>
+            <p className="text-xs font-medium flex justify-between">
+              <span>TOTAL:</span>
+              <span>${cartData.checkout.totalPrice.gross.amount}</span>
             </p>
           </div>
         </ul>
@@ -60,9 +56,9 @@ const CartTab = ({ cartData, cartLoading, cartError }) => {
       {cartData?.checkout?.lines?.length > 0 && (
         <Link
           to="/checkout"
-          className="block text-center bg-black text-white py-2 rounded"
+          className="block text-center bg-black text-white border border-black py-2 hover:bg-white hover:text-black transition-all"
         >
-          Checkout
+          CHECKOUT
         </Link>
       )}
     </div>

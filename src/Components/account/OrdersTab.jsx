@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 import CustomLoader from "../CustomLoader";
 import { GET_CUSTOMER_ORDERS } from "../../graphql/queries";
+import jsPDF from "jspdf";
 
 const OrdersTab = () => {
   const [token, setToken] = useState(null);
@@ -28,6 +29,48 @@ const OrdersTab = () => {
   if (error) return <p>Error fetching orders.</p>;
 
   const orders = data?.me?.orders?.edges || [];
+
+  const generatePDF = (order) => {
+    const doc = new jsPDF();
+
+    doc.text("Order Summary", 20, 20);
+
+    doc.text(`Order #: ${order.number}`, 20, 30);
+    doc.text(`Status: ${order.status}`, 20, 40);
+    doc.text(`Placed on: ${new Date(order.created).toLocaleDateString()}`, 20, 50);
+    doc.text(`Total: ${order.total.gross.amount} ${order.total.gross.currency}`, 20, 60);
+    doc.text(`Payment Status: ${order.paymentStatus}`, 20, 70);
+    doc.text(`Payment Gateway: ${order.payments[0]?.gateway}`, 20, 80);
+
+    doc.text("Shipping Address:", 20, 90);
+    doc.text(
+      `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
+      20,
+      100
+    );
+    doc.text(order.shippingAddress.streetAddress1, 20, 110);
+    doc.text(
+      `${order.shippingAddress.city}, ${order.shippingAddress.postalCode}`,
+      20,
+      120
+    );
+    doc.text(order.shippingAddress.country.country, 20, 130);
+
+    doc.text("Items:", 20, 150);
+
+    let y = 160;
+    order.lines.forEach((item) => {
+      doc.text(`${item.productName} x ${item.quantity}`, 20, y);
+      doc.text(
+        `${item.unitPrice.gross.amount} ${item.unitPrice.gross.currency}`,
+        140,
+        y
+      );
+      y += 10;
+    });
+
+    doc.save(`order-${order.number}.pdf`);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center h-80 space-y-6">
@@ -64,9 +107,7 @@ const OrdersTab = () => {
                     className="flex items-center justify-between"
                   >
                     <p className="text-sm">
-                      {line.productName} x {line.quantity} —{" "}
-                      {line.unitPrice.gross.amount}{" "}
-                      {line.unitPrice.gross.currency}
+                      {line.productName} x {line.quantity} — {line.unitPrice.gross.amount} {line.unitPrice.gross.currency}
                     </p>
                     <img
                       src={line.variant.product.thumbnail.url}
@@ -76,6 +117,12 @@ const OrdersTab = () => {
                   </div>
                 ))}
               </div>
+              <button
+                onClick={() => generatePDF(node)}
+                className="mt-3 px-4 py-2 text-xs bg-black text-white hover:bg-white hover:text-black border border-black transition-colors"
+              >
+                DOWNLOAD
+              </button>
             </div>
           ))}
         </div>

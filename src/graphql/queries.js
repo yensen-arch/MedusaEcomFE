@@ -569,9 +569,11 @@ export const CHECKOUT_COMPLETE = gql`
     }
   }
 `;
+
 export const GET_CUSTOMER_ORDERS = gql`
   query GetCustomerOrders {
     me {
+      email
       orders(first: 20) {
         edges {
           node {
@@ -583,6 +585,22 @@ export const GET_CUSTOMER_ORDERS = gql`
               gross {
                 amount
                 currency
+              }
+            }
+            paymentStatus
+            payments {
+              id
+              chargeStatus
+              gateway
+            }
+            shippingAddress {
+              firstName
+              lastName
+              streetAddress1
+              city
+              postalCode
+              country {
+                country
               }
             }
             lines {
