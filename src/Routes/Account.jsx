@@ -1,3 +1,4 @@
+// Routes/Account.jsx
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import Footer from "../Components/Footer";
@@ -6,23 +7,26 @@ import {
   GET_USER_QUERY,
   GET_CART_ITEMS,
 } from "../graphql/queries";
-import { Link } from "react-router-dom";
 import CustomLoader from "../Components/CustomLoader";
+import OrdersTab from "../Components/account/OrdersTab";
+import AccountTab from "../Components/account/AccountTab";
+import CartTab from "../Components/account/CartTab";
+import TabNavigation from "../Components/account/TabNavigation";
+
 const Account = () => {
   const [activeTab, setActiveTab] = useState(
     () => new URLSearchParams(window.location.search).get("tab") || "orders"
   );
   const [userData, setUserData] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  // Get stored tokens
+
   const accessToken = localStorage.getItem("token");
   const refreshToken = localStorage.getItem("refreshToken");
-  const csrfToken = localStorage.getItem("csrfToken");
+  const checkoutId =
+    typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
 
-  // Mutation for refreshing token
   const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
 
-  // Query for user data with error handling
   const { loading, error, data, refetch } = useQuery(GET_USER_QUERY, {
     context: {
       headers: {
@@ -32,7 +36,6 @@ const Account = () => {
     onCompleted: (data) => {
       if (data.me === null) {
         setIsAuthenticated(false);
-        // Clear stored tokens as they're invalid
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
         window.location.href = "/login";
@@ -64,10 +67,7 @@ const Account = () => {
       }
     },
   });
-  const checkoutId =
-    typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
 
-  // Query for cart items
   const {
     data: cartData,
     loading: cartLoading,
@@ -82,6 +82,7 @@ const Account = () => {
     skip: !checkoutId,
     fetchPolicy: "network-only",
   });
+
   useEffect(() => {
     if (!accessToken || !refreshToken) {
       setIsAuthenticated(false);
@@ -95,9 +96,8 @@ const Account = () => {
     }
   }, [data, accessToken, refreshToken]);
 
-  if (!isAuthenticated) {
-    return null; // or a loading state while redirecting
-  }
+  if (!isAuthenticated) return null;
+
   return (
     <>
       <div className="h-screen mt-4 flex flex-col items-center px-4 border border-black">
@@ -106,32 +106,10 @@ const Account = () => {
             <h1 className="text-xs py-2">{userData?.email}</h1>
 
             <div className="flex justify-center border-y border-black">
-              <nav className="flex items-center">
-                <button
-                  onClick={() => setActiveTab("orders")}
-                  className={`px-4 py-3 text-xs ${
-                    activeTab === "orders" ? "bg-black text-white" : ""
-                  }`}
-                >
-                  ORDERS
-                </button>
-                <button
-                  onClick={() => setActiveTab("account")}
-                  className={`px-4 py-3 text-xs ${
-                    activeTab === "account" ? "bg-black text-white" : ""
-                  }`}
-                >
-                  ACCOUNT
-                </button>
-                <button
-                  onClick={() => setActiveTab("cart")}
-                  className={`px-4 py-3 text-xs  ${
-                    activeTab === "cart" ? "bg-black text-white" : ""
-                  }`}
-                >
-                  CART
-                </button>
-              </nav>
+              <TabNavigation
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+              />
             </div>
           </div>
 
@@ -143,105 +121,19 @@ const Account = () => {
             <div className="flex justify-center items-center h-80">
               <p className="text-xs text-red-500 uppercase">ERROR</p>
             </div>
-          ) : activeTab === "orders" ? (
-            <div className="flex flex-col items-center justify-center h-80 space-y-6">
-              <h2 className="text-xs">NO ORDERS YET</h2>
-              <Link
-                to="/search/home"
-                className="border text-xs text-white bg-black border-black py-3 px-6 hover:bg-white hover:text-black transition-colors"
-              >
-                CONTINUE SHOPPING
-              </Link>
-            </div>
-          ) : activeTab === "account" ? (
-            <div className="space-y-12">
-              <section className="space-y-6">
-                <h2 className="text-center text-sm">PERSONAL INFO</h2>
-                <div className="space-y-6 text-center">
-                  <div className="space-y-1 px-2">
-                    <p className="text-xs text-black">
-                      Email: {userData?.email}
-                    </p>
-                  </div>
-                </div>
-              </section>
-              <section className="space-y-6">
-                <div className="space-y-6">
-                  <button className="w-full border text-white bg-black text-sm border-black py-3 hover:bg-white hover:text-black transition-colors">
-                    CHANGE PASSWORD
-                  </button>
-                </div>
-              </section>
-            </div>
-          ) : activeTab === "cart" ? (
-            <div className="space-y-4 p-4">
-              {cartLoading ? (
-                <p className="text-sm text-center">
-                  <CustomLoader />
-                </p>
-              ) : cartError ? (
-                <p className="text-xs uppercase text-center text-red-500">
-                  Error loading cart
-                </p>
-              ) : cartData?.checkout?.lines?.length > 0 ? (
-                <ul className="space-y-4">
-                  {cartData.checkout.lines.map((item) => (
-                    <li key={item.id} className="text-sm border-b pb-2">
-                      <div className="flex justify-between items-center">
-                        <img
-                          src={item.variant.product.thumbnail.url}
-                          alt={
-                            item.variant.product.thumbnail.alt ||
-                            "Product Image"
-                          }
-                          className="w-16 h-16 object-cover rounded"
-                        />
-                        <div className="ml-4">
-                          <p className="font-medium">
-                            {item.variant.product.name}
-                          </p>
-                          <p className="text-gray-600 text-xs uppercase">
-                            Category: {item.variant.product.category.name}
-                          </p>
-                          <p className="text-gray-600 text-xs uppercase">
-                            Size: {item.variant.name}
-                          </p>
-                          <p className="text-gray-600 text-xs uppercase">
-                            Quantity: {item.quantity}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p>
-                            {item.variant.pricing.price.gross.currency} $
-                            {item.variant.pricing.price.gross.amount}
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                  <div className="pt-4 border-t">
-                    <p className="text-sm font-medium flex justify-between">
-                      <span>Total:</span>
-                      <span>
-                        {cartData.checkout.totalPrice.gross.currency} $
-                        {cartData.checkout.totalPrice.gross.amount}
-                      </span>
-                    </p>
-                  </div>
-                </ul>
-              ) : (
-                <p className="text-xs text-center">NO ITEMS IN CART</p>
+          ) : (
+            <>
+              {activeTab === "orders" && <OrdersTab />}
+              {activeTab === "account" && <AccountTab userData={userData} />}
+              {activeTab === "cart" && (
+                <CartTab
+                  cartData={cartData}
+                  cartLoading={cartLoading}
+                  cartError={cartError}
+                />
               )}
-              {cartData?.checkout?.lines?.length > 0 && (
-                <Link
-                  to="/checkout"
-                  className="block text-center bg-black text-white py-2 rounded"
-                >
-                  Checkout
-                </Link>
-              )}
-            </div>
-          ) : null}
+            </>
+          )}
         </div>
       </div>
       <Footer />
