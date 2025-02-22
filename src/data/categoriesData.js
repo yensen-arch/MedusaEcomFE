@@ -1,24 +1,30 @@
 import { width } from "@mui/system";
 
-const cloudinary = require("cloudinary").v2;
-
-cloudinary.config({
-  cloud_name: "dmjhto8sd",
-  secure: true
-});
-
 // Helper function to generate optimized Cloudinary URLs
 const getOptimizedUrl = (originalUrl) => {
-  // Extract public ID from the original URL
-  const publicId = originalUrl.split('/upload/')[1];
+  if (!originalUrl.includes('cloudinary.com')) return originalUrl;
   
-  return cloudinary.url(publicId, {
-    transformation: [
-      { quality: 'auto' },
-      { fetch_format: 'auto' },
-      { width: 1280 }
-    ]
-  });
+  // Extract the version and public ID from the URL
+  const parts = originalUrl.split('/upload/');
+  if (parts.length !== 2) return originalUrl;
+
+  const baseUrl = parts[0] + '/upload';
+  const transformations = 'q_auto,f_auto,w_1280'; // quality:auto, format:auto, width:1280
+  
+  return `${baseUrl}/${transformations}/${parts[1]}`;
+};
+
+// Helper function for mobile images
+const getMobileOptimizedUrl = (originalUrl) => {
+  if (!originalUrl.includes('cloudinary.com')) return originalUrl;
+  
+  const parts = originalUrl.split('/upload/');
+  if (parts.length !== 2) return originalUrl;
+
+  const baseUrl = parts[0] + '/upload';
+  const transformations = 'q_auto,f_auto,w_640'; // quality:auto, format:auto, width:640
+  
+  return `${baseUrl}/${transformations}/${parts[1]}`;
 };
 
 export const categories = {
@@ -86,20 +92,6 @@ export const categories = {
   //   },
   //   { type: "footer" },
   // ],
-};
-
-// Helper function to generate optimized Cloudinary URLs
-const getMobileOptimizedUrl = (originalUrl) => {
-  // Extract public ID from the original URL
-  const publicId = originalUrl.split('/upload/')[1];
-  
-  return cloudinary.url(publicId, {
-    transformation: [
-      { quality: 'auto' },
-      { fetch_format: 'auto' },
-      { width: 640 }
-    ]
-  });
 };
 
 export const categoriesMobile = {
