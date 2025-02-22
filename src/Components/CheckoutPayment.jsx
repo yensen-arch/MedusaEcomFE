@@ -146,7 +146,7 @@ const CheckoutForm = ({
       return;
     }
 
-    try {console.log("amt from payment:",amount)
+    try {
       const { data: createData } = await checkoutPaymentCreate({
         variables: {
           checkoutId,
@@ -157,18 +157,6 @@ const CheckoutForm = ({
           },
         },
       });
-      // After checkoutPaymentCreate
-     
-
-
-
-
-
-
-
-
-      
-
       if (createData?.checkoutPaymentCreate?.errors.length) {
         const errorMessage = createData.checkoutPaymentCreate.errors
           .map((err) => err.message)
@@ -182,6 +170,23 @@ const CheckoutForm = ({
           checkoutId,
         },
       });
+      if (completeData?.checkoutComplete?.confirmationNeeded) {
+        const confirmationData = JSON.parse(
+          completeData.checkoutComplete.confirmationData
+        );
+
+        const { error: confirmError } = await stripe.confirmCardPayment(
+          confirmationData.client_secret,
+          {
+            payment_method: paymentMethod.id,
+          }
+        );
+
+        if (confirmError) {
+          setError(`Payment confirmation failed: ${confirmError.message}`);
+          return;
+        }
+      }
       if (completeData?.checkoutComplete?.errors.length) {
         const errorMessage = completeData.checkoutComplete.errors
           .map((err) => err.message)
