@@ -19,7 +19,12 @@ const OrdersTab = () => {
     skip: !token,
   });
 
-  if (loading) return <CustomLoader />;
+  if (loading)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center">
+        <CustomLoader />
+      </div>
+    );
   if (error) return <p>Error fetching orders.</p>;
 
   const orders = data?.me?.orders?.edges || [];

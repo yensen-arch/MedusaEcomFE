@@ -23,6 +23,7 @@ import Account from "./Account";
 import Checkout from "./Checkout";
 import Mission from "./Mission";
 import Donations from "./Donations";
+import ResetPass from "./ResetPass";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -35,6 +36,8 @@ const AllRoutes = () => {
       <Route path="/account" element={<Account />}></Route>
       <Route path="/checkout" element={<Checkout />}></Route>
       <Route path="/donations" element={<Donations />}></Route>
+      <Route path="/reset-password" element={<ResetPass />}></Route>
+
       <Route
         path="/help/items-and-sizes"
         element={<ItemsAvailabilityHelp />}
