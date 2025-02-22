@@ -26,6 +26,7 @@ const CheckoutForm = ({
   shippingMethodId,
   billingAddress,
 }) => {
+  const [isProcessing, setIsProcessing] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState("");
