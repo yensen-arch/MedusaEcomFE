@@ -9,7 +9,7 @@ const getOptimizedUrl = (originalUrl) => {
   if (parts.length !== 2) return originalUrl;
 
   const baseUrl = parts[0] + '/upload';
-  const transformations = 'q_auto,f_auto,w_1280'; // quality:auto, format:auto, width:1280
+  const transformations = 'c_fill,g_auto,q_auto,f_auto,w_1280'; // crop:fill, gravity:auto, quality:auto, format:auto, width:1280
   
   return `${baseUrl}/${transformations}/${parts[1]}`;
 };
@@ -22,7 +22,7 @@ const getMobileOptimizedUrl = (originalUrl) => {
   if (parts.length !== 2) return originalUrl;
 
   const baseUrl = parts[0] + '/upload';
-  const transformations = 'q_auto,f_auto,w_640'; // quality:auto, format:auto, width:640
+  const transformations = 'c_fill,g_auto,q_auto,f_auto,w_640'; // quality:auto, format:auto, width:640
   
   return `${baseUrl}/${transformations}/${parts[1]}`;
 };
