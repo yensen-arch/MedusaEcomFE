@@ -42,6 +42,7 @@
     "react-scripts": "^5.0.1",
     "react-scrollbars-custom": "^4.1.1",
     "stream-browserify": "^3.0.0",
+    "swiper": "^11.2.4",
     "url": "^0.11.4"
   }
 }
