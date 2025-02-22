@@ -141,16 +141,17 @@ const Account = () => {
             </div>
           ) : error && !error.message.includes("Signature has expired") ? (
             <div className="flex justify-center items-center h-80">
-              <p className="text-xs text-red-500 uppercase">
-                Error loading account data
-              </p>
+              <p className="text-xs text-red-500 uppercase">ERROR</p>
             </div>
           ) : activeTab === "orders" ? (
             <div className="flex flex-col items-center justify-center h-80 space-y-6">
-              <h2 className="text-sm">NO ORDERS YET</h2>
-              <button className="border text-sm text-white bg-black border-black py-3 px-6 hover:bg-white hover:text-black transition-colors">
+              <h2 className="text-xs">NO ORDERS YET</h2>
+              <Link
+                to="/search/home"
+                className="border text-xs text-white bg-black border-black py-3 px-6 hover:bg-white hover:text-black transition-colors"
+              >
                 CONTINUE SHOPPING
-              </button>
+              </Link>
             </div>
           ) : activeTab === "account" ? (
             <div className="space-y-12">
