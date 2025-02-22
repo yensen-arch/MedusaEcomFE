@@ -6,10 +6,15 @@ export const categories = {
       productId: "UHJvZHVjdDoxNjA=",
     },
     {
-      video:
-        "https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381101/gett0nihpxj7tgkg4tg3.mp4",
+      path: "v00",
+      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740200553/Image_2_f5mxep.webp",
       productId: "UHJvZHVjdDoxNjA=",
     },
+    // {
+    //   video:
+    //     "https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381101/gett0nihpxj7tgkg4tg3.mp4",
+    //   productId: "UHJvZHVjdDoxNjA=",
+    // },
     { type: "footer" },
   ],
   // WOMEN: [
