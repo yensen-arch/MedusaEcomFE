@@ -8,8 +8,7 @@ const getOptimizedUrl = (originalUrl) => {
   if (parts.length !== 2) return originalUrl;
 
   const baseUrl = parts[0] + '/upload';
-  // Increased width and added dpr_auto for better resolution on high-DPI displays
-  const transformations = 'c_fill,g_auto,q_auto:best,f_auto,w_1920,dpr_auto'; 
+  const transformations = 'c_fill,g_auto,q_auto:best,f_auto,w_1920,dpr_auto,fl_progressive:steep'; 
   
   return `${baseUrl}/${transformations}/${parts[1]}`;
 };
@@ -22,8 +21,7 @@ const getMobileOptimizedUrl = (originalUrl) => {
   if (parts.length !== 2) return originalUrl;
 
   const baseUrl = parts[0] + '/upload';
-  // Increased mobile width and added dpr_auto
-  const transformations = 'c_fill,g_auto,q_auto:best,f_auto,w_828,dpr_auto';
+  const transformations = 'c_fill,g_auto,q_auto:best,f_auto,w_828,dpr_auto,fl_progressive:steep';
   
   return `${baseUrl}/${transformations}/${parts[1]}`;
 };
@@ -34,6 +32,8 @@ export const categories = {
       path: "v00",
       img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/main_minified_dvrel3.webp"),
       productId: "UHJvZHVjdDox",
+      priority: true,
+      preload: true
     },
     {
       path: "v00",
@@ -101,6 +101,8 @@ export const categoriesMobile = {
       path: "v00",
       img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023164/IMG_7134_gypfm4.jpg"),
       productId: "UHJvZHVjdDoxNjA=",
+      priority: true,
+      preload: true
     },
     {
       video: getMobileOptimizedUrl(

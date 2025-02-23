@@ -38,6 +38,8 @@ const ProductList = ({ products, loading }) => {
               loading="lazy"
               src={product.thumbnail?.url}
               alt={product.name}
+              fetchPriority={product.priority ? "high" : "auto"}
+              decoding={product.priority ? "sync" : "async"}
               className="w-full h-64 object-cover transition-transform group-hover:scale-105"
             />
             <div className="p-4">
