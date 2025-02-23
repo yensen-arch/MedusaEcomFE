@@ -176,6 +176,23 @@ const Homepage = () => {
       setLoading(false);
     }, 2000);
   };
+  // Add preload function
+  useEffect(() => {
+    const preloadImages = () => {
+      const imagesToPreload = activeCategories[activeCategory]
+        ?.filter(item => item.img && item.priority)
+        .map(item => item.img);
+
+      imagesToPreload?.forEach(imageUrl => {
+        const img = new Image();
+        img.src = imageUrl;
+      });
+    };
+
+    preloadImages();
+  }, [activeCategory, activeCategories]);
+
+  // Update the renderSlides function
   const renderSlides = useMemo(() => {
     return activeCategories[activeCategory]?.map((ele, index) => (
       <SwiperSlide
@@ -198,6 +215,9 @@ const Homepage = () => {
                 <img
                   src={ele.img}
                   alt="Slide"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  fetchpriority={index === 0 ? "high" : "auto"}
+                  decoding={index === 0 ? "sync" : "async"}
                   className="w-full h-screen object-cover"
                 />
                 {loading && (

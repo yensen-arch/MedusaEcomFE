@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "PORT=3001 react-scripts start",
-    "build": "PORT=3001 react-scripts build"
+    "build": "GENERATE_SOURCEMAP=false PORT=3001 react-scripts build",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "keywords": [],
   "author": "",

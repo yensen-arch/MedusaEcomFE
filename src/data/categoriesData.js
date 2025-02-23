@@ -1,6 +1,7 @@
 import { width } from "@mui/system";
 
 // Helper function to generate optimized Cloudinary URLs
+// Update the optimization parameters
 const getOptimizedUrl = (originalUrl) => {
   if (!originalUrl.includes('cloudinary.com')) return originalUrl;
   
@@ -8,7 +9,7 @@ const getOptimizedUrl = (originalUrl) => {
   if (parts.length !== 2) return originalUrl;
 
   const baseUrl = parts[0] + '/upload';
-  const transformations = 'c_fill,g_auto,q_auto:best,f_auto,w_1920,dpr_auto,fl_progressive:steep'; 
+  const transformations = 'c_fill,g_auto,q_auto:best,f_auto,w_1920,dpr_auto,fl_progressive:steep/'; 
   
   return `${baseUrl}/${transformations}/${parts[1]}`;
 };
