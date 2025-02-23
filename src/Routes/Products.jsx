@@ -44,8 +44,16 @@ const Product = () => {
   // const description = product.description || "";
   const variation = product.variants || [];
   const images = product?.media?.length
-    ? product.media.map((img) => img.url)
-    : Array(4).fill(product?.thumbnail?.url || "/placeholder.svg");
+    ? product.media.map((img) => {
+        // Add Cloudinary optimization parameters
+        const baseUrl = img.url;
+        return `${baseUrl}?auto=format,compress&q=auto`;
+      })
+    : Array(4).fill(
+        product?.thumbnail?.url
+          ? `${product.thumbnail.url}?auto=format,compress&q=auto`
+          : "/placeholder.svg"
+      );
   let description = "";
   try {
     const parsedDescription = JSON.parse(product.description);
@@ -90,6 +98,8 @@ const Product = () => {
                 alt={`${product.name} view ${index + 1}`}
                 className="w-full h-full object-cover transition-transform cursor-pointer"
                 onClick={() => setIsLightboxOpen(true)}
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchpriority={index === 0 ? "high" : "auto"}
               />
             </div>
           ))}
@@ -115,12 +125,7 @@ const Product = () => {
 
       {/* Mobile Layout */}
       <div className="md:hidden">
-        <div
-          className="relative h-[90vh] overflow-hidden"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          ref={slideRef}
-        >
+        <div className="relative h-[90vh] overflow-hidden">
           <div className="h-full relative">
             {images.map((image, index) => (
               <div
@@ -137,6 +142,8 @@ const Product = () => {
                   src={image}
                   alt={`${product.name} view ${index + 1}`}
                   className="w-full h-full object-cover"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  fetchpriority={index === 0 ? "high" : "auto"}
                 />
               </div>
             ))}
@@ -287,9 +294,11 @@ const ProductInfo = ({
             <select
               className="w-full py-2 bg-white text-xs text-black border border-black hover:bg-white hover:text-black transition-colors appearance-none px-2"
               onChange={(e) => setSelectedSize(e.target.value)}
+              value={selectedSize}
+              defaultValue=""
             >
-              <option className="text-black bg-white" value="" disabled>
-                SIZES
+              <option className="text-black bg-white" value="" disabled selected>
+                SELECT SIZE
               </option>
               {sizes?.map((size) => (
                 <option

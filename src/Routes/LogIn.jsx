@@ -106,12 +106,13 @@ const LogIn = () => {
           </div>
           <div className="absolute top-40 right-60  hidden md:block w-full lg:w-1/5 h-full">
             <video
-              src="https://res.cloudinary.com/dmjhto8sd/video/upload/v1739850601/B444A4EE-6BBA-437C-947E-155D4BE435FD_xrt6pf.mp4"
+              src="https://res.cloudinary.com/dmjhto8sd/video/upload/q_auto:best,f_auto/v1739850601/B444A4EE-6BBA-437C-947E-155D4BE435FD_xrt6pf.mp4"
               autoPlay
               muted
               playsInline
               loop
               className="w-max object-fill"
+              preload="auto"
             />
           </div>
         </div>

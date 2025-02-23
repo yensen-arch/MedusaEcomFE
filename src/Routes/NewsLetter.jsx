@@ -77,13 +77,13 @@ const NewsLetter = () => {
       </div>
       <div className="hidden md:block w-full lg:w-2/5 h-full">
         <video
-          src="https://res.cloudinary.com/dmjhto8sd/video/upload/v1739850601/B444A4EE-6BBA-437C-947E-155D4BE435FD_xrt6pf.mov "
-          alt="Clothd fashion"
+          src="https://res.cloudinary.com/dmjhto8sd/video/upload/q_auto:best,f_auto/v1739850601/B444A4EE-6BBA-437C-947E-155D4BE435FD_xrt6pf.mp4"
           autoPlay
           muted
           playsInline
           loop
           className="w-max object-fill"
+          preload="auto"
         />
       </div>
     </div>

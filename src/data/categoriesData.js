@@ -4,12 +4,12 @@ import { width } from "@mui/system";
 const getOptimizedUrl = (originalUrl) => {
   if (!originalUrl.includes('cloudinary.com')) return originalUrl;
   
-  // Extract the version and public ID from the URL
   const parts = originalUrl.split('/upload/');
   if (parts.length !== 2) return originalUrl;
 
   const baseUrl = parts[0] + '/upload';
-  const transformations = 'c_fill,g_auto,q_auto,f_auto,w_1280'; // crop:fill, gravity:auto, quality:auto, format:auto, width:1280
+  // Increased width and added dpr_auto for better resolution on high-DPI displays
+  const transformations = 'c_fill,g_auto,q_auto:best,f_auto,w_1920,dpr_auto'; 
   
   return `${baseUrl}/${transformations}/${parts[1]}`;
 };
@@ -22,7 +22,8 @@ const getMobileOptimizedUrl = (originalUrl) => {
   if (parts.length !== 2) return originalUrl;
 
   const baseUrl = parts[0] + '/upload';
-  const transformations = 'c_fill,g_auto,q_auto,f_auto,w_640'; // quality:auto, format:auto, width:640
+  // Increased mobile width and added dpr_auto
+  const transformations = 'c_fill,g_auto,q_auto:best,f_auto,w_828,dpr_auto';
   
   return `${baseUrl}/${transformations}/${parts[1]}`;
 };
@@ -32,12 +33,12 @@ export const categories = {
     {
       path: "v00",
       img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/main_minified_dvrel3.webp"),
-      productId: "UHJvZHVjdDoxNjA=",
+      productId: "UHJvZHVjdDox",
     },
     {
       path: "v00",
       img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/second-minified_wkqogr.webp"),
-      productId: "UHJvZHVjdDoxNjA=",
+      productId: "UHJvZHVjdDox",
     },
     { type: "footer" },
   ],
