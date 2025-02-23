@@ -4,7 +4,7 @@ import CustomLoader from "../CustomLoader";
 
 const CartTab = ({ cartData, cartLoading, cartError }) => {
   return (
-    <div className="space-y-4 ">
+    <div className="space-y-4 p-2">
       {cartLoading ? (
         <p className="text-sm text-center">
           <CustomLoader />
@@ -16,12 +16,14 @@ const CartTab = ({ cartData, cartLoading, cartError }) => {
       ) : cartData?.checkout?.lines?.length > 0 ? (
         <ul className="space-y-4">
           {cartData.checkout.lines.map((item) => (
-            <li key={item.id} className="text-sm border-b pb-2">
-              <div className="flex justify-between items-center">
+            <li key={item.id} className="text-sm border-b border-black pb-2">
+              <div
+                className="flex justify-between items-center p-2 "
+              >
                 <img
                   src={item.variant.product.thumbnail.url}
                   alt={item.variant.product.thumbnail.alt || "Product Image"}
-                  className="w-16 h-16 object-cover rounded"
+                  className="w-16 h-16 object-cover border border-black"
                 />
                 <div className="ml-4">
                   <p className="font-medium uppercase">
@@ -43,7 +45,7 @@ const CartTab = ({ cartData, cartLoading, cartError }) => {
               </div>
             </li>
           ))}
-          <div className="pt-4 border-t">
+          <div className="pt-4 border-t border-black">
             <p className="text-xs font-medium flex justify-between">
               <span>TOTAL:</span>
               <span>${cartData.checkout.totalPrice.gross.amount}</span>

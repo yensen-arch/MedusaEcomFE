@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -29,7 +28,6 @@ const Navbar = ({
   const [lastScrollY, setLastScrollY] = useState(0);
   const [hovered, setHovered] = useState(null);
   const disabledCategories = ["WOMEN", "MEN", "ARCHIVE"]; //for the 1st drop
-
   const currentItem =
     categories?.[activeCategory]?.[swiperRef?.current?.swiper?.activeIndex];
   const logoUrl = currentItem?.video

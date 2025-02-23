@@ -276,7 +276,7 @@ const ProductInfo = ({
       </p>
       <div className="w-[90%] md:w-[80%] lg:w-[90%]">
         <div
-          dangerouslySetInnerHTML={{ __html: description.toUpperCase()  }}
+          dangerouslySetInnerHTML={{ __html: description.toUpperCase() }}
           className="text-xs py-4"
         />
         <div className="flex flex-col items-center space-y-2 ">
@@ -322,8 +322,8 @@ const ProductInfo = ({
             to="/checkout"
             className="w-full text-center py-2 bg-black text-xs text-white hover:bg-white hover:text-black border hover:border-black transition-colors"
           >
-             BUY NOW
-            </Link>
+            BUY NOW
+          </Link>
         </div>
 
         <div className="space-y-4 pt-6 text-xs uppercase">
@@ -364,6 +364,9 @@ const ProductInfo = ({
             content="HAND WASH IN COLD WATER. DO NOT BLEACH. LAY FLAT TO DRY. IRON ON LOW HEAT IF NEEDED. STORE IN A COOL, DRY PLACE."
           />
         </div>
+      </div>
+      <div className=" uppercase bg-green-100 border border-black text-[0.6rem] p-2">
+        Every purchase equals 1 donated item
       </div>
     </div>
   );

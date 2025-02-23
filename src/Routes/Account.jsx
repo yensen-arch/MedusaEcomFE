@@ -113,7 +113,7 @@ const Account = () => {
           </div>
 
           {loading ? (
-            <div className="flex justify-center items-center h-80">
+            <div className="flex justify-center items-center ">
               <CustomLoader />
             </div>
           ) : error && !error.message.includes("Signature has expired") ? (
@@ -122,15 +122,15 @@ const Account = () => {
             </div>
           ) : (
             <>
-              {activeTab === "orders" && <OrdersTab />}
-              {activeTab === "account" && <AccountTab userData={userData} />}
-              {activeTab === "cart" && (
-                <CartTab
-                  cartData={cartData}
-                  cartLoading={cartLoading}
-                  cartError={cartError}
-                />
-              )}
+                {activeTab === "orders" && <OrdersTab />}
+                {activeTab === "account" && <AccountTab userData={userData} />}
+                {activeTab === "cart" && (
+                  <CartTab
+                    cartData={cartData}
+                    cartLoading={cartLoading}
+                    cartError={cartError}
+                  />
+                )}
             </>
           )}
         </div>

@@ -33,47 +33,88 @@ const OrdersTab = () => {
   const generatePDF = (order) => {
     const doc = new jsPDF();
 
-    doc.text("Order Summary", 20, 20);
+    // Green Background for Logo
+    doc.setFillColor(0, 255, 0);
+    doc.rect(0, 10, doc.internal.pageSize.getWidth(), 15, "F");
 
-    doc.text(`Order #: ${order.number}`, 20, 30);
-    doc.text(`Status: ${order.status}`, 20, 40);
-    doc.text(`Placed on: ${new Date(order.created).toLocaleDateString()}`, 20, 50);
-    doc.text(`Total: ${order.total.gross.amount} ${order.total.gross.currency}`, 20, 60);
-    doc.text(`Payment Status: ${order.paymentStatus}`, 20, 70);
-    doc.text(`Payment Gateway: ${order.payments[0]?.gateway}`, 20, 80);
+    // Company Name
+    doc.setFontSize(24);
+    doc.setFont("courier", "bold");
+    doc.text("Clothd.co", 105, 20, { align: "center" });
 
-    doc.text("Shipping Address:", 20, 90);
+    // Order Summary
+    doc.setFontSize(16);
+    doc.setFont("courier", "normal");
+    doc.text("ORDER SUMMARY", 105, 35, { align: "center" });
+
+    // Order Details
+    doc.setFontSize(12);
+    doc.text(`ORDER #: ${order.number.toString().toUpperCase()}`, 20, 50);
+    doc.text(`STATUS: ${order.status.toUpperCase()}`, 20, 60);
     doc.text(
-      `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
+      `PLACED ON: ${new Date(order.created)
+        .toLocaleDateString()
+        .toUpperCase()}`,
+      20,
+      70
+    );
+    doc.text(
+      `TOTAL: ${order.total.gross.amount} ${order.total.gross.currency}`.toUpperCase(),
+      20,
+      80
+    );
+    doc.text(`PAYMENT STATUS: ${order.paymentStatus.toUpperCase()}`, 20, 90);
+    doc.text(
+      `PAYMENT GATEWAY: ${order.payments[0]?.gateway.toUpperCase()}`,
       20,
       100
     );
-    doc.text(order.shippingAddress.streetAddress1, 20, 110);
+
+    // Shipping Address
+    doc.setFont("courier", "bold");
+    doc.text("SHIPPING ADDRESS:", 20, 115);
+    doc.setFont("courier", "normal");
     doc.text(
-      `${order.shippingAddress.city}, ${order.shippingAddress.postalCode}`,
+      `${order.shippingAddress.firstName.toUpperCase()} ${order.shippingAddress.lastName.toUpperCase()}`,
       20,
-      120
+      125
     );
-    doc.text(order.shippingAddress.country.country, 20, 130);
+    doc.text(order.shippingAddress.streetAddress1.toUpperCase(), 20, 135);
+    doc.text(
+      `${order.shippingAddress.city.toUpperCase()}, ${order.shippingAddress.postalCode.toUpperCase()}`,
+      20,
+      145
+    );
+    doc.text(order.shippingAddress.country.country.toUpperCase(), 20, 155);
 
-    doc.text("Items:", 20, 150);
-
-    let y = 160;
+    // Items List
+    doc.setFont("courier", "bold");
+    doc.text("ITEMS:", 20, 170);
+    doc.setFont("courier", "normal");
+    let y = 180;
     order.lines.forEach((item) => {
-      doc.text(`${item.productName} x ${item.quantity}`, 20, y);
+      doc.text(`${item.productName.toUpperCase()} X ${item.quantity}`, 20, y);
       doc.text(
-        `${item.unitPrice.gross.amount} ${item.unitPrice.gross.currency}`,
-        140,
-        y
+        `${item.unitPrice.gross.amount} ${item.unitPrice.gross.currency}`.toUpperCase(),
+        160,
+        y,
+        { align: "right" }
       );
       y += 10;
     });
 
+    // Footer
+    doc.setFontSize(10);
+    doc.text("WELCOME TO THE CLOTHD.CO FAMILY", 105, y + 20, {
+      align: "center",
+    });
+
+    // Save PDF
     doc.save(`order-${order.number}.pdf`);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-80 space-y-6">
+    <div className="flex flex-col items-center justify-center">
       {orders.length === 0 ? (
         <>
           <h2 className="text-xs">NO ORDERS YET</h2>
@@ -85,41 +126,48 @@ const OrdersTab = () => {
           </Link>
         </>
       ) : (
-        <div className="w-full space-y-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 h-80">
+        <div
+          className="w-full overflow-y-auto h-[32rem]"
+          style={{
+            scrollbarWidth: "none" /* Firefox */,
+            msOverflowStyle: "none" /* IE/Edge */,
+          }}
+          onScroll={(e) => (e.currentTarget.style.scrollbarWidth = "none")}
+        >
           {orders.map(({ node }) => (
-            <div
-              key={node.id}
-              className="border border-gray-300 p-4 rounded shadow-sm"
-            >
-              <h3 className="text-sm font-bold">Order #{node.number}</h3>
-              <p className="text-xs">Status: {node.status}</p>
+            <div key={node.id} className="border border-black px-2">
+              <h3 className="text-sm font-bold">ORDER #{node.number}</h3>
+              <p className="text-xs">STATUS: {node.status}</p>
               <p className="text-xs">
-                Placed on: {new Date(node.created).toLocaleDateString()}
+                PLACED ON: {new Date(node.created).toLocaleDateString()}
               </p>
               <p className="text-xs mb-2">
-                Total: {node.total.gross.amount} {node.total.gross.currency}
+                TOTAL: {node.total.gross.amount} {node.total.gross.currency}
               </p>
-              <div className="mt-2 space-y-2">
-                <h4 className="text-xs font-semibold">Items:</h4>
+              <div className="mt-2 p-2">
+                <h4 className="text-xs font-semibold">ITEMS:</h4>
                 {node.lines.map((line, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between"
                   >
                     <p className="text-sm">
-                      {line.productName} x {line.quantity} — {line.unitPrice.gross.amount} {line.unitPrice.gross.currency}
+                      {line.productName} x {line.quantity} —{" "}
+                      {line.unitPrice.gross.amount}{" "}
+                      {line.unitPrice.gross.currency}
                     </p>
                     <img
                       src={line.variant.product.thumbnail.url}
                       alt={line.productName}
-                      className="w-16 h-16 object-cover rounded border"
+                      className="w-16 h-16 object-cover  border border-black"
                     />
                   </div>
                 ))}
               </div>
+
               <button
                 onClick={() => generatePDF(node)}
-                className="mt-3 px-4 py-2 text-xs bg-black text-white hover:bg-white hover:text-black border border-black transition-colors"
+                className="my-3 px-4 py-2 text-xs bg-black text-white hover:bg-white hover:text-black border border-black transition-colors"
               >
                 DOWNLOAD
               </button>
