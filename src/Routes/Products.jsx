@@ -276,7 +276,7 @@ const ProductInfo = ({
       </p>
       <div className="w-[90%] md:w-[80%] lg:w-[90%]">
         <div
-          dangerouslySetInnerHTML={{ __html: description }}
+          dangerouslySetInnerHTML={{ __html: description.toUpperCase()  }}
           className="text-xs py-4"
         />
         <div className="flex flex-col items-center space-y-2 ">

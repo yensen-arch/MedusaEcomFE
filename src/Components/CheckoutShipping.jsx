@@ -4,7 +4,7 @@ import {
   GET_SHIPPING_METHODS,
   CHECKOUT_SHIPPING_ADDRESS_UPDATE,
 } from "../graphql/queries";
-import { getStateFromZip } from "../utils/constants";  // Update this import
+import { getStateFromZip } from "../utils/constants";
 
 export default function CheckoutShipping({
   activeSection,
@@ -14,6 +14,8 @@ export default function CheckoutShipping({
   setBillingAddress,
 }) {
   const [selectedMethod, setSelectedMethod] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  
   useEffect(() => {
     if (selectedMethod) setShippingMethodId(selectedMethod.id);
   }, [selectedMethod]);
@@ -25,13 +27,15 @@ export default function CheckoutShipping({
     streetAddress2: "",
     city: "",
     postalCode: "",
-    country: "US", // Default to US
+    country: "US",
     countryArea: "",
     phone: "",
   });
+  
   useEffect(() => {
     if (address) setBillingAddress(address);
-  }, [address]); //for the payment component
+  }, [address]);
+  
   const [addressError, setAddressError] = useState("");
   const [shippingMethods, setShippingMethods] = useState([]);
   const checkoutId =
@@ -49,11 +53,9 @@ export default function CheckoutShipping({
     setAddress((prev) => {
       const newAddress = { ...prev, [name]: value };
       if (name === "country") {
-        // Reset postal code and state when country changes
         newAddress.postalCode = "";
         newAddress.countryArea = "";
       } else if (name === "postalCode") {
-        // Auto-fill state/province for both US and Canadian addresses
         const state = getStateFromZip(value);
         newAddress.countryArea = state || prev.countryArea;
       }
@@ -81,7 +83,6 @@ export default function CheckoutShipping({
       return false;
     }
 
-    // Validate phone number format (should start with + and contain only numbers)
     if (!address.phone.startsWith("+")) {
       setAddressError("Phone number must start with +");
       return false;
@@ -99,6 +100,8 @@ export default function CheckoutShipping({
     if (!validateAddress()) {
       return;
     }
+
+    setIsLoading(true);
 
     try {
       const response = await updateShippingAddress({
@@ -128,11 +131,13 @@ export default function CheckoutShipping({
     } catch (error) {
       setAddressError(error.message || "Error updating shipping address");
       console.error("Error updating shipping address:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <section className="border-b border-gray-200 pb-6">
+    <section className="border-b border-black pb-6">
       <div className="flex items-center gap-4">
         <h2
           className={
@@ -144,7 +149,7 @@ export default function CheckoutShipping({
         {activeSection !== "shipping" && activeSection === "payment" && (
           <button
             onClick={() => setActiveSection("shipping")}
-            className="text-sm text-gray-500 hover:text-black"
+            className="text-sm uppercase text-gray-500 hover:text-black"
           >
             Edit
           </button>
@@ -163,7 +168,7 @@ export default function CheckoutShipping({
             <input
               type="text"
               placeholder="First Name *"
-              className="border border-gray-300 p-3"
+              className="border border-black p-3"
               name="firstName"
               value={address.firstName}
               onChange={handleAddressChange}
@@ -171,7 +176,7 @@ export default function CheckoutShipping({
             <input
               type="text"
               placeholder="Last Name *"
-              className="border border-gray-300 p-3"
+              className="border border-black p-3"
               name="lastName"
               value={address.lastName}
               onChange={handleAddressChange}
@@ -179,7 +184,7 @@ export default function CheckoutShipping({
             <input
               type="text"
               placeholder="Address Line 1 *"
-              className="col-span-2 border border-gray-300 p-3"
+              className="col-span-2 border border-black p-3"
               name="streetAddress1"
               value={address.streetAddress1}
               onChange={handleAddressChange}
@@ -187,26 +192,27 @@ export default function CheckoutShipping({
             <input
               type="text"
               placeholder="Address Line 2 (Optional)"
-              className="col-span-2 border border-gray-300 p-3"
+              className="col-span-2 border border-black p-3"
               name="streetAddress2"
               value={address.streetAddress2}
               onChange={handleAddressChange}
             />
             <select
-              className="border border-gray-300 p-3"
+              className="border border-black p-3 bg-white"
               name="country"
               value={address.country}
               onChange={handleAddressChange}
             >
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              {/* Add more countries as needed */}
+              <option value="US">UNITED STATES</option>
+              <option value="CA">CANADA</option>
             </select>
 
             <input
               type="text"
-              placeholder={address.country === "US" ? "ZIP Code *" : "Postal Code *"}
-              className="border border-gray-300 p-3"
+              placeholder={
+                address.country === "US" ? "ZIP Code *" : "Postal Code *"
+              }
+              className="border border-black p-3"
               name="postalCode"
               value={address.postalCode}
               onChange={handleAddressChange}
@@ -214,7 +220,7 @@ export default function CheckoutShipping({
             <input
               type="text"
               placeholder="City *"
-              className="border border-gray-300 p-3"
+              className="border border-black p-3"
               name="city"
               value={address.city}
               onChange={handleAddressChange}
@@ -223,14 +229,14 @@ export default function CheckoutShipping({
               type="text"
               readOnly
               placeholder={address.country === "US" ? "State *" : "Province *"}
-              className="border border-gray-300 p-3 bg-gray-50"
+              className="border border-black p-3 bg-gray-50"
               name="countryArea"
               value={address.countryArea}
             />
             <input
               type="text"
               placeholder="Phone Number * (e.g., +11234567890)"
-              className="col-span-2 border border-gray-300 p-3"
+              className="col-span-2 border border-black p-3"
               name="phone"
               value={address.phone}
               onChange={handleAddressChange}
@@ -238,9 +244,10 @@ export default function CheckoutShipping({
           </div>
           <button
             onClick={handleAddressUpdate}
-            className="w-full bg-black text-white py-3 hover:bg-black/90"
+            disabled={isLoading}
+            className="w-full bg-black text-white py-3 hover:bg-black/90 disabled:bg-gray-500 disabled:cursor-not-allowed"
           >
-            CONTINUE TO DELIVERY
+            {isLoading ? "PROCESSING..." : "CONTINUE TO DELIVERY"}
           </button>
         </div>
       )}
@@ -252,7 +259,7 @@ export default function CheckoutShipping({
             {shippingMethods.map((method) => (
               <label
                 key={method.id}
-                className="block border border-gray-200 p-4 cursor-pointer"
+                className="block border border-black p-4 cursor-pointer"
               >
                 <div className="flex items-start gap-3">
                   <input
@@ -284,7 +291,7 @@ export default function CheckoutShipping({
 
           <button
             onClick={() => handleContinue("shipping")}
-            className="w-full bg-black text-white py-3 hover:bg-black/90 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="w-full bg-black text-white py-3 hover:bg-black/90 disabled:bg-gray-500 disabled:cursor-not-allowed"
             disabled={!selectedMethod}
           >
             CONTINUE TO PAYMENT

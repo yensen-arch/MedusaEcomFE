@@ -102,9 +102,9 @@ function Checkout() {
             {activeSection !== "email" && email && (
               <button
                 onClick={() => setActiveSection("email")}
-                className="text-xs text-gray-500 hover:text-black"
+                className="text-xs uppercase text-gray-500 hover:text-black"
               >
-                Edit
+                EDIT
               </button>
             )}
           </div>
@@ -124,7 +124,7 @@ function Checkout() {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-gray-300 p-3"
+                  className="w-full border border-black p-3"
                   required
                 />
               </div>
