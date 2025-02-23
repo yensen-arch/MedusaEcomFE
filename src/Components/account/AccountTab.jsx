@@ -21,7 +21,7 @@ const AccountTab = ({ userData }) => {
       const { data } = await requestReset({
         variables: {
           email: userData?.email,
-          redirectUrl: "https://yourfrontend.com/reset-password",
+          redirectUrl: "https://clothd.co/reset-password",
         },
       });
       if (data.requestPasswordReset.errors.length) {
