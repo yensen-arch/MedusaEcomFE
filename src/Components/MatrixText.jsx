@@ -13,8 +13,8 @@ const MatrixText = ({ originalText, finalText, isHovering }) => {
     if (isHovering) {
       hoverTimeout = setTimeout(() => {
         const animateText = async () => {
-          const iterations = 1;
-          const delay = 20;
+          const iterations = 3;
+          const delay = 10;
           const maxLength = Math.max(originalText.length, finalText.length);
 
           if (originalText.length < finalText.length) {

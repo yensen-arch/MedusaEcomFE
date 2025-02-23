@@ -3,6 +3,7 @@ import { useState } from "react";
 import Navbar from "./Components/Navbar";
 import AllRoutes from "./Routes/AllRoutes";
 import "swiper/css/bundle";
+
 function App() {
   const [activeCategory, setActiveCategory] = useState("WOMAN");
   const categoryNames = ["WOMAN", "MAN", "KIDS", "BEAUTY"];
