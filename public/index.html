@@ -10,7 +10,13 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-
+    <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "qe4i7lpqcf");
+    </script>
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -26,19 +32,34 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Clothd</title>
+    <!-- Add these lines near the top of head -->
+    <head>
+        <!-- Add these at the very top of head -->
+        <link 
+            rel="preload" 
+            as="image" 
+            href="https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/main_minified_dvrel3.webp" 
+            type="image/webp"
+            fetchpriority="high"
+        />
+        
+        <!-- Add preconnect for domains -->
+        <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://js.stripe.com" crossorigin />
+        <link rel="dns-prefetch" href="https://js.stripe.com" />
+    </head>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <!-- Move Clarity script here and add defer -->
+    <script defer type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "qe4i7lpqcf");
+    </script>
   </body>
 </html>

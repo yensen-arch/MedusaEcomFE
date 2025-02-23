@@ -1,20 +1,46 @@
+import { width } from "@mui/system";
+
+// Helper function to generate optimized Cloudinary URLs
+// Update the optimization parameters
+const getOptimizedUrl = (originalUrl) => {
+  if (!originalUrl.includes('cloudinary.com')) return originalUrl;
+  
+  const parts = originalUrl.split('/upload/');
+  if (parts.length !== 2) return originalUrl;
+
+  const baseUrl = parts[0] + '/upload';
+  const transformations = 'c_fill,g_auto,q_auto:best,f_auto,w_1920,dpr_auto,fl_progressive:steep/'; 
+  
+  return `${baseUrl}/${transformations}/${parts[1]}`;
+};
+
+// Helper function for mobile images
+const getMobileOptimizedUrl = (originalUrl) => {
+  if (!originalUrl.includes('cloudinary.com')) return originalUrl;
+  
+  const parts = originalUrl.split('/upload/');
+  if (parts.length !== 2) return originalUrl;
+
+  const baseUrl = parts[0] + '/upload';
+  const transformations = 'c_fill,g_auto,q_auto:best,f_auto,w_828,dpr_auto,fl_progressive:steep';
+  
+  return `${baseUrl}/${transformations}/${parts[1]}`;
+};
+
 export const categories = {
   V00: [
     {
       path: "v00",
-      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740198936/V00-Main_zsfrgn.webp",
-      productId: "UHJvZHVjdDoxNjA=",
+      img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/main_minified_dvrel3.webp"),
+      productId: "UHJvZHVjdDox",
+      priority: true,
+      preload: true
     },
     {
       path: "v00",
-      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740201635/main-3_oio6zu.webp",
-      productId: "UHJvZHVjdDoxNjA=",
+      img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/second-minified_wkqogr.webp"),
+      productId: "UHJvZHVjdDox",
     },
-    // {
-    //   video:
-    //     "https://res.cloudinary.com/dzsxh31vj/video/upload/v1737381101/gett0nihpxj7tgkg4tg3.mp4",
-    //   productId: "UHJvZHVjdDoxNjA=",
-    // },
     { type: "footer" },
   ],
   // WOMEN: [
@@ -74,12 +100,14 @@ export const categoriesMobile = {
   V00: [
     {
       path: "v00",
-      img: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023164/IMG_7134_gypfm4.jpg",
+      img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023164/IMG_7134_gypfm4.jpg"),
       productId: "UHJvZHVjdDoxNjA=",
+      priority: true,
+      preload: true
     },
     {
-      video:
-        "https://res.cloudinary.com/dmjhto8sd/video/upload/v1740108755/B444A4EE-6BBA-437C-947E-155D4BE435FD_keoyu7.mp4",
+      video: getMobileOptimizedUrl(
+        "https://res.cloudinary.com/dmjhto8sd/video/upload/v1740108755/B444A4EE-6BBA-437C-947E-155D4BE435FD_keoyu7.mp4"),
       productId: "UHJvZHVjdDoxNjA=",
     },
     { type: "footer" },

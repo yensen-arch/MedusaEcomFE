@@ -4,7 +4,7 @@ import {
   GET_SHIPPING_METHODS,
   CHECKOUT_SHIPPING_ADDRESS_UPDATE,
 } from "../graphql/queries";
-import { zipToStateMap } from "../utils/constants";
+import { getStateFromZip } from "../utils/constants";  // Update this import
 
 export default function CheckoutShipping({
   activeSection,
@@ -25,7 +25,7 @@ export default function CheckoutShipping({
     streetAddress2: "",
     city: "",
     postalCode: "",
-    country: "US",
+    country: "US", // Default to US
     countryArea: "",
     phone: "",
   });
@@ -48,9 +48,14 @@ export default function CheckoutShipping({
     const { name, value } = e.target;
     setAddress((prev) => {
       const newAddress = { ...prev, [name]: value };
-      // Update countryArea (state) if postalCode changes
-      if (name === "postalCode") {
-        newAddress.countryArea = zipToStateMap[value] || prev.countryArea;
+      if (name === "country") {
+        // Reset postal code and state when country changes
+        newAddress.postalCode = "";
+        newAddress.countryArea = "";
+      } else if (name === "postalCode") {
+        // Auto-fill state/province for both US and Canadian addresses
+        const state = getStateFromZip(value);
+        newAddress.countryArea = state || prev.countryArea;
       }
       return newAddress;
     });
@@ -187,9 +192,20 @@ export default function CheckoutShipping({
               value={address.streetAddress2}
               onChange={handleAddressChange}
             />
+            <select
+              className="border border-gray-300 p-3"
+              name="country"
+              value={address.country}
+              onChange={handleAddressChange}
+            >
+              <option value="US">United States</option>
+              <option value="CA">Canada</option>
+              {/* Add more countries as needed */}
+            </select>
+
             <input
               type="text"
-              placeholder="ZIP Code *"
+              placeholder={address.country === "US" ? "ZIP Code *" : "Postal Code *"}
               className="border border-gray-300 p-3"
               name="postalCode"
               value={address.postalCode}
@@ -206,7 +222,7 @@ export default function CheckoutShipping({
             <input
               type="text"
               readOnly
-              placeholder="State *"
+              placeholder={address.country === "US" ? "State *" : "Province *"}
               className="border border-gray-300 p-3 bg-gray-50"
               name="countryArea"
               value={address.countryArea}

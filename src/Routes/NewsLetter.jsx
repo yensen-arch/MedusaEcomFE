@@ -2,14 +2,60 @@ import React, { useState } from 'react'
 
 const NewsLetter = () => {
   const [email, setEmail] = useState("");
+  const [interests, setInterests] = useState([]);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   }
 
-  const handleSubscribe = (e) => {
+  const handleInterestChange = (interest) => {
+    setInterests(prev => 
+      prev.includes(interest)
+        ? prev.filter(i => i !== interest)
+        : [...prev, interest]
+    );
+  }
+
+  const handleSubscribe = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted:", { email });
+    if (!email || !acceptTerms) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch('https://mail.clothd.co/api/v1/lists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer W4zfWnJj9kcpMXfr6U23kJICVknttlOH26a0zkZZX2COJRrI1s3TCm2KWyUX'
+        },
+        body: JSON.stringify({
+          EMAIL: email,
+          INTERESTS: interests.join(','),
+          ACCEPTS_MARKETING: acceptTerms
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Subscription failed');
+      }
+
+      setEmail("");
+      setInterests([]);
+      setAcceptTerms(false);
+      alert("Successfully subscribed to newsletter!");
+    } catch (err) {
+      setError("Failed to subscribe. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   const handleUnsubscribe = (e) => {
@@ -28,15 +74,23 @@ const NewsLetter = () => {
         </div>
         <div className='mt-20 text-[0.8rem]'>
           <form>
+            {error && <p className="text-red-500 mb-4">{error}</p>}
             <input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={handleEmailChange}
-              className="w-full max-w-md px-3 py-2 border border-gray-300  focus:outline-none"
+              className="w-full max-w-md px-3 py-2 border border-gray-300 focus:outline-none"
+              required
             />
             <div className="flex items-center space-x-2 font-aboutUs font-light mt-8">
-              <input type="checkbox" id="terms" className="rounded text-blue-600 focus:ring-blue-500" />
+              <input 
+                type="checkbox" 
+                id="terms" 
+                checked={acceptTerms}
+                onChange={(e) => setAcceptTerms(e.target.checked)}
+                className="rounded text-blue-600 focus:ring-blue-500" 
+              />
               <label htmlFor="terms" className="text-[0.8rem]">
                 I accept the terms and conditions
               </label>
@@ -49,6 +103,8 @@ const NewsLetter = () => {
                     <input
                       type="checkbox"
                       id={option.toLowerCase()}
+                      checked={interests.includes(option)}
+                      onChange={() => handleInterestChange(option)}
                       className="rounded text-blue-600 focus:ring-blue-500"
                     />
                     <label htmlFor={option.toLowerCase()} className="text-[0.8rem]">
@@ -58,12 +114,14 @@ const NewsLetter = () => {
                 ))}
               </div>
             </div>
+
             <div className='my-16 flex flex-col gap-8 w-[50%]'>
               <button
                 onClick={handleSubscribe}
-                className="text-black px-6 py-2  border-[0.5px] border-black focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                disabled={loading}
+                className="text-black px-6 py-2 border-[0.5px] border-black focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50"
               >
-                Subscribe
+                {loading ? 'Subscribing...' : 'Subscribe'}
               </button>
               <button
                 onClick={handleUnsubscribe}
@@ -77,13 +135,13 @@ const NewsLetter = () => {
       </div>
       <div className="hidden md:block w-full lg:w-2/5 h-full">
         <video
-          src="https://res.cloudinary.com/dmjhto8sd/video/upload/v1739850601/B444A4EE-6BBA-437C-947E-155D4BE435FD_xrt6pf.mov "
-          alt="Clothd fashion"
+          src="https://res.cloudinary.com/dmjhto8sd/video/upload/q_auto:best,f_auto/v1739850601/B444A4EE-6BBA-437C-947E-155D4BE435FD_xrt6pf.mp4"
           autoPlay
           muted
           playsInline
           loop
           className="w-max object-fill"
+          preload="auto"
         />
       </div>
     </div>
