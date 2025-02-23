@@ -1,16 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { REFRESH_TOKEN_MUTATION, GET_CART_ITEMS } from "../graphql/queries";
 import CheckoutPayment from "../Components/CheckoutPayment";
 import CheckoutShipping from "../Components/CheckoutShipping";
 import CustomLoader from "../Components/CustomLoader";
-
+import { GET_USER_QUERY } from "../graphql/queries";
 function Checkout() {
   const [activeSection, setActiveSection] = useState("email");
   const [email, setEmail] = useState("");
   const [shippingMethodId, setShippingMethodId] = useState(null);
   const [billingAddress, setBillingAddress] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const { userLoading, userEmail, userData } = useQuery(GET_USER_QUERY, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    },
+    onCompleted: (data) => {
+      if (data?.me?.email) setEmail(data.me.email);
+    },
+  });
 
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -86,9 +96,9 @@ function Checkout() {
       {/* Main Checkout Form */}
       <main className="p-8 max-w-[800px] mx-auto w-full space-y-4">
         {/* Email Section */}
-        <section className="border-b border-gray-200 pb-6">
+        <section className="border-b border-black pb-6">
           <div className="flex items-center gap-4 mb-4">
-            <h2 className="font-medium">1. EMAIL</h2>
+            <h2 className="font-sm  ">1. EMAIL</h2>
             {activeSection !== "email" && email && (
               <button
                 onClick={() => setActiveSection("email")}
@@ -101,17 +111,13 @@ function Checkout() {
 
           {activeSection === "email" ? (
             <div className="space-y-4">
-              <p className="text-xs text-gray-600">
-                Please enter your email address to log in or checkout as guest.
-                If you would like to create an account, you will be able to do
-                it later.
+              <p className="text-xs uppercase text-gray-600">
+                Please enter your email address. If you would like to create an
+                account, you will be able to do it later.
               </p>
               <div className="space-y-1">
-                <div className="flex justify-between text-xs">
-                  <label htmlFor="email">
-                    Email Address (for order updates)
-                  </label>
-                  <span className="text-gray-500">*required</span>
+                <div className="flex justify-between text-xs uppercase">
+                  <span className="text-gray-500 text-xs">*required</span>
                 </div>
                 <input
                   type="email"
@@ -156,10 +162,10 @@ function Checkout() {
       </main>
 
       {/* Order Summary Sidebar */}
-      <aside className="border-l border-gray-200 p-6 bg-white">
+      <aside className="border-l border-black p-6 bg-white">
         <div className="space-y-6">
           <h2 className="font-medium">ORDER SUMMARY</h2>
-          <div className="space-y-4 border-b border-gray-200 pb-6">
+          <div className="space-y-4 border-b border-black pb-6">
             {data?.checkout?.lines?.map((item) => (
               <div key={item.id} className="flex gap-4">
                 {item.variant.product.thumbnail?.url && (
@@ -185,7 +191,7 @@ function Checkout() {
             ))}
           </div>
 
-          <div className="space-y-2 border-b border-gray-200 pb-6">
+          <div className="space-y-2 border-b border-black pb-6">
             <div className="flex justify-between text-xs">
               <span>SUBTOTAL</span>
               <span>
@@ -209,7 +215,7 @@ function Checkout() {
             </div>
           </div>
 
-          <ul className="space-y-2 text-xs">
+          <ul className="space-y-2 text-xs uppercase">
             <li>Free shipping, returns and exchanges</li>
             <li>30 days free return</li>
             <li>30 days free online exchange</li>
@@ -220,15 +226,34 @@ function Checkout() {
             <p className="font-medium text-center text-xs">WE ACCEPT</p>
             <div className="flex justify-center gap-2">
               {[
-                "visa",
-                "mastercard",
-                "amex",
-                "paypal",
-                "klarna",
-                "bitpay",
-                "apple-pay",
+                {
+                  name: "visa",
+                  url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg",
+                },
+                {
+                  name: "mastercard",
+                  url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg",
+                },
+                {
+                  name: "amex",
+                  url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/americanexpress.svg",
+                },
+                {
+                  name: "paypal",
+                  url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg",
+                },
+
+                {
+                  name: "apple-pay",
+                  url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/applepay.svg",
+                },
               ].map((payment) => (
-                <div key={payment} className="w-10 h-6 bg-black" />
+                <img
+                  key={payment.name}
+                  src={payment.url}
+                  alt={payment.name}
+                  className="w-10 h-6 object-contain"
+                />
               ))}
             </div>
           </div>

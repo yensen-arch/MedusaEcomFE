@@ -14,7 +14,8 @@ import {
   FiChevronLeft,
   FiChevronRight,
 } from "react-icons/fi";
-
+import CustomLoader from "../Components/CustomLoader";
+import { Link } from "react-router-dom";
 const Product = () => {
   const { productId } = useParams();
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
@@ -27,17 +28,20 @@ const Product = () => {
         ?.values[0]?.name
   );
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(false);
   const [isShippingOpen, setIsShippingOpen] = useState(false);
   const [isCareOpen, setIsCareOpen] = useState(false);
-  const slideRef = useRef(null);
   const [touchStart, setTouchStart] = useState(0);
   const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
   const [addToNewCart, { loading: newCartLoading }] =
     useMutation(ADD_TO_NEW_CART);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center">
+        <CustomLoader />
+      </div>
+    );
   if (error) return <p>Error: {error.message}</p>;
 
   const product = data.product;
@@ -86,8 +90,8 @@ const Product = () => {
   return (
     <div className="min-h-screen mt-20">
       {/* Desktop Layout */}
-      <div className="hidden md:grid md:grid-cols-[70%_30%] border-b border-black container mx-auto ">
-        <div className="flex flex-col ">
+      <div className="hidden md:grid md:grid-cols-[70%_30%] border-b border-r border-black container mx-auto ">
+        <div className="flex flex-col w-full">
           {images.map((image, index) => (
             <div
               key={index}
@@ -97,14 +101,13 @@ const Product = () => {
                 src={image}
                 alt={`${product.name} view ${index + 1}`}
                 className="w-full h-full object-cover transition-transform cursor-pointer"
-                onClick={() => setIsLightboxOpen(true)}
                 loading={index === 0 ? "eager" : "lazy"}
                 fetchpriority={index === 0 ? "high" : "auto"}
               />
             </div>
           ))}
         </div>
-        <div className="sticky top-24 h-fit  ">
+        <div className="sticky top-24 h-fit">
           <ProductInfo
             product={product}
             description={description}
@@ -197,19 +200,6 @@ const Product = () => {
         </div>
       </div>
 
-      {/* Lightbox */}
-      {isLightboxOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center"
-          onClick={() => setIsLightboxOpen(false)}
-        >
-          <img
-            src={images[currentImageIndex]}
-            alt="Fullscreen view"
-            className="max-w-full max-h-[90vh] object-contain"
-          />
-        </div>
-      )}
       <RelatedProducts productCategoryID={product.category?.id} />
       <Footer />
     </div>
@@ -297,7 +287,12 @@ const ProductInfo = ({
               value={selectedSize}
               defaultValue=""
             >
-              <option className="text-black bg-white" value="" disabled selected>
+              <option
+                className="text-black bg-white"
+                value=""
+                disabled
+                selected
+              >
                 SELECT SIZE
               </option>
               {sizes?.map((size) => (
@@ -321,6 +316,14 @@ const ProductInfo = ({
           >
             {cartLoading ? "ADDING..." : "ADD TO CART"}
           </button>
+          <Link
+            onClick={handleAddToCart}
+            disabled={cartLoading}
+            to="/checkout"
+            className="w-full text-center py-2 bg-black text-xs text-white hover:bg-white hover:text-black border hover:border-black transition-colors"
+          >
+             BUY NOW
+            </Link>
         </div>
 
         <div className="space-y-4 pt-6 text-xs uppercase">
