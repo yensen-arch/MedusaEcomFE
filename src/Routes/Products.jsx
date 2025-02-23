@@ -35,7 +35,7 @@ const Product = () => {
   const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
   const [addToNewCart, { loading: newCartLoading }] =
     useMutation(ADD_TO_NEW_CART);
-
+  // console.log("G", selectedSize);
   if (loading)
     return (
       <div className="flex items-center justify-center">
@@ -67,25 +67,6 @@ const Product = () => {
   } catch (error) {
     console.error("Invalid JSON:", error);
   }
-
-  const handleTouchStart = (e) => {
-    setTouchStart(e.touches[0].clientX);
-  };
-  const handleTouchMove = (e) => {
-    if (!touchStart) return;
-
-    const touchEnd = e.touches[0].clientX;
-    const diff = touchStart - touchEnd;
-
-    if (Math.abs(diff) > 50) {
-      if (diff > 0 && currentImageIndex < images.length - 1) {
-        setCurrentImageIndex(currentImageIndex + 1);
-      } else if (diff < 0 && currentImageIndex > 0) {
-        setCurrentImageIndex(currentImageIndex - 1);
-      }
-      setTouchStart(0);
-    }
-  };
 
   return (
     <div className="min-h-screen mt-20">
@@ -222,50 +203,53 @@ const ProductInfo = ({
   sizes,
 }) => {
   const handleAddToCart = async () => {
-    if (!product.variants?.[0]) {
-      console.error("No variant ID available for product:", product.name);
+    const selectedVariant = product.variants.find(variant =>
+      variant.attributes.some(attr =>
+        attr.attribute.name === "Size" &&
+        attr.values.some(val => val.name === selectedSize)
+      )
+    );
+  
+    if (!selectedVariant) {
+      console.error("No variant found for selected size:", selectedSize);
       return;
     }
+  
     let checkoutId = localStorage.getItem("checkoutId");
+    const variables = {
+      variantId: selectedVariant.id,
+      quantity: 1,
+    };
+  
     if (!checkoutId) {
-      const { data } = await addToNewCart({
-        variables: {
-          variantId: product.variants[0].id,
-          quantity: 1,
-        },
-      });
+      const { data } = await addToNewCart({ variables });
       if (data?.checkoutCreate?.errors.length) {
         console.error("Error adding to cart:", data.checkoutCreate.errors);
       } else {
-        const checkoutId = data.checkoutCreate.checkout.id;
-        localStorage.setItem("checkoutId", checkoutId);
-        console.log("Added to cart, checkoutId saved:", checkoutId);
+        const newCheckoutId = data.checkoutCreate.checkout.id;
+        localStorage.setItem("checkoutId", newCheckoutId);
+        console.log("Added to cart, checkoutId saved:", newCheckoutId);
       }
-      localStorage.setItem("checkoutId", data.checkoutCreate.checkout.id);
     } else {
       try {
         const { data } = await addToCart({
-          variables: {
-            checkoutId,
-            variantId: product.variants[0].id,
-            quantity: 1,
-          },
+          variables: { checkoutId, ...variables },
         });
-
+  
         if (data?.checkoutLinesAdd?.errors.length) {
           console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
         } else {
-          const checkoutId = data.checkoutLinesAdd.checkout.id;
-          localStorage.setItem("checkoutId", checkoutId);
-          console.log("Added to cart, checkoutId saved:", checkoutId);
+          const updatedCheckoutId = data.checkoutLinesAdd.checkout.id;
+          localStorage.setItem("checkoutId", updatedCheckoutId);
+          console.log("Added to cart, checkoutId saved:", updatedCheckoutId);
         }
       } catch (error) {
         console.error("Mutation error:", error);
       }
     }
   };
+  
   const [selectedSize, setSelectedSize] = useState("");
-
   return (
     <div className="space-y-1 mt-14 items-center flex flex-col">
       <h1 className="text-md font-bold  text-center">

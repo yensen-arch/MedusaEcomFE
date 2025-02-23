@@ -99,10 +99,9 @@ function Cart({ isOpen, onClose }) {
             <RiCloseFill size={24} />
           </button>
         </div>
-
         <div className=" relative">
           {isLoading || loading ? (
-            <div className="flex mt-10 justify-center items-center h-full w-full">
+            <div className="flex justify-center items-center h-full w-full min-h-screen">
               <CustomLoader />
             </div>
           ) : error ? (
@@ -134,7 +133,12 @@ function Cart({ isOpen, onClose }) {
                     <p className="mb-1 uppercase text-xs">
                       Category: {item.variant.product.category?.name || "Black"}
                     </p>
-                    <p className="mb-2 text-xs uppercase">Size: U</p>
+                    <p className="mb-2 text-xs uppercase">
+                      Size:{" "}
+                      {item.variant.attributes.find(
+                        (attr) => attr.attribute.name === "Size"
+                      )?.values[0]?.name || "U"}
+                    </p>
                     <div className="flex items-center gap-4 mb-4">
                       <span className="text-xs uppercase">Quantity:</span>
                       <button
