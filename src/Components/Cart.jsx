@@ -93,7 +93,7 @@ function Cart({ isOpen, onClose }) {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between border-b border-black items-center p-2.5 bg-[#00FF00]">
+        <div className="flex justify-between border-b border-black items-center pb-[9px] pt-[10px] bg-[#00FF00]">
           <h2 className="text-xs font-bold tracking-wider">CART</h2>
           <button onClick={onClose} className="hover:opacity-70">
             <RiCloseFill size={24} />
