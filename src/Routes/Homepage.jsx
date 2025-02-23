@@ -56,6 +56,7 @@ const Homepage = () => {
     () => categoryNames.indexOf(activeCategory),
     [activeCategory, categoryNames]
   );
+  //The autoscroll. Will remove if not needed soon.
 
   // useEffect(() => {
   //   let interval;
@@ -75,20 +76,20 @@ const Homepage = () => {
   //   };
   // }, [isMobile, isScrolling]);
 
-  const handleSlideChange = useCallback(
-    (swiper) => {
-      setActiveIndex(swiper.activeIndex);
-      if (
-        activeCategories[activeCategory][swiper.activeIndex]?.type === "footer"
-      ) {
-        if (isMobile) return;
-        setTimeout(() => {
-          swiper.slideTo(0);
-        }, 25000);
-      }
-    },
-    [activeCategory, activeCategories]
-  );
+  // const handleSlideChange = useCallback(
+  //   (swiper) => {
+  //     setActiveIndex(swiper.activeIndex);
+  //     if (
+  //       activeCategories[activeCategory][swiper.activeIndex]?.type === "footer"
+  //     ) {
+  //       if (isMobile) return;
+  //       setTimeout(() => {
+  //         swiper.slideTo(0);
+  //       }, 25000);
+  //     }
+  //   },
+  //   [activeCategory, activeCategories]
+  // );
 
   const handlePrev = useCallback(() => {
     if (indexNo > 0) {
@@ -168,22 +169,22 @@ const Homepage = () => {
   }, [isMobile, handleNext, handlePrev]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [loadingProductId, setLoadingProductId] = useState(null);
 
   const handleNavigation = (productId) => {
-    setLoading(true);
-    setTimeout(() => {
-      navigate(`/products/${productId}`);
-      setLoading(false);
-    }, 2000);
+    setLoadingProductId(productId);
+    navigate(`/products/${productId}`);
+    setLoadingProductId(null);
+    setLoading(false);
   };
   // Add preload function
   useEffect(() => {
     const preloadImages = () => {
       const imagesToPreload = activeCategories[activeCategory]
-        ?.filter(item => item.img && item.priority)
-        .map(item => item.img);
+        ?.filter((item) => item.img && item.priority)
+        .map((item) => item.img);
 
-      imagesToPreload?.forEach(imageUrl => {
+      imagesToPreload?.forEach((imageUrl) => {
         const img = new Image();
         img.src = imageUrl;
       });
@@ -192,7 +193,6 @@ const Homepage = () => {
     preloadImages();
   }, [activeCategory, activeCategories]);
 
-  // Update the renderSlides function
   const renderSlides = useMemo(() => {
     return activeCategories[activeCategory]?.map((ele, index) => (
       <SwiperSlide
@@ -220,11 +220,10 @@ const Homepage = () => {
                   decoding={index === 0 ? "sync" : "async"}
                   className="w-full h-screen object-cover"
                 />
-                {loading && (
-                  <div className="absolute top-2 right-2 p-2">
-                    <div className="absolute top-2 right-2 z-10">
-                      <CustomLoader />
-                    </div>
+                {loadingProductId === ele.productId && (
+                  <div className="absolute z-50 top-10 right-10 p-2">
+                    {console.log("loading product")}
+                    <CustomLoader />
                   </div>
                 )}
               </div>
@@ -240,11 +239,9 @@ const Homepage = () => {
                 >
                   <source src={ele.video} type="video/mp4" />
                 </video>
-                {loading && (
-                  <div className="absolute top-2 right-2 p-2">
-                    <div className="absolute top-2 right-2 z-10">
-                      <CustomLoader />
-                    </div>
+                {loadingProductId === ele.productId && (
+                  <div className="absolute z-50 top-10 right-10 p-2">
+                    <CustomLoader />
                   </div>
                 )}
               </div>
