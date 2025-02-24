@@ -64,7 +64,7 @@ function Cart({ isOpen, onClose }) {
   const handleQuantityChange = async (variantId, quantity) => {
     try {
       setIsLoading(true);
-      await updateCheckoutLines({
+      const { data } = await updateCheckoutLines({
         variables: {
           checkoutId,
           lines: [{ variantId, quantity }],
@@ -75,8 +75,9 @@ function Cart({ isOpen, onClose }) {
           },
         },
       });
+      const cartItems = data.checkoutLinesUpdate.checkout.lines.length;
+      localStorage.setItem("cartCount", cartItems);
       refetch();
-      
     } catch (err) {
       console.error("Error updating cart:", err);
     } finally {
