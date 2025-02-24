@@ -41,6 +41,11 @@ export const categories = {
       img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/second-minified_wkqogr.webp"),
       productId: "UHJvZHVjdDox",
     },
+    {
+      path: "v00",
+      img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740374963/upscalemedia-transformed_5_z7bxif.webp"),
+      productId: "UHJvZHVjdDox",
+    },
     { type: "footer" },
   ],
   // WOMEN: [
