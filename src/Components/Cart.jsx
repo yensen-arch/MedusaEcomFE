@@ -76,6 +76,7 @@ function Cart({ isOpen, onClose }) {
         },
       });
       refetch();
+      
     } catch (err) {
       console.error("Error updating cart:", err);
     } finally {
@@ -84,7 +85,6 @@ function Cart({ isOpen, onClose }) {
   };
 
   if (!isVisible) return null;
-
   return (
     <div className="fixed inset-0 bg-black/50 z-50 " onClick={onClose}>
       <div
@@ -93,7 +93,7 @@ function Cart({ isOpen, onClose }) {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between border-b border-black items-center pb-[9px] pt-[10px] bg-[#00FF00]">
+        <div className="flex px-2 justify-between border-b border-black items-center pb-[9px] pt-[10px] bg-[#00FF00]">
           <h2 className="text-xs font-bold tracking-wider">CART</h2>
           <button onClick={onClose} className="hover:opacity-70">
             <RiCloseFill size={24} />
@@ -120,7 +120,7 @@ function Cart({ isOpen, onClose }) {
                       alt={
                         item.variant.product.thumbnail?.alt || "Product Image"
                       }
-                      className="w-24 h-24 object-cover"
+                      className="w-24 h-24 object-cover border border-black"
                     />
                   )}
                   <div className="flex-grow">
@@ -175,7 +175,7 @@ function Cart({ isOpen, onClose }) {
         </div>
 
         {data?.checkout?.totalPrice && (
-          <div className="absolute w-full bottom-0 left-0 px-6 py-4 bg-white border-t border-black">
+          <div className="absolute mb-10 sm:mb-0 w-full bottom-0 left-0 px-6 py-4 bg-white border-t border-black">
             <div className="pt-4">
               <h3 className="text-xs font-bold mb-4">
                 OUR SIGNATURE PACKAGING

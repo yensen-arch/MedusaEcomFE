@@ -80,7 +80,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
       >
         <div className="flex flex-col gap-2 sm:gap-4 px-4">
           {/* Main Categories */}
-          <ul className="flex flex-col gap-4 px-4 mt-8">
+          <ul className="flex flex-col gap-4 px-4 mt-14 sm:mt-8">
             {loading ? (
               <p className="flex items-center justify-center"><CustomLoader/></p>
             ) : error ? (
@@ -162,7 +162,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
 
       {/* Login & Help options at the bottom */}
       <div className="fixed bottom-0 left-0 right-0 bg-white md:hidden border-t border-black">
-        <div className="flex flex-col gap-4 p-4 pb-20">
+        <div className="flex flex-col gap-4 p-4 pb-16">
           <Link
             to="/login"
             className="w-full text-center border border-black py-2 text-white bg-black"

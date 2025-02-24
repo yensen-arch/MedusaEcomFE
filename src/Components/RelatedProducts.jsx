@@ -8,7 +8,6 @@ import {
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import CustomLoader from "./CustomLoader";
-
 export default function RelatedProducts({ productCategoryID }) {
   const { loading, error, data } = useQuery(GET_PRODUCTS_BY_CATEGORY, {
     variables: { categoryId: productCategoryID, channel: "default-channel" },
@@ -82,11 +81,13 @@ function ProductCard({ product }) {
   const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
   const [addToNewCart, { loading: newCartLoading }] =
     useMutation(ADD_TO_NEW_CART);
+
   const handleAddToCart = async () => {
     if (!product.variantId) {
       console.error("No variant ID available for product:", product.name);
       return;
     }
+
     let checkoutId = localStorage.getItem("checkoutId");
     if (!checkoutId) {
       const { data } = await addToNewCart({
@@ -100,7 +101,9 @@ function ProductCard({ product }) {
       } else {
         const checkoutId = data.checkoutCreate.checkout.id;
         localStorage.setItem("checkoutId", checkoutId);
+        const cartItems = data.checkoutCreate.checkoutlines.length;
         console.log("Added to cart, checkoutId saved:", checkoutId);
+        localStorage.setItem("cartCount", cartItems);
       }
       localStorage.setItem("checkoutId", data.checkoutCreate.checkout.id);
     } else {
@@ -116,10 +119,10 @@ function ProductCard({ product }) {
         if (data?.checkoutLinesAdd?.errors.length) {
           console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
         } else {
-          console.log("Added to cart:", data.checkoutLinesAdd.checkout);
           checkoutId = data.checkoutLinesAdd.checkout.id;
           localStorage.setItem("checkoutId", checkoutId);
-          console.log("Added to cart, checkoutId saved:", checkoutId);
+          const cartItems = data.checkoutCreate;
+          localStorage.setItem("cartCount", cartItems);
         }
       } catch (error) {
         console.error("Mutation error:", error);

@@ -37,7 +37,7 @@ const Homepage = () => {
 
   const [activeCategory, setActiveCategory] = useState(categoryNames[0]);
   const [direction, setDirection] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(0);
+  // const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef(null);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef(null);
@@ -218,7 +218,7 @@ const Homepage = () => {
                   loading={index === 0 ? "eager" : "lazy"}
                   fetchpriority={index === 0 ? "high" : "auto"}
                   decoding={index === 0 ? "sync" : "async"}
-                  className="w-full h-screen object-cover"
+                  className="w-full h-screen "
                 />
                 {loadingProductId === ele.productId && (
                   <div className="absolute z-50 top-10 right-10 p-2">
