@@ -44,7 +44,7 @@ const CartTab = ({ cartData, cartLoading, cartError }) => {
 
   return (
     <div className="relative h-[32rem] flex flex-col">
-      <div className="flex-1 space-y-4 p-2 overflow-y-auto">
+      <div className="flex-1 space-y-4  overflow-y-auto">
         {cartLoading || updateLoading ? (
           <div className="flex justify-center">
             <CustomLoader />
@@ -56,8 +56,8 @@ const CartTab = ({ cartData, cartLoading, cartError }) => {
         ) : cartData?.checkout?.lines?.length > 0 ? (
           <ul className="space-y-4">
             {cartData.checkout.lines.map((item) => (
-              <li key={item.id} className="text-sm border-b border-black pb-2">
-                <div className="flex justify-between items-center p-2">
+              <li key={item.id} className="text-sm border-b px-2 border-black pb-2">
+                <div className="flex justify-between items-center ">
                   <img
                     src={item.variant.product.thumbnail.url}
                     alt={item.variant.product.thumbnail.alt || "Product Image"}
@@ -114,9 +114,9 @@ const CartTab = ({ cartData, cartLoading, cartError }) => {
           </p>
           <Link
             to="/checkout"
-            className="block text-center bg-black text-white border border-black py-2 hover:bg-white hover:text-black transition-all"
+            className="block text-xs text-center bg-black text-white border border-black py-2 hover:bg-white hover:text-black transition-all"
           >
-            CHECKOUT
+             CONFIRM CHECKOUT
           </Link>
         </div>
       )}

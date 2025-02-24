@@ -203,24 +203,25 @@ const ProductInfo = ({
   sizes,
 }) => {
   const handleAddToCart = async () => {
-    const selectedVariant = product.variants.find(variant =>
-      variant.attributes.some(attr =>
-        attr.attribute.name === "Size" &&
-        attr.values.some(val => val.name === selectedSize)
+    const selectedVariant = product.variants.find((variant) =>
+      variant.attributes.some(
+        (attr) =>
+          attr.attribute.name === "Size" &&
+          attr.values.some((val) => val.name === selectedSize)
       )
     );
-  
+
     if (!selectedVariant) {
       console.error("No variant found for selected size:", selectedSize);
       return;
     }
-  
+
     let checkoutId = localStorage.getItem("checkoutId");
     const variables = {
       variantId: selectedVariant.id,
       quantity: 1,
     };
-  
+
     if (!checkoutId) {
       const { data } = await addToNewCart({ variables });
       if (data?.checkoutCreate?.errors.length) {
@@ -235,7 +236,7 @@ const ProductInfo = ({
         const { data } = await addToCart({
           variables: { checkoutId, ...variables },
         });
-  
+
         if (data?.checkoutLinesAdd?.errors.length) {
           console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
         } else {
@@ -248,8 +249,20 @@ const ProductInfo = ({
       }
     }
   };
-  
+
   const [selectedSize, setSelectedSize] = useState("");
+  const selectRef = useRef(null);
+  const validateAndHandle = (callback) => (e) => {
+    if (!selectedSize) {
+      e.preventDefault();
+      selectRef.current.classList.add("animate-shake", "border-red-500", "border-2");
+      setTimeout(() => {
+        selectRef.current.classList.remove("animate-shake", "border-red-500", "border-2");
+      }, 820);
+      return;
+    }
+    callback(e);
+  };
   return (
     <div className="space-y-1 mt-14 items-center flex flex-col">
       <h1 className="text-md font-bold  text-center">
@@ -266,6 +279,7 @@ const ProductInfo = ({
         <div className="flex flex-col items-center space-y-2 ">
           <div className="relative w-full group">
             <select
+              ref={selectRef}
               className="w-full py-2 bg-white text-xs text-black border border-black hover:bg-white hover:text-black transition-colors appearance-none px-2"
               onChange={(e) => setSelectedSize(e.target.value)}
               value={selectedSize}
@@ -294,14 +308,14 @@ const ProductInfo = ({
             </span>
           </div>
           <button
-            onClick={handleAddToCart}
+            onClick={validateAndHandle(handleAddToCart)}
             disabled={cartLoading}
             className="w-full py-2 bg-black text-xs text-white hover:bg-white hover:text-black border hover:border-black transition-colors"
           >
             {cartLoading ? "ADDING..." : "ADD TO CART"}
           </button>
           <Link
-            onClick={handleAddToCart}
+            onClick={validateAndHandle(handleAddToCart)}
             disabled={cartLoading}
             to="/checkout"
             className="w-full text-center py-2 bg-black text-xs text-white hover:bg-white hover:text-black border hover:border-black transition-colors"
@@ -351,6 +365,47 @@ const ProductInfo = ({
       </div>
       <div className=" uppercase bg-green-100 border border-black text-[0.6rem] p-2">
         Every purchase equals 1 donated item
+      </div>
+      <div className="space-y-4">
+        <div className="flex justify-center gap-2 pt-6">
+          {[
+            {
+              name: "visa",
+              url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg",
+            },
+            {
+              name: "mastercard",
+              url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg",
+            },
+            {
+              name: "amex",
+              url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/americanexpress.svg",
+            },
+            {
+              name: "paypal",
+              url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg",
+            },
+            {
+              name: "google-pay",
+              url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlepay.svg",
+            },
+            {
+              name: "apple-pay",
+              url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/applepay.svg",
+            },
+            {
+              name: "klarna",
+              url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/klarna.svg",
+            },
+          ].map((payment) => (
+            <img
+              key={payment.name}
+              src={payment.url}
+              alt={payment.name}
+              className="w-8 h-5 object-contain"
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
