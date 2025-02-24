@@ -14,10 +14,10 @@ const Help = () => {
   return (
     <>
       <div
-        className="bg-cover bg-center w-full h-screen"
+        className="bg-cover bg-center w-full md:h-[40vh]"
         style={{
           backgroundImage:
-            "url('https://res.cloudinary.com/dmjhto8sd/image/upload/v1740108059/Main_nkxa4i.webp')",
+            "url('https://res.cloudinary.com/dmjhto8sd/image/upload/q_auto:best,f_auto,w_1920,c_limit,fl_lossy/v1740369145/upscalemedia-transformed_4_bvp1jl.png')",
         }}
       ></div>
       <div className="flex flex-col my-20 mx-auto w-[90%] md:w-[76%] gap-10 ">

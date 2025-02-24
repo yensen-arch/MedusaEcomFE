@@ -75,11 +75,11 @@ export default function Donations() {
           </div>
 
           <div className="">
-            <div className="text-center p-6">
+            {/* <div className="text-center p-6">
               <h2 className="mb-4 text-xs font-medium uppercase tracking-wider">
                 Make a Donation
               </h2>
-            </div>
+            </div> */}
             <DonationQR />
           </div>
         </div>

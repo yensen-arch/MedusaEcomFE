@@ -101,14 +101,14 @@ export const categoriesMobile = {
     {
       path: "v00",
       img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023164/IMG_7134_gypfm4.jpg"),
-      productId: "UHJvZHVjdDoxNjA=",
+      productId: "UHJvZHVjdDox",
       priority: true,
       preload: true
     },
     {
       video: getMobileOptimizedUrl(
         "https://res.cloudinary.com/dmjhto8sd/video/upload/v1740108755/B444A4EE-6BBA-437C-947E-155D4BE435FD_keoyu7.mp4"),
-      productId: "UHJvZHVjdDoxNjA=",
+      productId: "UHJvZHVjdDox",
     },
     { type: "footer" },
   ],
