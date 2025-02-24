@@ -19,6 +19,7 @@ function Checkout() {
     },
     onCompleted: (data) => {
       if (data?.me?.email) setEmail(data.me.email);
+      setActiveSection("shipping");
     },
   });
 
@@ -172,7 +173,7 @@ function Checkout() {
                   <img
                     src={item.variant.product.thumbnail.url}
                     alt={item.variant.product.thumbnail?.alt || "Product Image"}
-                    className="w-20 h-20 object-cover"
+                    className="w-20 h-20 object-cover border border-black"
                   />
                 )}
                 <div className="flex-1">
@@ -259,7 +260,10 @@ function Checkout() {
           </div>
 
           <div className="text-center">
-            <p className="font-medium text-xs">CUSTOMER SUPPORT</p>
+            <p className="font-medium text-[0.6rem]">
+              CUSTOMER SUPPORT <br />
+              help@clothd.co
+            </p>
           </div>
         </div>
       </aside>

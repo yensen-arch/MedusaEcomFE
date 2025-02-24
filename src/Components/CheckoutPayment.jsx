@@ -256,7 +256,7 @@ export default function CheckoutPayment({
   billingAddress,
 }) {
   return (
-    <section className="border-b border-gray-200 pb-6">
+    <section className="border-b border-black pb-6">
       <h2
         className={
           activeSection === "payment" ? "font-medium" : "text-gray-400"
