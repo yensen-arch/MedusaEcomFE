@@ -11,6 +11,7 @@ function Checkout() {
   const [shippingMethodId, setShippingMethodId] = useState(null);
   const [billingAddress, setBillingAddress] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+
   const { userLoading, userEmail, userData } = useQuery(GET_USER_QUERY, {
     context: {
       headers: {
@@ -18,20 +19,20 @@ function Checkout() {
       },
     },
     onCompleted: (data) => {
-      if (data?.me?.email) setEmail(data.me.email);
-      setActiveSection("shipping");
+      if (data?.me?.email) {
+        setEmail(data.me.email);
+        setActiveSection("shipping");
+      }
     },
   });
-
+// this case is for an expired token of a logged user
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const refreshToken =
     typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null;
   const checkoutId =
     typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
-
   const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
-
   const { data, loading, error, refetch } = useQuery(GET_CART_ITEMS, {
     variables: { checkoutId },
     context: {

@@ -203,6 +203,10 @@ const ProductInfo = ({
   sizes,
 }) => {
   const handleAddToCart = async () => {
+    if (localStorage.getItem("token") === null) {
+      // this case is for the fresh user.
+      window.location.href = "/login";
+    }
     const selectedVariant = product.variants.find((variant) =>
       variant.attributes.some(
         (attr) =>
@@ -255,9 +259,17 @@ const ProductInfo = ({
   const validateAndHandle = (callback) => (e) => {
     if (!selectedSize) {
       e.preventDefault();
-      selectRef.current.classList.add("animate-shake", "border-red-500", "border-2");
+      selectRef.current.classList.add(
+        "animate-shake",
+        "border-red-500",
+        "border-2"
+      );
       setTimeout(() => {
-        selectRef.current.classList.remove("animate-shake", "border-red-500", "border-2");
+        selectRef.current.classList.remove(
+          "animate-shake",
+          "border-red-500",
+          "border-2"
+        );
       }, 820);
       return;
     }

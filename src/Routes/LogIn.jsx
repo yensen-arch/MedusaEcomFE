@@ -15,7 +15,8 @@ const LogIn = () => {
 
   const [login, { loading }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (response) => {
-      const { token, refreshToken,csrfToken, accountErrors } = response.tokenCreate;
+      const { token, refreshToken, csrfToken, accountErrors } =
+        response.tokenCreate;
       if (accountErrors.length > 0) {
         setErrorMessage(accountErrors[0].message);
       } else {
