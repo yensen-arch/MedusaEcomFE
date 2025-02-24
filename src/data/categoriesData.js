@@ -43,7 +43,7 @@ export const categories = {
     },
     {
       path: "v00",
-      img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740374963/upscalemedia-transformed_5_z7bxif.webp"),
+      img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740375247/main_3_f0ewvp.webp"),
       productId: "UHJvZHVjdDox",
     },
     { type: "footer" },
