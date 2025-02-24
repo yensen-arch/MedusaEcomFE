@@ -21,6 +21,9 @@ const Navbar = ({
   isScrolling,
   isMobile,
 }) => {
+  const [cartCount, setCartCount] = useState(
+    localStorage.getItem("cartCount") || 0
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -34,6 +37,29 @@ const Navbar = ({
     ? "https://res.cloudinary.com/dmjhto8sd/image/upload/v1739507590/Clothd-green_r3fe9v.webp"
     : "https://res.cloudinary.com/dmjhto8sd/image/upload/v1739507590/Clothd-black_kgtd7e.webp";
 
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === "cartCount") {
+        setCartCount(e.newValue || 0);
+      }
+    };
+
+    const checkCartCount = () => {
+      const currentCount = localStorage.getItem("cartCount") || 0;
+      if (currentCount !== cartCount) {
+        setCartCount(currentCount);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    // Check for local updates
+    const interval = setInterval(checkCartCount, 1000);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [cartCount]);
   useEffect(() => {
     let startY = 0;
     const handleTouchStart = (e) => {
@@ -160,8 +186,16 @@ const Navbar = ({
               <Link to="/help" className="hidden md:block">
                 <RiQuestionLine className="w-5 h-5" />
               </Link>
-              <button onClick={toggleCart}>
+              <button onClick={toggleCart} className="relative">
                 <RiShoppingBagLine className="w-5 h-5" />
+                {cartCount > 0 && (
+                  <span
+                    key={cartCount}
+                    className="absolute -top-2 -right-2 bg-green-300 font-bold text-black text-xs rounded-full px-3 py-2 border border-black animate-[ping-once_0.3s_ease-in-out]"
+                  >
+                    {cartCount}
+                  </span>
+                )}
               </button>
             </div>
           </div>

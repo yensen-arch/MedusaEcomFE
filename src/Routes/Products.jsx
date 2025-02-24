@@ -233,7 +233,8 @@ const ProductInfo = ({
       } else {
         const newCheckoutId = data.checkoutCreate.checkout.id;
         localStorage.setItem("checkoutId", newCheckoutId);
-        console.log("Added to cart, checkoutId saved:", newCheckoutId);
+        const cartItems = data.checkoutCreate.checkout.lines.length;
+        localStorage.setItem("cartCount", cartItems);
       }
     } else {
       try {
@@ -246,7 +247,8 @@ const ProductInfo = ({
         } else {
           const updatedCheckoutId = data.checkoutLinesAdd.checkout.id;
           localStorage.setItem("checkoutId", updatedCheckoutId);
-          console.log("Added to cart, checkoutId saved:", updatedCheckoutId);
+          const cartItems = data.checkoutLinesAdd.checkout.lines.length;
+          localStorage.setItem("cartCount", cartItems);
         }
       } catch (error) {
         console.error("Mutation error:", error);

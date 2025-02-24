@@ -105,9 +105,9 @@ function ProductCard({ product }) {
       } else {
         const checkoutId = data.checkoutCreate.checkout.id;
         localStorage.setItem("checkoutId", checkoutId);
-        console.log("Added to cart, checkoutId saved:", checkoutId);
+        const cartItems = data.checkoutCreate.checkout.lines.length;
+        localStorage.setItem("cartCount", cartItems);
       }
-      localStorage.setItem("checkoutId", data.checkoutCreate.checkout.id);
     } else {
       try {
         const { data } = await addToCart({
@@ -123,7 +123,8 @@ function ProductCard({ product }) {
         } else {
           const checkoutId = data.checkoutLinesAdd.checkout.id;
           localStorage.setItem("checkoutId", checkoutId);
-          console.log("Added to cart, checkoutId saved:", checkoutId);
+          const cartItems = data.checkoutLinesAdd.checkout.lines.length;
+          localStorage.setItem("cartCount", cartItems);
         }
       } catch (error) {
         console.error("Mutation error:", error);

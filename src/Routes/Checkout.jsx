@@ -25,7 +25,7 @@ function Checkout() {
       }
     },
   });
-// this case is for an expired token of a logged user
+  // this case is for an expired token of a logged user
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const refreshToken =
@@ -244,10 +244,17 @@ function Checkout() {
                   name: "paypal",
                   url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg",
                 },
-
+                {
+                  name: "google-pay",
+                  url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlepay.svg",
+                },
                 {
                   name: "apple-pay",
                   url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/applepay.svg",
+                },
+                {
+                  name: "klarna",
+                  url: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/klarna.svg",
                 },
               ].map((payment) => (
                 <img

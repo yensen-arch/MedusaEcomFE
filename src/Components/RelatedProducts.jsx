@@ -102,7 +102,7 @@ function ProductCard({ product }) {
         const checkoutId = data.checkoutCreate.checkout.id;
         localStorage.setItem("checkoutId", checkoutId);
         const cartItems = data.checkoutCreate.checkoutlines.length;
-        console.log("Added to cart, checkoutId saved:", checkoutId);
+        console.log("here", cartItems);
         localStorage.setItem("cartCount", cartItems);
       }
       localStorage.setItem("checkoutId", data.checkoutCreate.checkout.id);
@@ -121,7 +121,7 @@ function ProductCard({ product }) {
         } else {
           checkoutId = data.checkoutLinesAdd.checkout.id;
           localStorage.setItem("checkoutId", checkoutId);
-          const cartItems = data.checkoutCreate;
+          const cartItems = data.checkoutLinesAdd.checkout.lines.length;
           localStorage.setItem("cartCount", cartItems);
         }
       } catch (error) {
