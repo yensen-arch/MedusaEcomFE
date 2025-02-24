@@ -75,11 +75,6 @@ export default function Donations() {
           </div>
 
           <div className="">
-            {/* <div className="text-center p-6">
-              <h2 className="mb-4 text-xs font-medium uppercase tracking-wider">
-                Make a Donation
-              </h2>
-            </div> */}
             <DonationQR />
           </div>
         </div>
@@ -87,28 +82,29 @@ export default function Donations() {
         <Separator className="my-12" />
 
         <div className="mx-auto max-w-6xl">
-  <h2 className="mb-8 text-xs font-medium uppercase tracking-wider">
-    Distribution Timeline
-  </h2>
-  <div className="relative overflow-x-auto">
-    <div className="absolute top-6 left-24 right-24 h-0.5 bg-green-300 min-w-[600px]" />
-    <div className="flex justify-between min-w-[600px]">
-      {timelineEvents.map((event, index) => (
-        <div key={event.date} className="relative">
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 w-4 h-4 bg-black rounded-full border-4 border-white" />
-          <div className="pt-12 text-center w-48">
-            <p className="text-xs font-medium">{event.date}</p>
-            <p className="text-xs text-muted-foreground mt-1">{event.location}</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              {event.peopleHelped} people helped
-            </p>
-          </div>
+          {/* <h2 className="mb-8 text-xs font-medium uppercase tracking-wider">
+            Distribution Timeline
+          </h2> */}
+          {/* <div className="relative overflow-x-auto">
+            <div className="absolute top-6 left-24 right-24 h-0.5 bg-green-300 min-w-[600px]" />
+            <div className="flex justify-between min-w-[600px]">
+              {timelineEvents.map((event, index) => (
+                <div key={event.date} className="relative">
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 w-4 h-4 bg-black rounded-full border-4 border-white" />
+                  <div className="pt-12 text-center w-48">
+                    <p className="text-xs font-medium">{event.date}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {event.location}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {event.peopleHelped} people helped
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div> */}
         </div>
-      ))}
-    </div>
-  </div>
-</div>
-
       </div>
       <Footer />
     </>
