@@ -1,15 +1,24 @@
 // src/components/checkout/CheckoutForm.js
 import React, { useEffect, useState } from "react";
-import { CardElement, useStripe, useElements, PaymentRequestButtonElement } from "@stripe/react-stripe-js";
+import {
+  CardElement,
+  useStripe,
+  useElements,
+  PaymentRequestButtonElement,
+} from "@stripe/react-stripe-js";
 import { useMutation } from "@apollo/client";
-import { 
-  CHECKOUT_PAYMENT_CREATE, 
-  CHECKOUT_EMAIL_UPDATE, 
-  CHECKOUT_BILLING_ADDRESS_UPDATE, 
-  CHECKOUT_COMPLETE 
+import {
+  CHECKOUT_PAYMENT_CREATE,
+  CHECKOUT_EMAIL_UPDATE,
+  CHECKOUT_BILLING_ADDRESS_UPDATE,
+  CHECKOUT_COMPLETE,
 } from "../../graphql/queries";
 import PaymentMethodSelector from "./PaymentMethodSelector";
-import { handleCardPayment, handleKlarnaPayment, processPayment } from "./paymentService";
+import {
+  handleCardPayment,
+  handleKlarnaPayment,
+  processPayment,
+} from "./paymentService";
 import usePaymentRequest from "./PaymentRequestSetup";
 
 const CheckoutForm = ({
@@ -112,9 +121,20 @@ const CheckoutForm = ({
     let paymentResult;
 
     if (paymentMethod === "card") {
-      paymentResult = await handleCardPayment(stripe, elements, userEmail, billingAddress);
+      paymentResult = await handleCardPayment(
+        stripe,
+        elements,
+        userEmail,
+        billingAddress
+      );
     } else if (paymentMethod === "klarna") {
-      paymentResult = await handleKlarnaPayment(stripe, amount, billingAddress);
+      paymentResult = await handleKlarnaPayment(
+        stripe,
+        checkoutId,
+        amount,
+        userEmail,
+        billingAddress
+      );
       if (paymentResult.status === "pending") {
         // For Klarna redirect flow
         setIsProcessing(false);
@@ -246,7 +266,7 @@ const CheckoutForm = ({
           </p>
           <button
             type="submit"
-            className="w-full bg-pink-500 text-xs text-white py-3 mt-2 hover:bg-pink-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="w-full bg-black text-xs border border-black text-white py-3 mt-2 hover:bg-white hover:text-black disabled:bg-gray-300 disabled:cursor-not-allowed"
             disabled={isProcessing}
           >
             {isProcessing ? "PROCESSING..." : "PAY WITH KLARNA"}
