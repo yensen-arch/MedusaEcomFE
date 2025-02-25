@@ -38,7 +38,7 @@ export const categories = {
     },
     {
       path: "v00",
-      img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/second-minified_wkqogr.webp"),
+      img: getOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740453899/Main_2_y0v59p.webp"),
       productId: "UHJvZHVjdDox",
     },
     {
