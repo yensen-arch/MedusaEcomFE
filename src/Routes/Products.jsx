@@ -71,8 +71,9 @@ const Product = () => {
   return (
     <div className="min-h-screen mt-20">
       {/* Desktop Layout */}
-      <div className="hidden md:grid md:grid-cols-[70%_30%] border-b border-r border-black container mx-auto ">
-        <div className="flex flex-col w-full">
+      <div className="hidden md:grid md:grid-cols-12 border-b border-r border-black w-full">
+        {/* Image gallery - 8/12 columns on large screens, 7/12 on medium */}
+        <div className="col-span-7 lg:col-span-8 flex flex-col w-full">
           {images.map((image, index) => (
             <div
               key={index}
@@ -88,7 +89,9 @@ const Product = () => {
             </div>
           ))}
         </div>
-        <div className="sticky top-24 h-fit">
+
+        {/* Product details - 4/12 columns on large screens, 5/12 on medium */}
+        <div className="col-span-5 lg:col-span-4 sticky top-24 h-fit">
           <ProductInfo
             product={product}
             description={description}

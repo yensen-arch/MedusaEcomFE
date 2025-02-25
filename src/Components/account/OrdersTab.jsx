@@ -64,11 +64,6 @@ const OrdersTab = () => {
       80
     );
     doc.text(`PAYMENT STATUS: ${order.paymentStatus.toUpperCase()}`, 20, 90);
-    doc.text(
-      `PAYMENT GATEWAY: ${order.payments[0]?.gateway.toUpperCase()}`,
-      20,
-      100
-    );
 
     // Shipping Address
     doc.setFont("courier", "bold");
