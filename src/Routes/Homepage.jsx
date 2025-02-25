@@ -218,7 +218,7 @@ const Homepage = () => {
                   loading={index === 0 ? "eager" : "lazy"}
                   fetchpriority={index === 0 ? "high" : "auto"}
                   decoding={index === 0 ? "sync" : "async"}
-                  className="w-full h-screen "
+                  className="w-full h-screen object-cover"
                 />
                 {loadingProductId === ele.productId && (
                   <div className="absolute z-50 top-10 right-10 p-2">
@@ -252,7 +252,7 @@ const Homepage = () => {
     ));
   }, [activeCategory, activeCategories, isScrolling]);
   return (
-    <div className="relative w-full h-screen cursor-pointer overflow-hidden">
+    <div className="relative w-full min-h-screen cursor-pointer overflow-hidden">
       <Navbar
         activeCategory={activeCategory}
         setActiveCategory={handleCategoryChange}
