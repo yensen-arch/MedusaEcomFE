@@ -9,7 +9,7 @@ import {
   CHECKOUT_PAYMENT_CREATE,
   CHECKOUT_EMAIL_UPDATE,
   CHECKOUT_BILLING_ADDRESS_UPDATE,
-  SHIPPING_METHOD_UPDATE,
+  // SHIPPING_METHOD_UPDATE,
   CHECKOUT_COMPLETE,
 } from "../graphql/queries";
 import { useMutation } from "@apollo/client";
@@ -34,7 +34,7 @@ const CheckoutForm = ({
     CHECKOUT_PAYMENT_CREATE
   );
   const [checkoutEmailUpdate] = useMutation(CHECKOUT_EMAIL_UPDATE);
-  const [checkoutShippingMethodUpdate] = useMutation(SHIPPING_METHOD_UPDATE);
+  // const [checkoutShippingMethodUpdate] = useMutation(SHIPPING_METHOD_UPDATE);
   const [updateBillingAddress] = useMutation(CHECKOUT_BILLING_ADDRESS_UPDATE);
   const [checkoutComplete] = useMutation(CHECKOUT_COMPLETE);
   useEffect(() => {
@@ -73,23 +73,23 @@ const CheckoutForm = ({
     }
   }, [checkoutId, billingAddress, updateBillingAddress]);
 
-  const handleShippingUpdate = async () => {
-    const { data } = await checkoutShippingMethodUpdate({
-      variables: {
-        checkoutId,
-        shippingMethodId: shippingMethodId,
-      },
-    });
+  // const handleShippingUpdate = async () => {
+  //   const { data } = await checkoutShippingMethodUpdate({
+  //     variables: {
+  //       checkoutId,
+  //       shippingMethodId: shippingMethodId,
+  //     },
+  //   });
 
-    if (data?.checkoutShippingMethodUpdate?.errors.length) {
-      const errorMessage = data.checkoutShippingMethodUpdate.errors
-        .map((err) => err.message)
-        .join(", ");
-      setError(`Shipping Method Error: ${errorMessage}`);
-      return false;
-    }
-    return true;
-  };
+  //   if (data?.checkoutShippingMethodUpdate?.errors.length) {
+  //     const errorMessage = data.checkoutShippingMethodUpdate.errors
+  //       .map((err) => err.message)
+  //       .join(", ");
+  //     setError(`Shipping Method Error: ${errorMessage}`);
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
   const handleEmailUpdate = async () => {
     const { data } = await checkoutEmailUpdate({
@@ -123,11 +123,11 @@ const CheckoutForm = ({
       setIsProcessing(false);
       return;
     }
-    const shippingUpdated = await handleShippingUpdate();
-    if (!shippingUpdated) {
-      setIsProcessing(false);
-      return;
-    }
+    // const shippingUpdated = await handleShippingUpdate();
+    // if (!shippingUpdated) {
+    //   setIsProcessing(false);
+    //   return;
+    // }
 
     const cardElement = elements.getElement(CardElement);
     const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -205,6 +205,7 @@ const CheckoutForm = ({
         return;
       }
       localStorage.removeItem("checkoutId");
+      localStorage.removeItem("cartCount");
       onSuccess();
     } catch (err) {
       setError(`Payment failed: ${err.message}`);

@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import {
   GET_SHIPPING_METHODS,
   CHECKOUT_SHIPPING_ADDRESS_UPDATE,
+  SHIPPING_METHOD_UPDATE,
 } from "../graphql/queries";
 import { getStateFromZip } from "../utils/constants";
 
@@ -12,14 +13,43 @@ export default function CheckoutShipping({
   handleContinue,
   setShippingMethodId,
   setBillingAddress,
+  onShippingMethodUpdate,
 }) {
+  const [updateShippingMethod, { loading: updatingShippingMethod }] =
+    useMutation(SHIPPING_METHOD_UPDATE);
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   useEffect(() => {
     if (selectedMethod) setShippingMethodId(selectedMethod.id);
   }, [selectedMethod]);
 
+  const handleShippingMethodSelection = async (method) => {
+    setSelectedMethod(method);
+
+    try {
+      const response = await updateShippingMethod({
+        variables: {
+          checkoutId,
+          shippingMethodId: method.id,
+        },
+      });
+
+      if (response.data?.checkoutShippingMethodUpdate?.errors?.length > 0) {
+        const errors = response.data.checkoutShippingMethodUpdate.errors;
+        setAddressError(errors.map((err) => err.message).join(", "));
+        return;
+      }
+
+      // Call the callback to update the parent component
+      if (onShippingMethodUpdate) {
+        onShippingMethodUpdate();
+      }
+    } catch (error) {
+      setAddressError(error.message || "Error updating shipping method");
+      console.error("Error updating shipping method:", error);
+    }
+  };
   const [address, setAddress] = useState({
     firstName: "",
     lastName: "",
@@ -31,11 +61,11 @@ export default function CheckoutShipping({
     countryArea: "",
     phone: "",
   });
-  
+
   useEffect(() => {
     if (address) setBillingAddress(address);
   }, [address]);
-  
+
   const [addressError, setAddressError] = useState("");
   const [shippingMethods, setShippingMethods] = useState([]);
   const checkoutId =
@@ -141,7 +171,7 @@ export default function CheckoutShipping({
       <div className="flex items-center gap-4">
         <h2
           className={
-            activeSection === "shipping" ? "font-medium" : "text-gray-400"
+            activeSection === "shipping" ? "font-medium" : "text-black"
           }
         >
           2. SHIPPING
@@ -267,7 +297,7 @@ export default function CheckoutShipping({
                     name="shipping"
                     value={method.id}
                     checked={selectedMethod?.id === method.id}
-                    onChange={() => setSelectedMethod(method)}
+                    onChange={() => handleShippingMethodSelection(method)}
                     className="mt-1"
                   />
                   <div className="flex-1">

@@ -90,8 +90,13 @@ function Checkout() {
       <div className="min-h-screen mt-28 p-8">Error loading cart items</div>
     );
   }
+  const subtotalAmount = data?.checkout?.subtotalPrice?.gross.amount || 0;
+  const shippingAmount = data?.checkout?.shippingPrice?.gross.amount || 0;
+  const totalAmount = (subtotalAmount + shippingAmount).toFixed(2);
 
-  const totalAmount = data?.checkout?.totalPrice?.gross.amount.toFixed(2);
+  const handleShippingMethodUpdate = () => {
+    refetch();
+  };
 
   return (
     <div className="min-h-screen mt-28 grid md:grid-cols-[1fr,400px]">
@@ -149,6 +154,7 @@ function Checkout() {
           handleContinue={handleContinue}
           setShippingMethodId={setShippingMethodId}
           setBillingAddress={setBillingAddress}
+          onShippingMethodUpdate={handleShippingMethodUpdate}
         />
 
         {/* Payment Section */}
@@ -197,15 +203,15 @@ function Checkout() {
             <div className="flex justify-between text-xs">
               <span>SUBTOTAL</span>
               <span>
-                $
-                {data?.checkout?.lines?.[0]?.variant?.pricing?.price?.gross?.amount.toFixed(
-                  2
-                ) || "0.00"}
+                ${data.checkout.subtotalPrice.gross.amount.toFixed(2) || "0.00"}
               </span>
             </div>
             <div className="flex justify-between">
               <span>SHIPPING</span>
-              <span>$ 0.00</span>
+              <span>
+                $
+                {data.checkout.shippingPrice?.gross.amount.toFixed(2) || "0.00"}
+              </span>
             </div>
             <div className="flex text-xs justify-between">
               <span>SALES TAX</span>
@@ -270,7 +276,7 @@ function Checkout() {
           <div className="text-center">
             <p className="font-medium text-[0.6rem]">
               CUSTOMER SUPPORT <br />
-              help@clothd.co
+              hello@clothd.co
             </p>
           </div>
         </div>

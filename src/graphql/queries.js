@@ -364,6 +364,18 @@ export const GET_CART_ITEMS = gql`
           currency
         }
       }
+      subtotalPrice {
+        gross {
+          amount
+          currency
+        }
+      }
+      shippingPrice {
+        gross {
+          amount
+          currency
+        }
+      }
       lines {
         id
         quantity
@@ -402,7 +414,6 @@ export const GET_CART_ITEMS = gql`
   }
 `;
 
-
 export const GET_SHIPPING_METHODS = gql`
   query GetShippingMethods($checkoutId: ID!) {
     checkout(id: $checkoutId) {
@@ -419,6 +430,7 @@ export const GET_SHIPPING_METHODS = gql`
     }
   }
 `;
+
 export const SHIPPING_METHOD_UPDATE = gql`
   mutation CheckoutShippingMethodUpdate(
     $checkoutId: ID!
