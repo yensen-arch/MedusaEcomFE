@@ -183,15 +183,15 @@ const Navbar = ({
               <Link to="/login" className="text-xs hidden md:block">
                 LOGIN
               </Link>
-              <Link to="/help" className="hidden md:block">
+              {/* <Link to="/help" className="hidden md:block">
                 <RiQuestionLine className="w-5 h-5" />
-              </Link>
+              </Link> */}
               <button onClick={toggleCart} className="relative">
                 <RiShoppingBagLine className="w-5 h-5" />
                 {cartCount > 0 && (
                   <span
                     key={cartCount}
-                    className="absolute -top-2 -right-2 bg-green-300 font-bold text-black text-xs rounded-full px-3 py-2 border border-black animate-[ping-once_0.3s_ease-in-out]"
+                    className="absolute -top-2 -right-2 bg-green-300 font-bold text-black text-xs rounded-none px-3 py-2 border border-black animate-[ping-once_0.3s_ease-in-out]"
                   >
                     {cartCount}
                   </span>

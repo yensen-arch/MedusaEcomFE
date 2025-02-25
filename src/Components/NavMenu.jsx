@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Scrollbar } from "react-scrollbars-custom";
 import { useEffect, useState } from "react";
 import MatrixText from "./MatrixText";
-import CustomLoader from "./CustomLoader"
+import CustomLoader from "./CustomLoader";
 import {
   RiCloseLine,
   RiSearchLine,
@@ -34,7 +34,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
   const additionalLinks = [
     { title: "DONATE", path: "/donations" },
     { title: "OUR MISSION", path: "/mission" },
-    { title: "HELP", path: "/help" },
+    // { title: "HELP", path: "/help" },
     { title: "WORK WITH US", path: "/careers" },
   ];
 
@@ -82,7 +82,9 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
           {/* Main Categories */}
           <ul className="flex flex-col gap-4 px-4 mt-14 sm:mt-8">
             {loading ? (
-              <p className="flex items-center justify-center"><CustomLoader/></p>
+              <p className="flex items-center justify-center">
+                <CustomLoader />
+              </p>
             ) : error ? (
               <p className="text-red-500 text-xs">ERROR: {error.message}</p>
             ) : (

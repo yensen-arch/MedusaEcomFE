@@ -42,7 +42,7 @@ function CategoryPage() {
       <h1 className="text-lg font-semibold px-6 mb-4">
         {data?.products?.edges[0]?.node?.category?.name.toUpperCase()}
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 ">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
@@ -134,78 +134,78 @@ function ProductCard({ product }) {
 
   return (
     <div className="outline outline-1 outline-black rounded-none overflow-hidden relative group">
-      <div
-        className="relative"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {isNavigating && (
-          <div className="absolute top-2 right-2 z-10">
-            <CustomLoader />
-          </div>
-        )}
-        <Link
-          to={`/products/${product.id}`}
-          className="block"
-          onClick={handleProductClick}
+  <div
+    className="relative"
+    onTouchStart={handleTouchStart}
+    onTouchMove={handleTouchMove}
+    onTouchEnd={handleTouchEnd}
+  >
+    {isNavigating && (
+      <div className="absolute top-2 right-2 z-10">
+        <CustomLoader />
+      </div>
+    )}
+    <Link
+      to={`/products/${product.id}`}
+      className="block"
+      onClick={handleProductClick}
+    >
+      <img
+        src={images[currentImage]}
+        alt={product.name}
+        className="w-full h-auto sm:h-[32rem] object-cover transition-all duration-500 ease-in-out"
+      />
+      {loading && (
+        <div className="absolute top-2 right-2 p-2">
+          <CustomLoader className="animate-spin text-black" size={20} />
+        </div>
+      )}
+    </Link>
+    {images.length > 1 && (
+      <>
+        <button
+          onClick={prevImage}
+          className="absolute left-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         >
-          <img
-            src={images[currentImage]}
-            alt={product.name}
-            className="w-full h-[32rem] object-cover transition-transform duration-300 ease-in-out"
-          />
-          {loading && (
-            <div className="absolute top-2 right-2  p-2  ">
-              <CustomLoader className="animate-spin text-black" size={20} />
-            </div>
-          )}
-        </Link>
-        {images.length > 1 && (
-          <>
-            <button
-              onClick={prevImage}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            >
-              <RiArrowLeftSLine size={24} />
-            </button>
-            <button
-              onClick={nextImage}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            >
-              <RiArrowRightSLine size={24} />
-            </button>
-          </>
-        )}
-        <div className="flex justify-center mt-2">
-          {images.map((_, index) => (
-            <span
-              key={index}
-              onClick={() => setCurrentImage(index)}
-              className={`w-1 h-1 mx-1 rounded-full cursor-pointer transition-all duration-300 ${
-                index === currentImage ? "bg-black scale-125" : "bg-gray-200"
-              }`}
-            ></span>
-          ))}
-        </div>
-      </div>
-      <div className="text-center mt-2 text-xs relative h-12">
-        <div className="absolute w-full h-full flex items-center justify-center group overflow-hidden">
-          <div className="absolute w-full text-center text-gray-600 transition-transform duration-300 group-hover:-translate-y-full  group-hover:opacity-0">
-            {product.name.toUpperCase()}
-            <br />
-            <p className="text-xs">${product.price.toFixed(2)}</p>
-          </div>
-          <button
-            onClick={handleAddToCart}
-            disabled={cartLoading}
-            className=" transition-transform duration-300 absolute translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 border border-black text-black px-1 py-1 text-xs"
-          >
-            {cartLoading ? "ADDING..." : "ADD TO CART"}
-          </button>
-        </div>
-      </div>
+          <RiArrowLeftSLine size={24} />
+        </button>
+        <button
+          onClick={nextImage}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        >
+          <RiArrowRightSLine size={24} />
+        </button>
+      </>
+    )}
+    <div className="flex justify-center mt-2">
+      {images.map((_, index) => (
+        <span
+          key={index}
+          onClick={() => setCurrentImage(index)}
+          className={`w-1 h-1 mx-1 rounded-full cursor-pointer transition-all duration-300 ${
+            index === currentImage ? "bg-black scale-125" : "bg-gray-200"
+          }`}
+        ></span>
+      ))}
     </div>
+  </div>
+  <div className="text-center mt-2 text-xs relative h-12">
+    <div className="absolute w-full h-full flex items-center justify-center group overflow-hidden">
+      <div className="absolute w-full text-center text-gray-600 transition-transform duration-300 group-hover:-translate-y-full group-hover:opacity-0">
+        {product.name.toUpperCase()}
+        <br />
+        <p className="text-xs">${product.price.toFixed(2)}</p>
+      </div>
+      <button
+        onClick={handleAddToCart}
+        disabled={cartLoading}
+        className="transition-transform duration-300 absolute translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 border border-black text-black px-1 py-1 text-xs"
+      >
+        {cartLoading ? "ADDING..." : "ADD TO CART"}
+      </button>
+    </div>
+  </div>
+</div>
   );
 }
 
