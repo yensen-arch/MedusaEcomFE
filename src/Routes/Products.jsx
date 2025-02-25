@@ -111,9 +111,9 @@ const Product = () => {
       </div>
 
       {/* Mobile Layout */}
-      <div className="md:hidden">
+      <div className="md:hidden ">
         <div className="relative h-[90vh] overflow-hidden">
-          <div className="h-full relative">
+          <div className="h-full relative mt-2">
             {images.map((image, index) => (
               <div
                 key={index}

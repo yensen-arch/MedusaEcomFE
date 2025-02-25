@@ -39,7 +39,7 @@ export default function RelatedProducts({ productCategoryID }) {
       <h2 className="text-md border-b border-black mb-6 text-center">
         COMPLETE YOUR STYLE
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
+      <div className="grid grid-cols-2   sm:grid-cols-2 lg:grid-cols-4 gap-0">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
@@ -138,11 +138,14 @@ function ProductCard({ product }) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <button onClick={handleClick} className="block w-full">
+        <button
+          onClick={handleClick}
+          className="block w-full h-[20rem] sm:h-[32rem]"
+        >
           <img
             src={images[currentImage]}
             alt={product.name}
-            className="w-full h-[32rem] object-cover transition-transform duration-300 ease-in-out"
+            className="w-auto h-[20rem] sm:h-[32rem] object-cover transition-transform duration-300 ease-in-out"
           />
           {loading && (
             <div className="absolute top-2 right-2 p-2">

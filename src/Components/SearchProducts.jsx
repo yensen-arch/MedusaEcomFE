@@ -88,10 +88,9 @@ function ProductCard({ product }) {
         } else {
           checkoutId = data.checkoutLinesAdd.checkout.id;
           localStorage.setItem("checkoutId", checkoutId);
-          console.log(data.checkoutLinesAdd.checkout.lines.length)
+          console.log(data.checkoutLinesAdd.checkout.lines.length);
           const cartItems = data.checkoutLinesAdd.checkout.lines.length;
           localStorage.setItem("cartCount", cartItems);
-
         }
       } catch (error) {
         console.error(error);
@@ -114,7 +113,7 @@ function ProductCard({ product }) {
           <img
             src={displayImages[currentImage]}
             alt={product.name}
-            className="w-full h-[32rem] object-cover transition-transform duration-300 ease-in-out"
+            className="w-auto h-[20rem] sm:h-[32rem] object-cover transition-transform duration-300 ease-in-out"
           />
           {loading && (
             <div className="absolute top-2 right-2  p-2  ">
@@ -250,7 +249,7 @@ function SearchProducts({ selectedCategory }) {
           <h3 className="text-xl font-semibold px-6 mb-4">
             {category.toUpperCase()}
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2   sm:grid-cols-2 lg:grid-cols-4 gap-0">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
