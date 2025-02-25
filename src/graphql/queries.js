@@ -590,7 +590,6 @@ export const CHECKOUT_COMPLETE = gql`
     }
   }
 `;
-
 export const GET_CUSTOMER_ORDERS = gql`
   query GetCustomerOrders {
     me {
@@ -602,6 +601,18 @@ export const GET_CUSTOMER_ORDERS = gql`
             number
             status
             created
+            subtotal {
+              gross {
+                amount
+                currency
+              }
+            }
+            shippingPrice {
+              gross {
+                amount
+                currency
+              }
+            }
             total {
               gross {
                 amount
@@ -647,3 +658,4 @@ export const GET_CUSTOMER_ORDERS = gql`
     }
   }
 `;
+

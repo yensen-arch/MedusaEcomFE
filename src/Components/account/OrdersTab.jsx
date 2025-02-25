@@ -103,9 +103,38 @@ const OrdersTab = () => {
       y += 10;
     });
 
+    // Subtotal & Shipping Charges
+    y += 10;
+    doc.setFont("courier", "bold");
+    doc.text("SUBTOTAL:", 20, y);
+    doc.text(
+      `${order.subtotal.gross.amount} ${order.subtotal.gross.currency}`.toUpperCase(),
+      160,
+      y,
+      { align: "right" }
+    );
+
+    y += 10;
+    doc.text("SHIPPING CHARGES:", 20, y);
+    doc.text(
+      `${order.shippingPrice.gross.amount} ${order.shippingPrice.gross.currency}`.toUpperCase(),
+      160,
+      y,
+      { align: "right" }
+    );
+
+    y += 10;
+    doc.text("TOTAL:", 20, y);
+    doc.text(
+      `${order.total.gross.amount} ${order.total.gross.currency}`.toUpperCase(),
+      160,
+      y,
+      { align: "right" }
+    );
+
     // Footer
     doc.setFontSize(10);
-    doc.text("WELCOME TO THE CLOTHD.CO FAMILY", 105, y + 20, {
+    doc.text("WELCOME TO THE CLOTHD.CO FAMILY.", 105, y + 20, {
       align: "center",
     });
 
