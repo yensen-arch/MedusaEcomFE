@@ -129,7 +129,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
 
           {/* Additional Links */}
           <div className="px-4 border-t border-slate-300 mt-4">
-            <ul className="flex flex-col gap-2 mt-4">
+            <ul className="flex flex-col gap-4 mt-8">
               {additionalLinks.map((link) => (
                 <li
                   key={link.title}
