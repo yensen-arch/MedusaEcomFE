@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { REFRESH_TOKEN_MUTATION, GET_CART_ITEMS } from "../graphql/queries";
-import CheckoutPayment from "../Components/CheckoutPayment";
+import CheckoutPayment from "../Components/checkout/CheckoutPayment";
 import CheckoutShipping from "../Components/CheckoutShipping";
 import CustomLoader from "../Components/CustomLoader";
 import { GET_USER_QUERY } from "../graphql/queries";
