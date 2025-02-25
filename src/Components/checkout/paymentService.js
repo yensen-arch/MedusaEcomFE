@@ -1,4 +1,6 @@
 // src/services/paymentService.js
+import { CardElement } from "@stripe/react-stripe-js";
+
 export const handleCardPayment = async (
     stripe,
     elements,
