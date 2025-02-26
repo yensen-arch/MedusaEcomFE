@@ -355,19 +355,19 @@ const ProductInfo = ({
             setIsOpen={setIsShippingOpen}
             content={
               <>
-                FREE STANDARD SHIPPING ON ORDERS OVER $200.
+                FREE STANDARD SHIPPING ON ALL ORDERS.
                 <br />
                 EXPRESS SHIPPING AVAILABLE.
+                {/* <br />
+                RETURNS ACCEPTED WITHIN 30 DAYS OF PURCHASE. */}
                 <br />
-                RETURNS ACCEPTED WITHIN 30 DAYS OF PURCHASE.
-                <br />
-                <br />
-                <a
+                {/* <br /> */}
+                {/* <a
                   href="/help/shipping"
                   className="underline text-xs uppercase"
                 >
                   READ MORE
-                </a>
+                </a> */}
               </>
             }
           />
@@ -381,7 +381,7 @@ const ProductInfo = ({
         </div>
       </div>
       <div className=" uppercase bg-green-50 border border-black text-[0.6rem] p-2">
-        Every purchase equals 1 donated item
+        ONE PURCHASED = ONE DONATED
       </div>
       {/* <div className="space-y-4">
         <div className="flex justify-center gap-2 pt-6">
