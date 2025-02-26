@@ -1,6 +1,7 @@
 import React from "react";
 import Footer from "../Components/Footer";
 import DonationQR from "../Components/DonationQR";
+import { useEffect } from "react";
 
 const timelineEvents = [
   {
@@ -30,6 +31,9 @@ const Separator = ({ className }) => (
 );
 
 export default function Donations() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
   return (
     <>
       <div className="min-h-screen bg-white p-6 md:p-12 mt-28">
