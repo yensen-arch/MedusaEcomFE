@@ -9,10 +9,10 @@ const Footer = () => {
         <div className="footer_rows">
           <h4 className="font-bold">HELP</h4>
           <div>
-            <Link to={"/help/"}>MY Clothd ACCOUNT</Link>
+            <Link to={"/account/"}>MY Clothd ACCOUNT</Link>
           </div>
 
-          <div>
+          {/* <div>
             <Link to={"/help/items-and-sizes"}>ITEMS AND SIZES</Link>
           </div>
           <div>
@@ -20,37 +20,39 @@ const Footer = () => {
           </div>
           <div>
             <Link to={"/help/payment-invoice"}>PAYMENTS AND INVOICES</Link>
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <Link to={"/help/shipping"}>SHIPPING</Link>
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <Link to={"/help/myOrders"}>MY PURCHASES</Link>
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <Link to={"/help/exchanges"}>EXCHANGES, RETURNS AND REFUNDS</Link>
-          </div>
+          </div> */}
         </div>
         <div className="footer_rows">
           <h4 className="font-bold">FOLLOW US</h4>
-          <div>
+          {/* <div>
             <Link to={"/newsletter"}>NEWSLETTER</Link>
-          </div>
+          </div> */}
           {/* REPLACE WITH YOUR ACCOUNTS*/}
           <div><a href="https://www.instagram.com/Clothd">INSTAGRAM</a></div>
-          <div><a href="https://www.facebook.com/Clothd">FACEBOOK</a></div>
-          <div><a href="https://www.x.com/Clothd">X</a></div>
-          <div><a href="http://pinterest.com/Clothdofficial/">PINTEREST</a></div>
-          <div><a href="https://www.youtube.com/@Clothd">YOUTUBE</a></div>
+          {/* <div><a href="https://www.facebook.com/Clothd">FACEBOOK</a></div> */}
+          <div><a href="https://tiktok.com/@Clothd">TIKTOK</a></div>
+          {/* <div><a href="http://pinterest.com/Clothdofficial/">PINTEREST</a></div>
+          <div><a href="https://www.youtube.com/@Clothd">YOUTUBE</a></div> */}
         </div>
         <div className="footer_rows">
           <h4 className="font-bold">COMPANY</h4>
           <div>
-            <Link to={"/about"}>ABOUT US</Link>
+            <Link to={"/mission"}>MISSION</Link>
           </div>
-          <div>JOIN LIFE</div>
           <div>
-            <Link to={"/career"}>WORK WITH US</Link>
+            <Link to={"/lookbook"}>LOOKBOOK</Link>
+          </div>
+          <div>
+            <Link to={"/work-with-us"}>WORK WITH US</Link>
           </div>
         </div>
         <div className="footer_rows">
@@ -58,8 +60,11 @@ const Footer = () => {
           <div>
             <Link to={"/privacy"}>PRIVACY POLICY</Link>
           </div>
-          <div>PURCHASE CONDITIONS</div>
-          <div>GIFT CARD CONDITIONS</div>
+          <div>
+            <Link to={"/privacy"}>TERMS & CONDITIONS</Link>
+          </div>
+          {/* <div>PURCHASE CONDITIONS</div>
+          <div>GIFT CARD CONDITIONS</div> */}
         </div>
       </div>
 
