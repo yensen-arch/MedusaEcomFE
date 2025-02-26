@@ -25,6 +25,8 @@ const WorkWithUs = () => {
           <br />
           Join us in our mission to transform fashion while making a positive impact 
           on our community.
+          <br />
+          Reach us at: relations@clothd.co
         </p>
       </div>
       <Footer />
