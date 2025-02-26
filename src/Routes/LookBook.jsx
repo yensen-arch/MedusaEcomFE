@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import CustomLoader from "../Components/CustomLoader";
 
 const images = [
   {
@@ -21,8 +22,7 @@ const images = [
   {
     src: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740549300/WhatsApp_Image_2025-02-20_at_16.59.32_we1uof.jpg",
     alt: "Look 3",
-    story:
-      "89",
+    story: "89",
   },
   {
     src: "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740549300/WhatsApp_Image_2025-02-20_at_17.03.35_vyusil.jpg",
@@ -128,6 +128,7 @@ const images = [
 
 function LookBook() {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const openModal = (index) => {
     setSelectedImage(index);
@@ -137,56 +138,75 @@ function LookBook() {
     setSelectedImage(null);
   };
 
+  useEffect(() => {
+    let loadedCount = 0;
+    images.forEach((image) => {
+      const img = new Image();
+      img.src = image.src;
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === images.length) setLoading(false);
+      };
+    });
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-8 mt-28">
-      <header className="mb-8 flex justify-between items-center">
-        <h1 className="text-3xl font-light flex items-center gap-2">
-          V00{" "}
-          <span className="text-xs text-gray-500">
-            {new Date().toLocaleDateString()} • EARTH
-          </span>
-        </h1>
-      </header>
-
-      {/* Masonry Layout */}
-      <div className="columns-2 sm:columns-2 md:columns-3 gap-4 space-y-4">
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className="break-inside-avoid cursor-pointer"
-            onClick={() => openModal(index)}
-          >
-            <img
-              src={image.src}
-              alt={image.alt}
-              className="w-full h-auto border border-black "
-            />
-          </div>
-        ))}
-      </div>
-
-      {selectedImage !== null && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
-          onClick={closeModal}
-        >
-          <div
-            className="bg-white p-4 max-w-3xl w-auto mx-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={images[selectedImage].src}
-              alt={images[selectedImage].alt}
-              className="w-auto max-h-[80vh] border border-black mb-4"
-            />
-            <p className="text-[0.6rem] text-gray-700">
-              {images[selectedImage].story.toUpperCase()}
-            </p>
-          </div>
+      {loading ? (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <CustomLoader />
         </div>
+      ) : (
+        <>
+          {" "}
+          <header className="mb-8 flex justify-between items-center">
+            <h1 className="text-3xl font-light flex items-center gap-2">
+              V00{" "}
+              <span className="text-xs text-gray-500">
+                {new Date().toLocaleDateString()} • EARTH
+              </span>
+            </h1>
+          </header>
+          {/* Masonry Layout */}
+          <div className="columns-2 sm:columns-2 md:columns-3 gap-4 space-y-4">
+            {images.map((image, index) => (
+              <div
+                key={index}
+                className="break-inside-avoid cursor-pointer"
+                loading="lazy"
+                onClick={() => openModal(index)}
+              >
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full h-auto border border-black "
+                />
+              </div>
+            ))}
+          </div>
+          {selectedImage !== null && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+              onClick={closeModal}
+            >
+              <div
+                className="bg-white p-4 max-w-3xl w-auto mx-4"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={images[selectedImage].src}
+                  alt={images[selectedImage].alt}
+                  className="w-auto max-h-[80vh] border border-black mb-4"
+                />
+                <p className="text-[0.6rem] text-gray-700">
+                  {images[selectedImage].story.toUpperCase()}
+                </p>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
 }
-
 export default LookBook;
