@@ -35,8 +35,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
     { title: "LOOKBOOK", path: "/lookbook" },
     { title: "DONATE", path: "/donations" },
     { title: "OUR MISSION", path: "/mission" },
-    // { title: "HELP", path: "/help" },
-    { title: "WORK WITH US", path: "/careers" },
+    { title: "WORK WITH US", path: "/work-with-us" }, // Updated path
   ];
 
   const socialLinks = [
