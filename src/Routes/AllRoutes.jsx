@@ -62,10 +62,8 @@ const AllRoutes = () => {
       <Route path="career" element={<Careers />}></Route>
       <Route path="/privacy" element={<Privacy />}></Route>
       <Route path="products/:productId" element={<Products />} />
-      <Route path="category/:categoryId" element={<CategoryPage />} />
-      <Route path="/work-with-us",
-      element: <WorkWithUs />,
-    }
+      <Route path="/category/:categoryId" element={<CategoryPage />} />
+      <Route path="/work-with-us" element={<WorkWithUs />} />
       <Route path="*" element={<NotFound />}></Route>
     </Routes>
   );
