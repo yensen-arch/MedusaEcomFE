@@ -380,7 +380,7 @@ const ProductInfo = ({
           />
         </div>
       </div>
-      <div className=" uppercase bg-green-100 border border-black text-[0.6rem] p-2">
+      <div className=" uppercase bg-green-50 border border-black text-[0.6rem] p-2">
         Every purchase equals 1 donated item
       </div>
       {/* <div className="space-y-4">

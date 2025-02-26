@@ -114,10 +114,19 @@ const Navbar = ({
   };
 
   const toggleCart = () => setIsCartOpen(!isCartOpen);
-
+  const styleTag = `
+ @keyframes bgColorPulse {
+  0% { background-color: #00FF00; }  
+  25% { background-color: #FFFF00; }
+  50% { background-color: #00FF00; }
+  75% { background-color: #FFFF00; }
+  100% { background-color: #00FF00; }
+}
+  `;
   return (
     <>
       {/* Main Navbar */}
+      <style dangerouslySetInnerHTML={{ __html: styleTag }} />
       <nav className="fixed top-0 left-0 w-full z-50 bg-white">
         <div className="w-full flex flex-col">
           {/* Top section */}
@@ -194,8 +203,8 @@ const Navbar = ({
                 {cartCount > 0 && (
                   <span
                     key={cartCount}
-                    className="absolute -top-2 -right-2 bg-green-300 font-bold text-black text-xs rounded-none px-3 py-2 border border-black animate-[ping-once_0.3s_ease-in-out]"
-                  >
+                    className="absolute -top-2 -right-2 bg-green-300 font-bold text-black text-xs rounded-none px-3 py-2 border border-black animate-[bgColorPulse_1.5s_ease-in-out]"
+                    >
                     {cartCount}
                   </span>
                 )}
