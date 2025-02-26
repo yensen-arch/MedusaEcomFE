@@ -145,7 +145,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
           </div>
 
           {/* Social Media Icons */}
-          <div className="px-4 mt-6">
+          <div className="px-4 mt-6 sm:mt-2">
             <div className="flex justify-start gap-6">
               {socialLinks.map((social, index) => (
                 <a

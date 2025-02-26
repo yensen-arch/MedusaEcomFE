@@ -151,7 +151,7 @@ const OrdersTab = () => {
         </>
       ) : (
         <div
-          className="w-full overflow-y-auto h-[32rem]"
+          className="w-full overflow-y-auto h-[29rem]"
           style={{
             scrollbarWidth: "none" /* Firefox */,
             msOverflowStyle: "none" /* IE/Edge */,

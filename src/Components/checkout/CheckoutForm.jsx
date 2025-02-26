@@ -120,27 +120,27 @@ const CheckoutForm = ({
 
     let paymentResult;
 
-    if (paymentMethod === "card") {
-      paymentResult = await handleCardPayment(
-        stripe,
-        elements,
-        userEmail,
-        billingAddress
-      );
-    } else if (paymentMethod === "klarna") {
-      paymentResult = await handleKlarnaPayment(
-        stripe,
-        checkoutId,
-        amount,
-        userEmail,
-        billingAddress
-      );
-      if (paymentResult.status === "pending") {
-        // For Klarna redirect flow
-        setIsProcessing(false);
-        return;
-      }
-    }
+    // if (paymentMethod === "card") {
+    paymentResult = await handleCardPayment(
+      stripe,
+      elements,
+      userEmail,
+      billingAddress
+    );
+    // } else if (paymentMethod === "klarna") {
+    // paymentResult = await handleKlarnaPayment(
+    //   stripe,
+    //   checkoutId,
+    //   amount,
+    //   userEmail,
+    //   billingAddress
+    // );
+    //   if (paymentResult.status === "pending") {
+    //     // For Klarna redirect flow
+    //     setIsProcessing(false);
+    //     return;
+    //   }
+    // }
 
     if (paymentResult.error) {
       setError(paymentResult.error);
@@ -175,29 +175,29 @@ const CheckoutForm = ({
     },
   ];
 
-  if (canMakePayment) {
-    if (canMakePayment.applePay) {
-      paymentOptions.push({
-        id: "apple-pay",
-        name: "Apple Pay",
-        icon: "🍎",
-      });
-    }
+  // if (canMakePayment) {
+  //   if (canMakePayment.applePay) {
+  //     paymentOptions.push({
+  //       id: "apple-pay",
+  //       name: "Apple Pay",
+  //       icon: "🍎",
+  //     });
+  //   }
 
-    if (canMakePayment.googlePay) {
-      paymentOptions.push({
-        id: "google-pay",
-        name: "Google Pay",
-        icon: "G",
-      });
-    }
-  }
+  //   if (canMakePayment.googlePay) {
+  //     paymentOptions.push({
+  //       id: "google-pay",
+  //       name: "Google Pay",
+  //       icon: "G",
+  //     });
+  //   }
+  // }
 
-  paymentOptions.push({
-    id: "klarna",
-    name: "Klarna",
-    icon: "K",
-  });
+  // paymentOptions.push({
+  //   id: "klarna",
+  //   name: "Klarna",
+  //   icon: "K",
+  // });
 
   return (
     <div className="space-y-4">

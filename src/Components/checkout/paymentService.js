@@ -158,14 +158,12 @@ export const processPayment = async (
         };
       }
     }
-
     if (completeData?.checkoutComplete?.errors?.length) {
       const errorMessage = completeData.checkoutComplete.errors
         .map((err) => err.message)
         .join(", ");
       return { error: `Checkout Completion Error: ${errorMessage}` };
     }
-
     return { success: true };
   } catch (err) {
     return { error: `Payment failed: ${err.message}` };

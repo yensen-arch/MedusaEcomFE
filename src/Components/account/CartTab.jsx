@@ -48,7 +48,7 @@ const CartTab = ({ cartData, cartLoading, cartError }) => {
   };
 
   return (
-    <div className="relative h-[32rem] flex flex-col">
+    <div className="relative h-[29rem] flex flex-col">
       <div className="flex-1 space-y-4  overflow-y-auto">
         {cartLoading || updateLoading ? (
           <div className="flex justify-center">

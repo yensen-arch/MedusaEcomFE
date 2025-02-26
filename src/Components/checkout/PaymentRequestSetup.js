@@ -1,4 +1,3 @@
-// src/components/checkout/PaymentRequestSetup.js
 import { useEffect, useState } from "react";
 
 const usePaymentRequest = (
@@ -10,7 +9,8 @@ const usePaymentRequest = (
   checkoutComplete,
   userEmail,
   setIsProcessing,
-  setError
+  setError,
+  onSuccess
 ) => {
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakePayment, setCanMakePayment] = useState(false);
@@ -57,7 +57,7 @@ const usePaymentRequest = (
               input: {
                 gateway: "saleor.payments.stripe",
                 token: event.paymentMethod.id,
-                amount: parseFloat(amount),
+                amount: parseFloat(amount) * 100, // Converting to cents for Saleor
               },
             },
           });
@@ -141,7 +141,7 @@ const usePaymentRequest = (
         }
       });
     }
-  }, [stripe, amount, checkoutId]);
+  }, [stripe, amount, checkoutId, checkoutPaymentCreate, checkoutEmailUpdate, checkoutComplete, userEmail, setIsProcessing, setError, onSuccess]);
 
   return { paymentRequest, canMakePayment };
 };

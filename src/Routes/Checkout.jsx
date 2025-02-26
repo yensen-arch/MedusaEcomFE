@@ -230,7 +230,7 @@ function Checkout() {
             <li>Signature packaging</li>
           </ul>
 
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <p className="font-medium text-center text-xs">WE ACCEPT</p>
             <div className="flex justify-center gap-2">
               {[
@@ -271,7 +271,7 @@ function Checkout() {
                 />
               ))}
             </div>
-          </div>
+          </div> */}
 
           <div className="text-center">
             <p className="font-medium text-[0.6rem]">

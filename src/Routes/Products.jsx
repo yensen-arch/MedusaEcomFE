@@ -383,7 +383,7 @@ const ProductInfo = ({
       <div className=" uppercase bg-green-100 border border-black text-[0.6rem] p-2">
         Every purchase equals 1 donated item
       </div>
-      <div className="space-y-4">
+      {/* <div className="space-y-4">
         <div className="flex justify-center gap-2 pt-6">
           {[
             {
@@ -423,7 +423,7 @@ const ProductInfo = ({
             />
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

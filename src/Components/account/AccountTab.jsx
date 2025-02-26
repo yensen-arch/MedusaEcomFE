@@ -42,9 +42,9 @@ const AccountTab = ({ userData }) => {
           <p className="text-xs text-black">Email: {userData?.email}</p>
         </div>
       </section>
-      <button onClick={handleReset} className="w-full border text-white bg-black text-sm border-black py-3 hover:bg-white hover:text-black transition-colors">
+      {/* <button onClick={handleReset} className="w-full border text-white bg-black text-sm border-black py-3 hover:bg-white hover:text-black transition-colors">
         CHANGE PASSWORD
-      </button>
+      </button> */}
       {status && <p>{status}</p>}
     </div>
   );
