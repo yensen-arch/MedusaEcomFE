@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import CustomLoader from "../Components/CustomLoader";
+import Footer from "../Components/Footer";
 
 const images = [
   {
@@ -206,6 +207,7 @@ function LookBook() {
           )}
         </>
       )}
+      <Footer />
     </div>
   );
 }
