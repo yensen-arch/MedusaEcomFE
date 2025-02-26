@@ -113,12 +113,16 @@ export const categoriesMobile = {
   V00: [
     {
       path: "v00",
-      img: getMobileOptimizedUrl(
-        "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023164/IMG_7134_gypfm4.jpg"
-      ),
+      img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740544747/Main-Mobile_qt4rgz.webp"),
       productId: "UHJvZHVjdDox",
       priority: true,
       preload: true,
+    },
+    {
+      path: "v00",
+      img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740544747/Second-Mobile_d8lgtr.webp"),
+      productId: "UHJvZHVjdDox",
+      preload: true
     },
     // {
     //   video: getMobileOptimizedUrl(
