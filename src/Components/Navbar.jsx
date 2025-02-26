@@ -221,7 +221,7 @@ const Navbar = ({
             {/* Search bar */}
             <Link
               to={"/search/home"}
-              className="px-6 py-3 flex items-center justify-center  border-b border-black"
+              className=" py-3 flex items-center justify-center  border-b border-black"
             >
               <RiSearchLine className="w-5 h-5 text-gray-400 text-black" />
               <input
