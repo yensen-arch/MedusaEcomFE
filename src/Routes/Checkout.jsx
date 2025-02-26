@@ -224,9 +224,10 @@ function Checkout() {
           </div>
 
           <ul className="space-y-2 text-xs uppercase">
-            <li>Free shipping, returns and exchanges</li>
+            {/* <li>Free shipping, returns and exchanges</li>
             <li>30 days free return</li>
-            <li>30 days free online exchange</li>
+            <li>30 days free online exchange</li> */}
+            <li>Handmade in Spain</li>
             <li>Signature packaging</li>
           </ul>
 
