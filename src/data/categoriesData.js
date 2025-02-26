@@ -105,16 +105,22 @@ export const categoriesMobile = {
   V00: [
     {
       path: "v00",
-      img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740023164/IMG_7134_gypfm4.jpg"),
+      img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740544747/Main-Mobile_qt4rgz.webp"),
       productId: "UHJvZHVjdDox",
       priority: true,
       preload: true
     },
     {
-      video: getMobileOptimizedUrl(
-        "https://res.cloudinary.com/dmjhto8sd/video/upload/v1740108755/B444A4EE-6BBA-437C-947E-155D4BE435FD_keoyu7.mp4"),
+      path: "v00",
+      img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740544747/Second-Mobile_d8lgtr.webp"),
       productId: "UHJvZHVjdDox",
+      preload: true
     },
+    // {
+    //   video: getMobileOptimizedUrl(
+    //     "https://res.cloudinary.com/dmjhto8sd/video/upload/v1740108755/B444A4EE-6BBA-437C-947E-155D4BE435FD_keoyu7.mp4"),
+    //   productId: "UHJvZHVjdDox",
+    // },
     { type: "footer" },
   ],
   // WOMEN: [
