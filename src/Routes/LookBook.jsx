@@ -154,7 +154,7 @@ function LookBook() {
   return (
     <div className="container mx-auto px-4 py-8 mt-28">
       {loading ? (
-        <div className="fixed inset-0 flex items-center justify-center">
+        <div className="fixed h-screen w-screen inset-0 flex items-center justify-center">
           <CustomLoader />
         </div>
       ) : (
