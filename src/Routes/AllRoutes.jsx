@@ -25,6 +25,7 @@ import Mission from "./Mission";
 import Donations from "./Donations";
 import ResetPass from "./ResetPass";
 import LookBook from "./LookBook";
+import WorkWithUs from "./WorkWithUs";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -62,6 +63,9 @@ const AllRoutes = () => {
       <Route path="/privacy" element={<Privacy />}></Route>
       <Route path="products/:productId" element={<Products />} />
       <Route path="category/:categoryId" element={<CategoryPage />} />
+      <Route path="/work-with-us",
+      element: <WorkWithUs />,
+    }
       <Route path="*" element={<NotFound />}></Route>
     </Routes>
   );
