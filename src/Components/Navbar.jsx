@@ -174,6 +174,9 @@ const Navbar = ({
 
             {/* Right: User links */}
             <div className="flex items-center space-x-6">
+              <Link to="/lookbook" className="text-xs hidden md:block">
+                LOOKBOOK
+              </Link>
               <Link to="/donations" className="text-xs hidden md:block">
                 DONATE
               </Link>

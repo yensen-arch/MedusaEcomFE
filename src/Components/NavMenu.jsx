@@ -32,6 +32,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
   }, [isMenuOpen]);
 
   const additionalLinks = [
+    { title: "LOOKBOOK", path: "/lookbook" },
     { title: "DONATE", path: "/donations" },
     { title: "OUR MISSION", path: "/mission" },
     // { title: "HELP", path: "/help" },
@@ -78,9 +79,9 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
         style={{ height: "calc(100vh - 280px)" }}
         trackYProps={{ style: { width: "4px" } }}
       >
-        <div className="flex flex-col gap-2 sm:gap-4 px-4">
+        <div className="flex flex-col sm:gap-4 px-4">
           {/* Main Categories */}
-          <ul className="flex flex-col gap-4 px-4 mt-14 sm:mt-8">
+          <ul className="flex flex-col gap-4 px-4 mt-8">
             {loading ? (
               <p className="flex items-center justify-center">
                 <CustomLoader />

@@ -24,6 +24,7 @@ import Checkout from "./Checkout";
 import Mission from "./Mission";
 import Donations from "./Donations";
 import ResetPass from "./ResetPass";
+import LookBook from "./LookBook";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -36,6 +37,7 @@ const AllRoutes = () => {
       <Route path="/account" element={<Account />}></Route>
       <Route path="/checkout" element={<Checkout />}></Route>
       <Route path="/donations" element={<Donations />}></Route>
+      <Route path="/lookbook" element={<LookBook />}></Route>
       <Route path="/reset-password" element={<ResetPass />}></Route>
 
       <Route
