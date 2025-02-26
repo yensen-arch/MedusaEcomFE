@@ -152,14 +152,13 @@ function LookBook() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-28">
+    <>
       {loading ? (
-        <div className="fixed h-screen w-screen inset-0 flex items-center justify-center">
+        <div className="fixed inset-0 h-screen w-screen flex items-center justify-center z-50">
           <CustomLoader />
         </div>
       ) : (
-        <>
-          {" "}
+        <div className="min-h-screen container mx-auto px-4 py-8 mt-28 pb-24">
           <header className="mb-8 flex justify-between items-center">
             <h1 className="text-3xl font-light flex items-center gap-2">
               V00{" "}
@@ -180,7 +179,7 @@ function LookBook() {
                 <img
                   src={image.src}
                   alt={image.alt}
-                  className="w-full h-auto border border-black "
+                  className="w-full h-auto border border-black"
                 />
               </div>
             ))}
@@ -205,10 +204,12 @@ function LookBook() {
               </div>
             </div>
           )}
-        </>
+        </div>
       )}
-      <Footer />
-    </div>
+      <div className="relative">
+        <Footer />
+      </div>
+    </>
   );
 }
 export default LookBook;
