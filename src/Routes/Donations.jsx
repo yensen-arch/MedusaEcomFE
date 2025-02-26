@@ -40,9 +40,9 @@ export default function Donations() {
                 Clothd. Donation Initiative
               </h1>
               <p className="text-xs uppercase leading-relaxed text-muted-foreground">
-                Our mission is to provide essential clothing to individuals
+                Our mission is to provide essential food and clothing to individuals
                 experiencing homelessness across the United States. Through your
-                generous donations, we can help protect vulnerable community
+                 donations, we can help protect vulnerable community
                 members from harsh weather conditions while preserving their
                 dignity.
               </p>
@@ -53,8 +53,7 @@ export default function Donations() {
                 How It Works
               </h2>
               <p className="text-xs uppercase leading-relaxed text-muted-foreground">
-                For every $25 donated, we can provide a complete set of clean,
-                weather-appropriate clothing to someone in need. We work
+                For every item purchased, we donate a full set of clothing as well as a meal to someone in need. We work
                 directly with local shelters and outreach programs to ensure
                 your donations reach those who need them most.
               </p>
@@ -65,11 +64,11 @@ export default function Donations() {
                 Impact Statistics
               </h2>
               <p className="text-xs uppercase leading-relaxed text-muted-foreground">
-                Total individuals helped: 0
+                Total individuals helped: 12
                 <br />
-                Cities reached: 0
+                Cities reached: 1
                 <br />
-                Active distribution centers: 0
+                Active distribution centers: 1
               </p>
             </div>
           </div>
