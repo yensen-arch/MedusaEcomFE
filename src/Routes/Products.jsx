@@ -329,7 +329,7 @@ const ProductInfo = ({
             disabled={cartLoading}
             className="w-full py-2 bg-black text-xs text-white hover:bg-white hover:text-black border hover:border-black transition-colors"
           >
-            {cartLoading ? "ADDING..." : "ADD TO CART"}
+            {cartLoading ? "ADDED" : "ADD TO CART"}
           </button>
           <Link
             onClick={validateAndHandle(handleAddToCart)}

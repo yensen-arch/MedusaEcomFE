@@ -87,97 +87,103 @@ function Cart({ isOpen, onClose }) {
 
   if (!isVisible) return null;
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 " onClick={onClose}>
+    <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose}>
       <div
-        className={`border border-black overflow-y-auto fixed top-0 right-0 w-full sm:w-[500px] h-screen bg-white transform transition-transform duration-300 ease-in-out ${
+        className={`border border-black fixed top-0 right-0 w-full sm:w-[500px] h-screen bg-white transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex px-2 justify-between border-b border-black items-center pb-[9px] pt-[10px] bg-[#00FF00]">
+        <div className="flex px-2 justify-between border-b border-black items-center pb-[8px] pt-[11px] bg-[#00FF00]">
           <h2 className="text-xs font-bold tracking-wider">CART</h2>
           <button onClick={onClose} className="hover:opacity-70">
             <RiCloseFill size={24} />
           </button>
         </div>
-        <div className=" relative">
-          {isLoading || loading ? (
-            <div className="flex justify-center items-center h-full w-full min-h-screen">
-              <CustomLoader />
-            </div>
-          ) : error ? (
-            <p className="text-center text-red-500 py-4">
-              Error fetching cart items
-            </p>
-          ) : data?.checkout?.lines?.length > 0 ? (
-            data.checkout.lines.map((item) => (
-              <div key={item.id} className="py-6 border-b border-black">
-                <div className="flex gap-4">
-                  {item.variant.product.thumbnail?.url && (
-                    <img
-                      src={
-                        item.variant.product.thumbnail.url || "/placeholder.svg"
-                      }
-                      alt={
-                        item.variant.product.thumbnail?.alt || "Product Image"
-                      }
-                      className="w-24 h-24 object-cover border border-black"
-                    />
-                  )}
-                  <div className="flex-grow">
-                    <h3 className="font-bold mb-1 uppercase text-xs">
-                      {item.variant.product.name}
-                    </h3>
-                    <p className="text-xs font-bold mb-2">
-                      $ {item.variant.pricing.price.gross.amount.toFixed(2)}
-                    </p>
-                    <p className="mb-1 uppercase text-xs">
-                      Category: {item.variant.product.category?.name || "Black"}
-                    </p>
-                    <p className="mb-2 text-xs uppercase">
-                      Size:{" "}
-                      {item.variant.attributes.find(
-                        (attr) => attr.attribute.name === "Size"
-                      )?.values[0]?.name || "U"}
-                    </p>
-                    <div className="flex items-center gap-4 mb-4">
-                      <span className="text-xs uppercase">Quantity:</span>
-                      <button
-                        className="px-2 hover:opacity-70"
-                        onClick={() =>
-                          handleQuantityChange(
-                            item.variant.id,
-                            item.quantity - 1
-                          )
+
+        {/* Added fixed height container with overflow-y-auto and scrollbar-hide classes */}
+        <div className="h-[calc(100vh-180px)] overflow-y-auto scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent">
+          <div className="relative">
+            {isLoading || loading ? (
+              <div className="flex justify-center items-center h-full w-full min-h-screen">
+                <CustomLoader />
+              </div>
+            ) : error ? (
+              <p className="text-center text-red-500 py-4">
+                Error fetching cart items
+              </p>
+            ) : data?.checkout?.lines?.length > 0 ? (
+              data.checkout.lines.map((item) => (
+                <div key={item.id} className="mb-10 py-6 border-b border-black">
+                  <div className="flex gap-2">
+                    {item.variant.product.thumbnail?.url && (
+                      <img
+                        src={
+                          item.variant.product.thumbnail.url ||
+                          "/placeholder.svg"
                         }
-                      >
-                        −
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button
-                        className="px-2 hover:opacity-70"
-                        onClick={() =>
-                          handleQuantityChange(
-                            item.variant.id,
-                            item.quantity + 1
-                          )
+                        alt={
+                          item.variant.product.thumbnail?.alt || "Product Image"
                         }
-                      >
-                        +
-                      </button>
+                        className="w-24 h-24 object-cover border border-black"
+                      />
+                    )}
+                    <div className="flex-grow">
+                      <h3 className="font-bold mb-1 uppercase text-xs">
+                        {item.variant.product.name}
+                      </h3>
+                      <p className="text-xs font-bold mb-2">
+                        $ {item.variant.pricing.price.gross.amount.toFixed(2)}
+                      </p>
+                      <p className="mb-1 uppercase text-xs">
+                        Category:{" "}
+                        {item.variant.product.category?.name || "Black"}
+                      </p>
+                      <p className="mb-2 text-xs uppercase">
+                        Size:{" "}
+                        {item.variant.attributes.find(
+                          (attr) => attr.attribute.name === "Size"
+                        )?.values[0]?.name || "U"}
+                      </p>
+                      <div className="flex items-center gap-4 mb-4">
+                        <span className="text-xs uppercase">Quantity:</span>
+                        <button
+                          className="px-2 hover:opacity-70"
+                          onClick={() =>
+                            handleQuantityChange(
+                              item.variant.id,
+                              item.quantity - 1
+                            )
+                          }
+                        >
+                          −
+                        </button>
+                        <span>{item.quantity}</span>
+                        <button
+                          className="px-2 hover:opacity-70"
+                          onClick={() =>
+                            handleQuantityChange(
+                              item.variant.id,
+                              item.quantity + 1
+                            )
+                          }
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-xs py-8">YOUR CART IS EMPTY</p>
-          )}
+              ))
+            ) : (
+              <p className="text-center text-xs py-8">YOUR CART IS EMPTY</p>
+            )}
+          </div>
         </div>
 
         {data?.checkout?.totalPrice && (
-          <div className="absolute mb-10 sm:mb-0 w-full bottom-0 left-0 px-6 py-4 bg-white border-t border-black">
-            <div className="pt-4">
+          <div className="absolute w-full mb-8 sm:mb-0 bottom-0 left-0 px-6 py-2 bg-white border-t border-black">
+            <div >
               <h3 className="text-xs font-bold mb-4">
                 OUR SIGNATURE PACKAGING
               </h3>
@@ -186,11 +192,11 @@ function Cart({ isOpen, onClose }) {
                 <span>SHIPPING COST</span>
                 <span>$ 0.00</span>
               </div>
-              <div className="flex text-xs justify-between mb-4">
+              <div className="flex text-xs justify-between mb-2">
                 <span>SALES TAX</span>
                 <span className="text-xs">CALCULATED AT CHECKOUT</span>
               </div>
-              <div className="flex text-xs justify-between mb-6">
+              <div className="flex text-xs justify-between mb-2 sm:mb-6">
                 <span>ESTIMATED TOTAL (TAX EXCL.)</span>
                 <span>
                   $ {data.checkout.totalPrice.gross.amount.toFixed(2)}

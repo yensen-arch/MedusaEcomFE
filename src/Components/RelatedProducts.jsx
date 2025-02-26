@@ -182,7 +182,7 @@ function ProductCard({ product }) {
             disabled={cartLoading}
             className=" transition-transform duration-300 absolute translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 border border-black text-black px-1 py-1 text-xs"
           >
-            {cartLoading ? "ADDING..." : "ADD TO CART"}
+            {cartLoading ? "ADDED" : "ADD TO CART"}
           </button>
         </div>
       </div>
