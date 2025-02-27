@@ -154,7 +154,7 @@ function LookBook() {
   return (
     <>
       {loading ? (
-        <div className="fixed inset-0 h-screen w-screen flex items-center justify-center z-50">
+        <div className="fixed inset-0 min-h-screen w-screen flex items-center justify-center">
           <CustomLoader />
         </div>
       ) : (
@@ -204,11 +204,9 @@ function LookBook() {
               </div>
             </div>
           )}
+          <Footer />
         </div>
       )}
-      <div className="relative">
-        <Footer />
-      </div>
     </>
   );
 }
