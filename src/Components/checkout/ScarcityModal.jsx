@@ -41,7 +41,7 @@ function ScarcityModal() {
           isPulsing ? "bg-white text-black" : "bg-black text-white"
         }`}
       >
-        <p className="text-xs uppercase">Drop0</p>
+        <p className="text-xs uppercase">Drop-0</p>
         <p className="text-xs uppercase">{productScarcity[productId] || "N/A"}</p>
       </div>
     </div>

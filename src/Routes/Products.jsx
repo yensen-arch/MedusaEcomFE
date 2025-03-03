@@ -1,4 +1,4 @@
-import { useState, useRef,useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import {
@@ -15,8 +15,9 @@ import {
   FiChevronRight,
 } from "react-icons/fi";
 import CustomLoader from "../Components/CustomLoader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ScarcityModal from "../Components/checkout/ScarcityModal";
+
 const Product = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -49,7 +50,6 @@ const Product = () => {
     );
   if (error) return <p>Error: {error.message}</p>;
 
-  
   const product = data.product;
   // const description = product.description || "";
   const variation = product.variants || [];
@@ -212,6 +212,9 @@ const ProductInfo = ({
   newCartLoading,
   sizes,
 }) => {
+  const [cartAdded, setCartAdded] = useState(false);
+  const navigate = useNavigate();
+
   const handleAddToCart = async () => {
     if (localStorage.getItem("token") === null) {
       // this case is for the fresh user.
@@ -245,6 +248,7 @@ const ProductInfo = ({
         localStorage.setItem("checkoutId", newCheckoutId);
         const cartItems = data.checkoutCreate.checkout.lines.length;
         localStorage.setItem("cartCount", cartItems);
+        setCartAdded(true); // Set cartAdded to true when cart is updated
       }
     } else {
       try {
@@ -259,12 +263,20 @@ const ProductInfo = ({
           localStorage.setItem("checkoutId", updatedCheckoutId);
           const cartItems = data.checkoutLinesAdd.checkout.lines.length;
           localStorage.setItem("cartCount", cartItems);
+          setCartAdded(true);
         }
       } catch (error) {
         console.error("Mutation error:", error);
       }
     }
   };
+
+  // Redirect to /checkout when cartAdded is true
+  useEffect(() => {
+    if (cartAdded) {
+      navigate("/checkout");
+    }
+  }, [cartAdded, navigate]);
 
   const [selectedSize, setSelectedSize] = useState("");
   const selectRef = useRef(null);
@@ -338,14 +350,16 @@ const ProductInfo = ({
           >
             {cartLoading ? "ADDED" : "ADD TO CART"}
           </button>
-          <Link
-            onClick={validateAndHandle(handleAddToCart)}
+          <button
+            onClick={validateAndHandle(async () => {
+              await handleAddToCart();
+              setCartAdded(true);
+            })}
             disabled={cartLoading}
-            to="/checkout"
-            className="w-full text-center py-2 bg-black text-xs text-white hover:bg-white hover:text-black border hover:border-black transition-colors"
+            className="w-full flex items-center justify-center text-center py-2 bg-black text-xs text-white hover:bg-white hover:text-black border hover:border-black transition-colors"
           >
-            PREORDER NOW
-          </Link>
+            {cartLoading ? <CustomLoader /> : "PREORDER NOW"}
+          </button>
         </div>
 
         <div className="space-y-4 pt-6 text-xs uppercase">
