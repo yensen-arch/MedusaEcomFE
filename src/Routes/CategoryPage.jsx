@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import {
@@ -11,6 +11,9 @@ import Footer from "../Components/Footer";
 import CustomLoader from "../Components/CustomLoader";
 
 function CategoryPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { categoryId } = useParams();
   const { loading, error, data } = useQuery(GET_PRODUCTS_BY_CATEGORY, {
     variables: { categoryId, channel: "default-channel" },
@@ -55,7 +58,7 @@ function CategoryPage() {
 function ProductCard({ product }) {
   const [currentImage, setCurrentImage] = useState(0);
   const [isNavigating, setIsNavigating] = useState(false);
-  const [slideDirection, setSlideDirection] = useState('right');
+  const [slideDirection, setSlideDirection] = useState("right");
   const navigate = useNavigate();
   const images =
     product.images.length > 1
@@ -66,12 +69,12 @@ function ProductCard({ product }) {
   const touchStarted = useRef(false);
 
   const prevImage = () => {
-    setSlideDirection('left');
+    setSlideDirection("left");
     setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
-  
+
   const nextImage = () => {
-    setSlideDirection('right');
+    setSlideDirection("right");
     setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
@@ -79,17 +82,17 @@ function ProductCard({ product }) {
     touchStartX.current = e.touches[0].clientX;
     touchStarted.current = true;
   };
-  
+
   const handleTouchMove = (e) => {
     if (!touchStarted.current) return;
     touchEndX.current = e.touches[0].clientX;
   };
-  
+
   const handleTouchEnd = () => {
     if (!touchStarted.current) return;
-    
+
     const swipeDistance = touchStartX.current - touchEndX.current;
-    
+
     // Only trigger swipe if distance is significant (more than 30px)
     if (Math.abs(swipeDistance) > 30) {
       if (swipeDistance > 0) {
@@ -98,14 +101,14 @@ function ProductCard({ product }) {
         prevImage();
       }
     }
-    
+
     touchStarted.current = false;
   };
-  
+
   const handleTouchCancel = () => {
     touchStarted.current = false;
   };
-  
+
   const [loading, setLoading] = useState(false);
 
   const handleProductClick = async (e) => {
@@ -188,12 +191,14 @@ function ProductCard({ product }) {
               src={images[currentImage]}
               alt={product.name}
               className={`w-auto h-[20rem] sm:h-[32rem] object-cover absolute transition-transform duration-300 ease-in-out ${
-                slideDirection === 'right' ? 'animate-slide-in-right' : 'animate-slide-in-left'
+                slideDirection === "right"
+                  ? "animate-slide-in-right"
+                  : "animate-slide-in-left"
               }`}
               style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
               }}
             />
           </div>

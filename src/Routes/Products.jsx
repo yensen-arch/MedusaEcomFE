@@ -16,8 +16,9 @@ import {
 } from "react-icons/fi";
 import CustomLoader from "../Components/CustomLoader";
 import { Link } from "react-router-dom";
+import ScarcityModal from "../Components/checkout/ScarcityModal";
 const Product = () => {
-    useEffect(() => {//start from the top always
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
@@ -75,6 +76,7 @@ const Product = () => {
 
   return (
     <div className="min-h-screen mt-20">
+      <ScarcityModal />
       {/* Desktop Layout */}
       <div className="hidden md:grid md:grid-cols-12 border-b border-r border-black w-full">
         {/* Image gallery - 8/12 columns on large screens, 7/12 on medium */}
