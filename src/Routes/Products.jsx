@@ -337,7 +337,7 @@ const ProductInfo = ({
             to="/checkout"
             className="w-full text-center py-2 bg-black text-xs text-white hover:bg-white hover:text-black border hover:border-black transition-colors"
           >
-            BUY NOW
+            PREORDER NOW
           </Link>
         </div>
 
