@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef,useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import {
@@ -17,6 +17,10 @@ import {
 import CustomLoader from "../Components/CustomLoader";
 import { Link } from "react-router-dom";
 const Product = () => {
+    useEffect(() => {//start from the top always
+    window.scrollTo(0, 0);
+  }, []);
+
   const { productId } = useParams();
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
     variables: { id: productId, channel: "default-channel" },
@@ -44,6 +48,7 @@ const Product = () => {
     );
   if (error) return <p>Error: {error.message}</p>;
 
+  
   const product = data.product;
   // const description = product.description || "";
   const variation = product.variants || [];
