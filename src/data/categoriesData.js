@@ -36,14 +36,14 @@ export const categories = {
       img: getOptimizedUrl(
         "https://res.cloudinary.com/dmjhto8sd/image/upload/v1741398926/donated_skjclx.webp"
       ),
-      productId: "UHJvZHVjdDox",
+      productId: "UHJvZHVjdDo0",
     },
     {
       path: "v00",
       img: getOptimizedUrl(
         "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740255295/main_minified_dvrel3.webp"
       ),
-      productId: "UHJvZHVjdDox",
+      productId: "UHJvZHVjdDo0",
       priority: true,
       preload: true,
     },
@@ -52,7 +52,7 @@ export const categories = {
       img: getOptimizedUrl(
         "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740375247/main_3_f0ewvp.webp"
       ),
-      productId: "UHJvZHVjdDox",
+      productId: "UHJvZHVjdDo0",
     },
     { type: "footer" },
   ],
@@ -114,14 +114,14 @@ export const categoriesMobile = {
     {
       path: "v00",
       img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740544747/Main-Mobile_qt4rgz.webp"),
-      productId: "UHJvZHVjdDox",
+      productId: "UHJvZHVjdDo0",
       priority: true,
       preload: true,
     },
     {
       path: "v00",
       img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740544747/Second-Mobile_d8lgtr.webp"),
-      productId: "UHJvZHVjdDox",
+      productId: "UHJvZHVjdDo0",
       preload: true
     },
     // {
