@@ -113,7 +113,7 @@ export const categoriesMobile = {
   V00: [
     {
       path: "v00",
-      img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740544747/Main-Mobile_qt4rgz.webp"),
+      img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1741400168/Mobile_main_x1ckwh.webp"),
       productId: "UHJvZHVjdDo0",
       priority: true,
       preload: true,
