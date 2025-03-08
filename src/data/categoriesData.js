@@ -120,7 +120,7 @@ export const categoriesMobile = {
     },
     {
       path: "v00",
-      img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740544747/Second-Mobile_d8lgtr.webp"),
+      img: getMobileOptimizedUrl("https://res.cloudinary.com/dmjhto8sd/image/upload/v1740544747/Main-Mobile_qt4rgz.webp"),
       productId: "UHJvZHVjdDo0",
       preload: true
     },
