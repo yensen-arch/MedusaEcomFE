@@ -4,9 +4,9 @@ import { useParams } from "react-router-dom";
 const productScarcity = {
   "UHJvZHVjdDo2": "27/200 left",
   "UHJvZHVjdDo0": "50/150 left",
-  "UHJvZHVjdDox": "23/100 left",
-  "UHJvZHVjdDo1": "29/100 left",
-  "UHJvZHVjdDo4": "15/100 left",
+  "UHJvZHVjdDo1": "31/100 left",
+  "UHJvZHVjdDo3": "10/100 left",
+  "UHJvZHVjdDoz": "29/100 left",
 };
 
 function ScarcityModal() {

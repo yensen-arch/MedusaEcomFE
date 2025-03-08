@@ -46,7 +46,7 @@ const Account = () => {
           const { data: refreshData } = await refreshTokenMutation({
             variables: { refreshToken },
           });
-
+    
           if (refreshData?.tokenRefresh?.token) {
             localStorage.setItem("token", refreshData.tokenRefresh.token);
             refetch();
@@ -63,8 +63,18 @@ const Account = () => {
           localStorage.removeItem("refreshToken");
           window.location.href = "/login";
         }
+      } else if (error.message.includes("Signature verification failed")) {
+        // Handle invalid token directly - refreshing won't help in this case
+        console.error("Invalid token detected:", error.message);
+        setIsAuthenticated(false);
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        window.location.href = "/login";
+      } else {
+        // Handle other errors
+        console.error("GraphQL error:", error.message);
       }
-    },
+    }
   });
 
   const {

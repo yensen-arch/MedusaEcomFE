@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { REFRESH_TOKEN_MUTATION, GET_CART_ITEMS } from "../graphql/queries";
 import CheckoutPayment from "../Components/checkout/CheckoutPayment";
@@ -12,7 +12,8 @@ function Checkout() {
   const [billingAddress, setBillingAddress] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const { userLoading, userEmail, userData } = useQuery(GET_USER_QUERY, {
+  // Get user data
+  const { loading: userLoading, data: userData } = useQuery(GET_USER_QUERY, {
     context: {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -25,7 +26,8 @@ function Checkout() {
       }
     },
   });
-  // this case is for an expired token of a logged user
+
+  // Handle token management
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const refreshToken =
@@ -33,7 +35,14 @@ function Checkout() {
   const checkoutId =
     typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
   const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
-  const { data, loading, error, refetch } = useQuery(GET_CART_ITEMS, {
+
+  // Get cart items
+  const {
+    data,
+    loading: cartLoading,
+    error,
+    refetch,
+  } = useQuery(GET_CART_ITEMS, {
     variables: { checkoutId },
     context: {
       headers: {
@@ -44,7 +53,6 @@ function Checkout() {
     fetchPolicy: "network-only",
     onError: async (error) => {
       if (error.message.includes("Signature has expired")) {
-        setIsProcessing(true);
         try {
           const { data: refreshData } = await refreshTokenMutation({
             variables: { refreshToken },
@@ -54,16 +62,34 @@ function Checkout() {
             localStorage.setItem("token", refreshData.tokenRefresh.token);
             refetch();
           } else {
-            console.error("Token refresh failed.");
+            setIsAuthenticated(false);
+            localStorage.removeItem("token");
+            localStorage.removeItem("refreshToken");
+            window.location.href = "/login";
           }
         } catch (refreshError) {
           console.error("Error refreshing token:", refreshError);
-        } finally {
-          setIsProcessing(false);
+          setIsAuthenticated(false);
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+          window.location.href = "/login";
         }
+      } else if (error.message.includes("Signature verification failed")) {
+        // Handle invalid token directly - refreshing won't help in this case
+        console.error("Invalid token detected:", error.message);
+        setIsAuthenticated(false);
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        window.location.href = "/login";
+      } else {
+        // Handle other errors
+        console.error("GraphQL error:", error.message);
       }
     },
   });
+
+  // Check if any API is still loading
+  const isLoading = userLoading || cartLoading || isProcessing;
 
   const handleContinue = (section) => {
     if (section === "email" && email) {
@@ -77,7 +103,12 @@ function Checkout() {
     window.location.href = "/account?tab=orders";
   };
 
-  if (loading || isProcessing) {
+  const handleShippingMethodUpdate = () => {
+    refetch();
+  };
+
+  // Show loader when any API is loading
+  if (isLoading) {
     return (
       <div className="h-screen w-full flex justify-center items-center">
         <CustomLoader />
@@ -85,18 +116,17 @@ function Checkout() {
     );
   }
 
+  // Show error state if cart loading fails
   if (error) {
     return (
       <div className="min-h-screen mt-28 p-8">Error loading cart items</div>
     );
   }
+
+  // Calculate totals from data
   const subtotalAmount = data?.checkout?.subtotalPrice?.gross.amount || 0;
   const shippingAmount = data?.checkout?.shippingPrice?.gross.amount || 0;
   const totalAmount = (subtotalAmount + shippingAmount).toFixed(2);
-
-  const handleShippingMethodUpdate = () => {
-    refetch();
-  };
 
   return (
     <div className="min-h-screen mt-28 grid md:grid-cols-[1fr,400px]">

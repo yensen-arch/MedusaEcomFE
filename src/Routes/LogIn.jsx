@@ -97,6 +97,7 @@ const LogIn = () => {
             </form>
 
             <div className="mt-4">
+              <p>OR</p>
               <button
                 onClick={() => navigate("/signin")}
                 className="w-full bg-white text-black px-4 py-2 text-xs cursor-pointer border border-black hover:bg-black hover:text-white"

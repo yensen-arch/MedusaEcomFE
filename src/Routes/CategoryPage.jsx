@@ -114,7 +114,7 @@ function ProductCard({ product }) {
   const handleProductClick = async (e) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulating API load time
+    await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulating API load time
     setLoading(false);
     setIsNavigating(true);
     navigate(`/products/${product.id}`);
@@ -135,8 +135,31 @@ function ProductCard({ product }) {
           quantity: 1,
         },
       });
-      if (data?.checkoutCreate?.errors.length) {
-        console.error("Error adding to cart:", data.checkoutCreate.errors);
+      if (data?.checkoutLinesAdd?.errors.length) {
+        // Check if the error is because of an invalid checkout ID
+        if (
+          data.checkoutLinesAdd.errors.some((err) =>
+            err.message.includes("Couldn't resolve to a node")
+          )
+        ) {
+          // Clear the invalid checkout ID
+          localStorage.removeItem("checkoutId");
+          // Create a new checkout instead
+          const { data: newCartData } = await addToNewCart({ variables });
+          if (newCartData?.checkoutCreate?.errors.length) {
+            console.error(
+              "Error creating new cart:",
+              newCartData.checkoutCreate.errors
+            );
+          } else {
+            const newCheckoutId = newCartData.checkoutCreate.checkout.id;
+            localStorage.setItem("checkoutId", newCheckoutId);
+            const cartItems = newCartData.checkoutCreate.checkout.lines.length;
+            localStorage.setItem("cartCount", cartItems);
+          }
+        } else {
+          console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
+        }
       } else {
         const checkoutId = data.checkoutCreate.checkout.id;
         localStorage.setItem("checkoutId", checkoutId);

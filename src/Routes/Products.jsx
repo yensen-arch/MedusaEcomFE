@@ -1,3 +1,4 @@
+//src/Routes/Products.jsx
 import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useParams } from "react-router-dom";
@@ -15,14 +16,14 @@ import {
   FiChevronRight,
 } from "react-icons/fi";
 import CustomLoader from "../Components/CustomLoader";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ScarcityModal from "../Components/checkout/ScarcityModal";
 
 const Product = () => {
+  const { id } = useParams();
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
+  }, [id]);
   const { productId } = useParams();
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
     variables: { id: productId, channel: "default-channel" },
@@ -37,11 +38,9 @@ const Product = () => {
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(false);
   const [isShippingOpen, setIsShippingOpen] = useState(false);
   const [isCareOpen, setIsCareOpen] = useState(false);
-  const [touchStart, setTouchStart] = useState(0);
   const [addToCart, { loading: cartLoading }] = useMutation(ADD_TO_CART);
   const [addToNewCart, { loading: newCartLoading }] =
     useMutation(ADD_TO_NEW_CART);
-  // console.log("G", selectedSize);
   if (loading)
     return (
       <div className="flex items-center justify-center">
@@ -248,7 +247,6 @@ const ProductInfo = ({
         localStorage.setItem("checkoutId", newCheckoutId);
         const cartItems = data.checkoutCreate.checkout.lines.length;
         localStorage.setItem("cartCount", cartItems);
-        setCartAdded(true); // Set cartAdded to true when cart is updated
       }
     } else {
       try {
@@ -257,13 +255,39 @@ const ProductInfo = ({
         });
 
         if (data?.checkoutLinesAdd?.errors.length) {
-          console.error("Error adding to cart:", data.checkoutLinesAdd.errors);
+          // Check if the error is because of an invalid checkout ID
+          if (
+            data.checkoutLinesAdd.errors.some((err) =>
+              err.message.includes("Couldn't resolve to a node")
+            )
+          ) {
+            // Clear the invalid checkout ID
+            localStorage.removeItem("checkoutId");
+            // Create a new checkout instead
+            const { data: newCartData } = await addToNewCart({ variables });
+            if (newCartData?.checkoutCreate?.errors.length) {
+              console.error(
+                "Error creating new cart:",
+                newCartData.checkoutCreate.errors
+              );
+            } else {
+              const newCheckoutId = newCartData.checkoutCreate.checkout.id;
+              localStorage.setItem("checkoutId", newCheckoutId);
+              const cartItems =
+                newCartData.checkoutCreate.checkout.lines.length;
+              localStorage.setItem("cartCount", cartItems);
+            }
+          } else {
+            console.error(
+              "Error adding to cart:",
+              data.checkoutLinesAdd.errors
+            );
+          }
         } else {
           const updatedCheckoutId = data.checkoutLinesAdd.checkout.id;
           localStorage.setItem("checkoutId", updatedCheckoutId);
           const cartItems = data.checkoutLinesAdd.checkout.lines.length;
           localStorage.setItem("cartCount", cartItems);
-          setCartAdded(true);
         }
       } catch (error) {
         console.error("Mutation error:", error);

@@ -4,7 +4,6 @@ import {
   CardElement,
   useStripe,
   useElements,
-  PaymentRequestButtonElement,
 } from "@stripe/react-stripe-js";
 import { useMutation } from "@apollo/client";
 import {
@@ -16,7 +15,6 @@ import {
 import PaymentMethodSelector from "./PaymentMethodSelector";
 import {
   handleCardPayment,
-  handleKlarnaPayment,
   processPayment,
 } from "./paymentService";
 import usePaymentRequest from "./PaymentRequestSetup";
@@ -120,28 +118,12 @@ const CheckoutForm = ({
 
     let paymentResult;
 
-    // if (paymentMethod === "card") {
     paymentResult = await handleCardPayment(
       stripe,
       elements,
       userEmail,
       billingAddress
     );
-    // } else if (paymentMethod === "klarna") {
-    // paymentResult = await handleKlarnaPayment(
-    //   stripe,
-    //   checkoutId,
-    //   amount,
-    //   userEmail,
-    //   billingAddress
-    // );
-    //   if (paymentResult.status === "pending") {
-    //     // For Klarna redirect flow
-    //     setIsProcessing(false);
-    //     return;
-    //   }
-    // }
-
     if (paymentResult.error) {
       setError(paymentResult.error);
       setIsProcessing(false);
@@ -174,31 +156,6 @@ const CheckoutForm = ({
       icon: "💳",
     },
   ];
-
-  // if (canMakePayment) {
-  //   if (canMakePayment.applePay) {
-  //     paymentOptions.push({
-  //       id: "apple-pay",
-  //       name: "Apple Pay",
-  //       icon: "🍎",
-  //     });
-  //   }
-
-  //   if (canMakePayment.googlePay) {
-  //     paymentOptions.push({
-  //       id: "google-pay",
-  //       name: "Google Pay",
-  //       icon: "G",
-  //     });
-  //   }
-  // }
-
-  // paymentOptions.push({
-  //   id: "klarna",
-  //   name: "Klarna",
-  //   icon: "K",
-  // });
-
   return (
     <div className="space-y-4">
       {error && (
@@ -235,41 +192,6 @@ const CheckoutForm = ({
             disabled={!stripe || isProcessing}
           >
             {isProcessing ? "PROCESSING..." : "PLACE ORDER"}
-          </button>
-        </form>
-      )}
-
-      {paymentMethod === "apple-pay" || paymentMethod === "google-pay" ? (
-        <div className="mt-4">
-          {paymentRequest && (
-            <PaymentRequestButtonElement
-              options={{
-                paymentRequest,
-                style: {
-                  paymentRequestButton: {
-                    type: "default",
-                    theme: "dark",
-                    height: "48px",
-                  },
-                },
-              }}
-            />
-          )}
-        </div>
-      ) : null}
-
-      {paymentMethod === "klarna" && (
-        <form onSubmit={handleSubmit}>
-          <p className="text-sm mb-3">
-            Pay later with Klarna. You'll be redirected to complete your
-            purchase.
-          </p>
-          <button
-            type="submit"
-            className="w-full bg-black text-xs border border-black text-white py-3 mt-2 hover:bg-white hover:text-black disabled:bg-gray-300 disabled:cursor-not-allowed"
-            disabled={isProcessing}
-          >
-            {isProcessing ? "PROCESSING..." : "PAY WITH KLARNA"}
           </button>
         </form>
       )}

@@ -37,7 +37,6 @@ const Homepage = () => {
 
   const [activeCategory, setActiveCategory] = useState(categoryNames[0]);
   const [direction, setDirection] = useState(0);
-  // const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef(null);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef(null);
@@ -56,41 +55,6 @@ const Homepage = () => {
     () => categoryNames.indexOf(activeCategory),
     [activeCategory, categoryNames]
   );
-  //The autoscroll. Will remove if not needed soon.
-
-  // useEffect(() => {
-  //   let interval;
-  //   if (!isMobile) {
-  //     // Only set up the interval if not in mobile mode
-  //     interval = setInterval(() => {
-  //       if (swiperRef.current?.swiper && !isScrolling) {
-  //         swiperRef.current.swiper.slideNext();
-  //       }
-  //     }, 15000);
-  //   }
-
-  //   return () => {
-  //     if (interval) {
-  //       clearInterval(interval);
-  //     }
-  //   };
-  // }, [isMobile, isScrolling]);
-
-  // const handleSlideChange = useCallback(
-  //   (swiper) => {
-  //     setActiveIndex(swiper.activeIndex);
-  //     if (
-  //       activeCategories[activeCategory][swiper.activeIndex]?.type === "footer"
-  //     ) {
-  //       if (isMobile) return;
-  //       setTimeout(() => {
-  //         swiper.slideTo(0);
-  //       }, 25000);
-  //     }
-  //   },
-  //   [activeCategory, activeCategories]
-  // );
-
   const handlePrev = useCallback(() => {
     if (indexNo > 0) {
       setDirection(-1);
