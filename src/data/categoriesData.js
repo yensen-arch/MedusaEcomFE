@@ -43,7 +43,7 @@ export const categories = {
     {
       path: "v00",
       img: getOptimizedUrl(
-        "https://res.cloudinary.com/dmjhto8sd/image/upload/v1740453899/Main_2_y0v59p.webp"
+        "https://res.cloudinary.com/dmjhto8sd/image/upload/v1741398926/donated_skjclx.webp"
       ),
       productId: "UHJvZHVjdDox",
     },
