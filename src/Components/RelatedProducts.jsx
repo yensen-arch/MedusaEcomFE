@@ -55,7 +55,7 @@ function ProductCard({ product }) {
   const images =
     product.images.length > 1
       ? product.images
-      : Array(4).fill(product.images[0]);
+      : Array(1).fill(product.images[0]);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
@@ -167,7 +167,7 @@ function ProductCard({ product }) {
           <img
             src={images[currentImage]}
             alt={product.name}
-            className="w-auto h-[20rem] sm:h-[32rem] object-cover transition-transform duration-300 ease-in-out"
+            className="w-auto h-[20rem] sm:h-[32rem] object-contain transition-transform duration-300 ease-in-out"
           />
           {loading && (
             <div className="absolute top-2 right-2 p-2">

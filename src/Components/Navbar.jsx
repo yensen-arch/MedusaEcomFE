@@ -226,8 +226,8 @@ const Navbar = ({
               <RiSearchLine className="w-5 h-5 text-gray-400 text-black" />
               <input
                 type="text"
-                placeholder="WHAT ARE YOU LOOKING FOR"
-                className=" ml-4 text-center outline-none text-xs placeholder:text-gray-400"
+                placeholder="WHAT DO YOU NEED?"
+                className="text-center outline-none text-xs placeholder:text-gray-400"
               />
             </Link>
           </div>

@@ -21,7 +21,7 @@ function ProductCard({ product }) {
       : [product.thumbnail?.url || "/placeholder.svg"];
 
   // Duplicate the image if only one exists
-  const displayImages = images.length > 1 ? images : Array(4).fill(images[0]);
+  const displayImages = images.length > 1 ? images : Array(1).fill(images[0]);
 
   const prevImage = () =>
     setCurrentImage((prev) =>

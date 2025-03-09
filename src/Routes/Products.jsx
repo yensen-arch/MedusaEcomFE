@@ -50,15 +50,13 @@ const Product = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   const product = data.product;
-  // const description = product.description || "";
-  const variation = product.variants || [];
   const images = product?.media?.length
     ? product.media.map((img) => {
         // Add Cloudinary optimization parameters
         const baseUrl = img.url;
         return `${baseUrl}?auto=format,compress&q=auto`;
       })
-    : Array(4).fill(
+    : Array(1).fill(
         product?.thumbnail?.url
           ? `${product.thumbnail.url}?auto=format,compress&q=auto`
           : "/placeholder.svg"
@@ -134,7 +132,7 @@ const Product = () => {
                 <img
                   src={image}
                   alt={`${product.name} view ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   loading={index === 0 ? "eager" : "lazy"}
                   fetchpriority={index === 0 ? "high" : "auto"}
                 />

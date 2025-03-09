@@ -63,7 +63,7 @@ function ProductCard({ product }) {
   const images =
     product.images.length > 1
       ? product.images
-      : Array(4).fill(product.images[0]);
+      : Array(1).fill(product.images[0]);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const touchStarted = useRef(false);
