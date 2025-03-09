@@ -95,33 +95,30 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
                   onMouseEnter={() => setHovered(category.id)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  <div
-                    onClick={
-                      category.name.toUpperCase() !== "V00"
-                        ? undefined
-                        : onClose
-                    }
-                  >
-                    {disabledCategories.includes(
-                      category.name.toUpperCase()
-                    ) ? (
-                      <div className="text-sm cursor-default">
-                        {hovered === category.id ? (
-                          <MatrixText
-                            originalText={category.name.toUpperCase()}
-                            finalText="COMING SOON"
-                            isHovering={hovered === category.id}
-                          />
-                        ) : (
-                          category.name.toUpperCase()
-                        )}
-                      </div>
-                    ) : (
-                      <Link to={`/category/${category.id}`} className="text-sm">
-                        {category.name.toUpperCase()}
-                      </Link>
-                    )}
-                  </div>
+                  {disabledCategories.includes(category.name.toUpperCase()) ? (
+                    <div
+                      className="text-sm cursor-default"
+                      onClick={
+                        category.name.toUpperCase() === "V00"
+                          ? onClose
+                          : undefined
+                      }
+                    >
+                      {hovered === category.id ? (
+                        <MatrixText
+                          originalText={category.name.toUpperCase()}
+                          finalText="COMING SOON"
+                          isHovering={hovered === category.id}
+                        />
+                      ) : (
+                        category.name.toUpperCase()
+                      )}
+                    </div>
+                  ) : (
+                    <Link to={`/category/${category.id}`} className="text-sm">
+                      <div>{category.name.toUpperCase()}</div>
+                    </Link>
+                  )}
                 </li>
               ))
             )}
