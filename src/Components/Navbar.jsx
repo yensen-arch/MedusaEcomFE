@@ -34,8 +34,8 @@ const Navbar = ({
   const currentItem =
     categories?.[activeCategory]?.[swiperRef?.current?.swiper?.activeIndex];
   const logoUrl = currentItem?.video
-    ? "https://res.cloudinary.com/dmjhto8sd/image/upload/v1739507590/Clothd-green_r3fe9v.webp"
-    : "https://res.cloudinary.com/dmjhto8sd/image/upload/v1739507590/Clothd-black_kgtd7e.webp";
+    ? "https://res.cloudinary.com/dmjhto8sd/image/upload/v1742753830/Bag_Logo_dbsxjh.png"
+    : "https://res.cloudinary.com/dmjhto8sd/image/upload/v1742753830/Bag_Logo_dbsxjh.png";
 
   useEffect(() => {
     const handleStorageChange = (e) => {
