@@ -178,7 +178,7 @@ const Navbar = ({
               to="/"
               className="absolute left-1/2 transform -translate-x-1/2"
             >
-              <img src={logoUrl} alt="Logo" className="h-12" />
+              <img src={logoUrl} alt="Logo" className="h-20" /> {/* Changed from h-12 to h-16 */}
             </Link>
 
             {/* Right: User links */}
