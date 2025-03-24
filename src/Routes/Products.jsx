@@ -73,7 +73,7 @@ const Product = () => {
 
   return (
     <div className="min-h-screen mt-20">
-      <ScarcityModal />
+      {/* <ScarcityModal /> */}
       {/* Desktop Layout */}
       <div className="hidden md:grid md:grid-cols-12 border-b border-r border-black w-full">
         {/* Image gallery - 8/12 columns on large screens, 7/12 on medium */}
@@ -403,7 +403,7 @@ const ProductInfo = ({
                 EXPRESS SHIPPING AVAILABLE.
                 {/* <br />
                 RETURNS ACCEPTED WITHIN 30 DAYS OF PURCHASE. */}
-                <br />
+                {/* <br /> */}
                 {/* <br /> */}
                 {/* <a
                   href="/help/shipping"
@@ -423,6 +423,7 @@ const ProductInfo = ({
           />
         </div>
       </div>
+
       <div className=" uppercase bg-green-50 border border-black text-[0.6rem] p-2">
         ONE PURCHASED = ONE DONATED
       </div>
@@ -467,6 +468,7 @@ const ProductInfo = ({
           ))}
         </div>
       </div> */}
+      <p className="uppercase text-[0.6rem] pt-4">Get deliveries under 14 days</p>
     </div>
   );
 };

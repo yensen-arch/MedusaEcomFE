@@ -178,7 +178,7 @@ const Navbar = ({
               to="/"
               className="absolute left-1/2 transform -translate-x-1/2"
             >
-              <img src={logoUrl} alt="Logo" className="h-20" /> {/* Changed from h-12 to h-16 */}
+              <img src={logoUrl} alt="Logo" className="h-24" />{" "}
             </Link>
 
             {/* Right: User links */}
@@ -204,7 +204,7 @@ const Navbar = ({
                   <span
                     key={cartCount}
                     className="absolute -top-2 -right-2 bg-green-300 font-bold text-black text-xs rounded-none px-3 py-2 border border-black animate-[bgColorPulse_1.5s_ease-in-out]"
-                    >
+                  >
                     {cartCount}
                   </span>
                 )}
