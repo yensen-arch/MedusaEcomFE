@@ -468,7 +468,7 @@ const ProductInfo = ({
           ))}
         </div>
       </div> */}
-      <p className="uppercase text-[0.6rem] pt-4">Get deliveries under 14 days</p>
+      <p className="uppercase text-[0.6rem] pt-4">complementary standard shipping</p>
     </div>
   );
 };

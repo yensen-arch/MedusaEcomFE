@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import {
   RiMenuLine,
   RiCloseLine,
-  RiQuestionLine,
   RiShoppingBagLine,
   RiSearchLine,
 } from "react-icons/ri";

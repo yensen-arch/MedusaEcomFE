@@ -1,51 +1,60 @@
-import { gql, useMutation } from "@apollo/client";
 import { useState } from "react";
-
-const REQUEST_RESET_PASSWORD = gql`
-  mutation RequestPasswordReset($email: String!, $redirectUrl: String!) {
-    requestPasswordReset(email: $email, redirectUrl: $redirectUrl) {
-      errors {
-        field
-        message
-      }
-    }
-  }
-`;
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import CustomLoader from "../CustomLoader";
+import { LOGOUT_MUTATION } from "../../graphql/queries";
 
 const AccountTab = ({ userData }) => {
-  const [requestReset] = useMutation(REQUEST_RESET_PASSWORD);
+  const navigate = useNavigate();
   const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleReset = async () => {
+  const [logout] = useMutation(LOGOUT_MUTATION, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    },
+    onCompleted: () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      navigate("/login");
+    },
+    onError: (error) => {
+      setStatus("Logout failed. Try again.");
+      console.error(error);
+    },
+  });
+  const handleLogout = async () => {
+    setLoading(true);
     try {
-      const { data } = await requestReset({
-        variables: {
-          email: userData?.email,
-          redirectUrl: "https://clothd.co/reset-password",
-        },
-      });
-      if (data.requestPasswordReset.errors.length) {
-        setStatus("Error sending reset link.");
-      } else {
-        setStatus("Reset link sent to your email.");
-      }
-    } catch {
-      setStatus("Failed to send reset link.");
+      await logout();
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 relative">
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 z-50">
+          <CustomLoader />
+        </div>
+      )}
       <section className="space-y-6">
         <h2 className="text-center text-sm">PERSONAL INFO</h2>
         <div className="text-center">
           <p className="text-xs text-black">Email: {userData?.email}</p>
         </div>
       </section>
-      {/* <button onClick={handleReset} className="w-full border text-white bg-black text-sm border-black py-3 hover:bg-white hover:text-black transition-colors">
-        CHANGE PASSWORD
-      </button> */}
-      {status && <p>{status}</p>}
+      <button
+        onClick={handleLogout}
+        className="w-full border text-white bg-black text-sm border-black py-3 hover:bg-white hover:text-black transition-colors"
+        disabled={loading}
+      >
+        {loading ? "Logging out..." : "LOGOUT"}
+      </button>
+      {status && <p className="text-red-500 text-center">{status}</p>}
     </div>
   );
 };

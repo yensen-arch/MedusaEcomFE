@@ -259,10 +259,21 @@ export const LOGIN_MUTATION = gql`
   }
 `;
 
+export const REQUEST_RESET_PASSWORD = gql`
+  mutation RequestPasswordReset($email: String!, $redirectUrl: String!) {
+    requestPasswordReset(email: $email, redirectUrl: $redirectUrl) {
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;
+
 export const LOGOUT_MUTATION = gql`
-  mutation TokenRemove {
-    tokenRemove {
-      accountErrors {
+  mutation {
+    tokensDeactivateAll {
+      errors {
         field
         message
       }
@@ -658,4 +669,3 @@ export const GET_CUSTOMER_ORDERS = gql`
     }
   }
 `;
-
