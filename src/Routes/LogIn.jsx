@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import Footer from "../Components/Footer";
 import { LOGIN_MUTATION } from "../graphql/queries";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useAuth } from "../context/AuthContext";
 
 const LogIn = () => {
+  const { isAuth, setIsAuth } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,6 +25,7 @@ const LogIn = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("refreshToken", refreshToken);
         localStorage.setItem("csrfToken", csrfToken);
+        setIsAuth(true);
         navigate(path);
       }
     },

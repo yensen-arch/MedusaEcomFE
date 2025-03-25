@@ -23,9 +23,7 @@ const Account = () => {
   const refreshToken = localStorage.getItem("refreshToken");
   const checkoutId =
     typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
-
   const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
-
   const { loading, error, data, refetch } = useQuery(GET_USER_QUERY, {
     context: {
       headers: {
@@ -46,7 +44,7 @@ const Account = () => {
           const { data: refreshData } = await refreshTokenMutation({
             variables: { refreshToken },
           });
-    
+
           if (refreshData?.tokenRefresh?.token) {
             localStorage.setItem("token", refreshData.tokenRefresh.token);
             refetch();
@@ -74,7 +72,7 @@ const Account = () => {
         // Handle other errors
         console.error("GraphQL error:", error.message);
       }
-    }
+    },
   });
 
   const {
@@ -94,6 +92,7 @@ const Account = () => {
 
   useEffect(() => {
     if (!accessToken || !refreshToken) {
+      console.log("No token found");
       setIsAuthenticated(false);
       window.location.href = "/login";
       return;
@@ -132,15 +131,15 @@ const Account = () => {
             </div>
           ) : (
             <>
-                {activeTab === "orders" && <OrdersTab />}
-                {activeTab === "account" && <AccountTab userData={userData} />}
-                {activeTab === "cart" && (
-                  <CartTab
-                    cartData={cartData}
-                    cartLoading={cartLoading}
-                    cartError={cartError}
-                  />
-                )}
+              {activeTab === "orders" && <OrdersTab />}
+              {activeTab === "account" && <AccountTab userData={userData} />}
+              {activeTab === "cart" && (
+                <CartTab
+                  cartData={cartData}
+                  cartLoading={cartLoading}
+                  cartError={cartError}
+                />
+              )}
             </>
           )}
         </div>

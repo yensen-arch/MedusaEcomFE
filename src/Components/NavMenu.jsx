@@ -3,6 +3,7 @@ import { Scrollbar } from "react-scrollbars-custom";
 import { useEffect, useState } from "react";
 import MatrixText from "./MatrixText";
 import CustomLoader from "./CustomLoader";
+import { useAuth } from "../context/AuthContext";
 import {
   RiCloseLine,
   RiSearchLine,
@@ -18,7 +19,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
   const { loading, error, data } = useQuery(GET_CATEGORIES);
   const [categories, setCategories] = useState([]);
   const [hovered, setHovered] = useState(null);
-
+  const { isAuth } = useAuth();
   useEffect(() => {
     if (data?.categories?.edges?.length) {
       const categoryObjects = data.categories.edges.map((edge) => edge.node);
@@ -34,6 +35,7 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
   const additionalLinks = [
     { title: "LOOKBOOK", path: "/lookbook" },
     { title: "DONATE", path: "/donations" },
+    { title: "ACCOUNT", path: "/account" },
     { title: "OUR MISSION", path: "/mission" },
     { title: "WORK WITH US", path: "/work-with-us" }, // Updated path
   ];
@@ -159,21 +161,25 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
         </div>
       </Scrollbar>
 
-      {/* Login & Help options at the bottom */}
+      {/* Mobile Login/Register Section */}
       <div className="fixed bottom-0 left-0 right-0 bg-white md:hidden border-t border-black">
         <div className="flex flex-col gap-4 p-4 pb-12">
-          <Link
-            to="/login"
-            className="w-full text-center border border-black py-2 text-white bg-black"
-          >
-            LOGIN
-          </Link>
-          <Link
-            to="/register"
-            className="w-full text-center border border-black py-2"
-          >
-            REGISTER
-          </Link>
+          {!isAuth && (
+            <>
+              <Link
+                to="/login"
+                className="w-full text-center border border-black py-2 text-white bg-black"
+              >
+                LOGIN
+              </Link>
+              <Link
+                to="/register"
+                className="w-full text-center border border-black py-2"
+              >
+                REGISTER
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -88,7 +88,7 @@ const Product = () => {
                 alt={`${product.name} view ${index + 1}`}
                 className="w-full h-full object-cover transition-transform cursor-pointer"
                 loading={index === 0 ? "eager" : "lazy"}
-                fetchpriority={index === 0 ? "high" : "auto"}
+                fetchPriority={index === 0 ? "high" : "auto"}
               />
             </div>
           ))}
@@ -134,7 +134,7 @@ const Product = () => {
                   alt={`${product.name} view ${index + 1}`}
                   className="w-full h-full object-contain"
                   loading={index === 0 ? "eager" : "lazy"}
-                  fetchpriority={index === 0 ? "high" : "auto"}
+                  fetchPriority={index === 0 ? "high" : "auto"}
                 />
               </div>
             ))}

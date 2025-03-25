@@ -281,6 +281,15 @@ export const LOGOUT_MUTATION = gql`
   }
 `;
 
+export const ME_QUERY = gql`
+  query {
+    me {
+      id
+      email
+    }
+  }
+`;
+
 export const GET_USER_QUERY = gql`
   query GetUser {
     me {

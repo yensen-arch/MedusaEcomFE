@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import CustomLoader from "../CustomLoader";
 import { LOGOUT_MUTATION } from "../../graphql/queries";
+import { useAuth } from "../../context/AuthContext";
 
 const AccountTab = ({ userData }) => {
+  const { isAuth, setIsAuth } = useAuth();
   const navigate = useNavigate();
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,6 +18,7 @@ const AccountTab = ({ userData }) => {
       },
     },
     onCompleted: () => {
+      setIsAuth(false);
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
       navigate("/login");

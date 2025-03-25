@@ -10,6 +10,7 @@ import {
 import NavMenu from "./NavMenu";
 import Cart from "./Cart";
 import MatrixText from "./MatrixText";
+import { useAuth } from "../context/AuthContext";
 const Navbar = ({
   activeCategory,
   setActiveCategory,
@@ -20,6 +21,7 @@ const Navbar = ({
   isScrolling,
   isMobile,
 }) => {
+  const { isAuth } = useAuth();
   const [cartCount, setCartCount] = useState(
     localStorage.getItem("cartCount") || 0
   );
@@ -188,12 +190,17 @@ const Navbar = ({
               <Link to="/donations" className="text-xs hidden md:block">
                 DONATE
               </Link>
-              <Link to="/account" className="text-xs hidden md:block">
-                ACCOUNT
-              </Link>
-              <Link to="/login" className="text-xs hidden md:block">
-                LOGIN
-              </Link>
+
+              {isAuth && (
+                <Link to="/account" className="text-xs hidden md:block">
+                  ACCOUNT
+                </Link>
+              )}
+              {!isAuth && (
+                <Link to="/login" className="text-xs hidden md:block">
+                  LOGIN
+                </Link>
+              )}
               {/* <Link to="/help" className="hidden md:block">
                 <RiQuestionLine className="w-5 h-5" />
               </Link> */}
