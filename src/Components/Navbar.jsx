@@ -248,7 +248,9 @@ const Navbar = ({
               to={"/search/home"}
               className="py-3 flex items-center justify-center"
             >
-              <span className="w-52 outline-none z-0 text-xs text-center cursor-pointer">
+              {" "}
+              <RiSearchLine className="w-5 h-5 text-gray-400" />
+              <span className="w-52 outline-none z-0 text-slate-600 text-xs text-center cursor-pointer">
                 WHAT ARE YOU LOOKING FOR
               </span>
             </Link>
