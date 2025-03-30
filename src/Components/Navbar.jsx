@@ -246,14 +246,11 @@ const Navbar = ({
           >
             <Link
               to={"/search/home"}
-              className=" py-3 flex items-center justify-center"
+              className="py-3 flex items-center justify-center"
             >
-              <RiSearchLine className="w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="WHAT ARE YOU LOOKING FOR"
-                className=" w-52 outline-none text-xs text-center"
-              />
+              <span className="w-52 outline-none z-0 text-xs text-center cursor-pointer">
+                WHAT ARE YOU LOOKING FOR
+              </span>
             </Link>
           </div>
         </div>
