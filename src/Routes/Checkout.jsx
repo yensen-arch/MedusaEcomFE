@@ -247,7 +247,7 @@ function Checkout() {
             <div className="flex gap-2">
               <input
                 type="text"
-                placeholder="Enter voucher code"
+                placeholder="ENTER AMBASSADOR CODE"
                 value={voucherCode}
                 onChange={(e) => setVoucherCode(e.target.value)}
                 disabled={isVoucherApplied}
@@ -265,7 +265,7 @@ function Checkout() {
               <p className="text-xs text-red-600">{voucherError}</p>
             )}
             {isVoucherApplied && (
-              <p className="text-xs text-green-600">Voucher code applied successfully!</p>
+              <p className="text-xs text-green-600">You've got an AMBASSADOR!</p>
             )}
           </div>
 

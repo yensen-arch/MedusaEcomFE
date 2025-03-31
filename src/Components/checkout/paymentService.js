@@ -113,9 +113,14 @@ export const processPayment = async (
   stripe,
   checkoutId,
   paymentToken,
-  amount
+  amount,
+  token,
+  refreshToken,
+  refreshTokenMutation
 ) => {
   try {
+    console.log("Starting payment process...");
+    
     const { data: createData } = await checkoutPaymentCreate({
       variables: {
         checkoutId,
@@ -125,27 +130,41 @@ export const processPayment = async (
           amount: parseFloat(amount),
         },
       },
+      context: {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      },
     });
 
     if (createData?.checkoutPaymentCreate?.errors?.length) {
       const errorMessage = createData.checkoutPaymentCreate.errors
         .map((err) => err.message)
         .join(", ");
+      console.error("Payment creation error:", errorMessage);
       return { error: `Payment Creation Error: ${errorMessage}` };
     }
 
+    console.log("Payment created, completing checkout...");
+    
     const { data: completeData } = await checkoutComplete({
       variables: {
         checkoutId,
       },
+      context: {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      },
     });
 
     if (completeData?.checkoutComplete?.confirmationNeeded) {
+      console.log("Payment needs confirmation...");
       const confirmationData = JSON.parse(
         completeData.checkoutComplete.confirmationData
       );
 
-      const { error: confirmError } = await stripe.confirmCardPayment(
+      const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(
         confirmationData.client_secret,
         {
           payment_method: paymentToken,
@@ -153,19 +172,90 @@ export const processPayment = async (
       );
 
       if (confirmError) {
+        console.error("Payment confirmation error:", confirmError);
         return {
           error: `Payment confirmation failed: ${confirmError.message}`,
         };
       }
+
+      if (paymentIntent.status === "succeeded") {
+        console.log("Payment confirmed, completing checkout...");
+        // Retry checkout completion after successful confirmation
+        const { data: finalCompleteData } = await checkoutComplete({
+          variables: {
+            checkoutId,
+          },
+          context: {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          },
+        });
+
+        if (finalCompleteData?.checkoutComplete?.errors?.length) {
+          const errorMessage = finalCompleteData.checkoutComplete.errors
+            .map((err) => err.message)
+            .join(", ");
+          console.error("Final checkout completion error:", errorMessage);
+          return { error: `Checkout Completion Error: ${errorMessage}` };
+        }
+
+        if (!finalCompleteData?.checkoutComplete?.order?.id) {
+          console.error("No order ID in final response:", finalCompleteData);
+          return { error: "Order creation failed - no order ID received" };
+        }
+
+        console.log("Order created successfully:", finalCompleteData.checkoutComplete.order);
+        return { success: true, orderId: finalCompleteData.checkoutComplete.order.id };
+      }
     }
+
     if (completeData?.checkoutComplete?.errors?.length) {
       const errorMessage = completeData.checkoutComplete.errors
         .map((err) => err.message)
         .join(", ");
+      console.error("Checkout completion error:", errorMessage);
       return { error: `Checkout Completion Error: ${errorMessage}` };
     }
-    return { success: true };
+
+    if (!completeData?.checkoutComplete?.order?.id) {
+      console.error("No order ID in response:", completeData);
+      return { error: "Order creation failed - no order ID received" };
+    }
+
+    console.log("Order created successfully:", completeData.checkoutComplete.order);
+    return { success: true, orderId: completeData.checkoutComplete.order.id };
   } catch (err) {
+    console.error("Payment process error:", err);
+    if (err.message.includes("Signature has expired")) {
+      try {
+        console.log("Token expired, refreshing...");
+        const { data: refreshData } = await refreshTokenMutation({
+          variables: { refreshToken },
+        });
+
+        if (refreshData?.tokenRefresh?.token) {
+          const newToken = refreshData.tokenRefresh.token;
+          localStorage.setItem("token", newToken);
+          console.log("Token refreshed, retrying payment...");
+          
+          // Retry the payment process with new token
+          return processPayment(
+            checkoutPaymentCreate,
+            checkoutComplete,
+            stripe,
+            checkoutId,
+            paymentToken,
+            amount,
+            newToken,
+            refreshToken,
+            refreshTokenMutation
+          );
+        }
+      } catch (refreshError) {
+        console.error("Token refresh error:", refreshError);
+      }
+    }
     return { error: `Payment failed: ${err.message}` };
   }
 };

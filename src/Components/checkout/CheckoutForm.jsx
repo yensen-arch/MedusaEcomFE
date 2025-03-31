@@ -11,6 +11,7 @@ import {
   CHECKOUT_EMAIL_UPDATE,
   CHECKOUT_BILLING_ADDRESS_UPDATE,
   CHECKOUT_COMPLETE,
+  REFRESH_TOKEN_MUTATION,
 } from "../../graphql/queries";
 import PaymentMethodSelector from "./PaymentMethodSelector";
 import {
@@ -37,6 +38,10 @@ const CheckoutForm = ({
   const [checkoutEmailUpdate] = useMutation(CHECKOUT_EMAIL_UPDATE);
   const [updateBillingAddress] = useMutation(CHECKOUT_BILLING_ADDRESS_UPDATE);
   const [checkoutComplete] = useMutation(CHECKOUT_COMPLETE);
+  const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
+
+  const token = localStorage.getItem("token");
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const { paymentRequest, canMakePayment } = usePaymentRequest(
     stripe,
@@ -136,7 +141,10 @@ const CheckoutForm = ({
       stripe,
       checkoutId,
       paymentResult.paymentToken,
-      amount
+      amount,
+      token,
+      refreshToken,
+      refreshTokenMutation
     );
 
     if (processResult.success) {
