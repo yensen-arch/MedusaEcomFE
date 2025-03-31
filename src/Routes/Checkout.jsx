@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { REFRESH_TOKEN_MUTATION, GET_CART_ITEMS } from "../graphql/queries";
+import { REFRESH_TOKEN_MUTATION, GET_CART_ITEMS, CHECKOUT_ADD_PROMO_CODE } from "../graphql/queries";
 import CheckoutPayment from "../Components/checkout/CheckoutPayment";
 import CheckoutShipping from "../Components/CheckoutShipping";
 import CustomLoader from "../Components/CustomLoader";
@@ -11,6 +11,9 @@ function Checkout() {
   const [shippingMethodId, setShippingMethodId] = useState(null);
   const [billingAddress, setBillingAddress] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [voucherCode, setVoucherCode] = useState("");
+  const [voucherError, setVoucherError] = useState("");
+  const [isApplyingVoucher, setIsApplyingVoucher] = useState(false);
 
   // Get user data
   const { loading: userLoading, data: userData } = useQuery(GET_USER_QUERY, {
@@ -87,6 +90,39 @@ function Checkout() {
       }
     },
   });
+
+  const [applyDiscountCode] = useMutation(CHECKOUT_ADD_PROMO_CODE);
+
+  const handleApplyVoucher = async () => {
+    if (!voucherCode.trim()) {
+      setVoucherError("Please enter a voucher code");
+      return;
+    }
+
+    setIsApplyingVoucher(true);
+    setVoucherError("");
+
+    try {
+      const { data } = await applyDiscountCode({
+        variables: {
+          checkoutId,
+          promoCode: voucherCode.trim()
+        },
+      });
+
+      if (data?.checkoutAddPromoCode?.errors?.length) {
+        setVoucherError(data.checkoutAddPromoCode.errors[0].message);
+      } else {
+        // Refresh the cart data to show updated prices
+        refetch();
+        setVoucherError("");
+      }
+    } catch (error) {
+      setVoucherError("Failed to apply voucher code");
+    } finally {
+      setIsApplyingVoucher(false);
+    }
+  };
 
   // Check if any API is still loading
   const isLoading = userLoading || cartLoading || isProcessing;
@@ -203,6 +239,30 @@ function Checkout() {
       <aside className="border-l border-black p-6 bg-white">
         <div className="space-y-6">
           <h2 className="font-medium">ORDER SUMMARY</h2>
+          
+          {/* Voucher Code Section */}
+          <div className="space-y-2 border-b border-black pb-4">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Enter voucher code"
+                value={voucherCode}
+                onChange={(e) => setVoucherCode(e.target.value)}
+                className="flex-1 border border-black p-2 text-xs"
+              />
+              <button
+                onClick={handleApplyVoucher}
+                disabled={isApplyingVoucher}
+                className="bg-black text-white px-4 py-2 text-xs hover:bg-black/90 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              >
+                {isApplyingVoucher ? "APPLYING..." : "APPLY"}
+              </button>
+            </div>
+            {voucherError && (
+              <p className="text-xs text-red-600">{voucherError}</p>
+            )}
+          </div>
+
           <div className="space-y-4 border-b border-black pb-6">
             {data?.checkout?.lines?.map((item) => (
               <div key={item.id} className="flex gap-4">
@@ -236,11 +296,16 @@ function Checkout() {
                 ${data.checkout.subtotalPrice.gross.amount.toFixed(2) || "0.00"}
               </span>
             </div>
+            {data.checkout.discount?.amount && (
+              <div className="flex justify-between text-xs text-green-600">
+                <span>DISCOUNT</span>
+                <span>-${data.checkout.discount.amount.amount.toFixed(2)}</span>
+              </div>
+            )}
             <div className="flex justify-between">
               <span>SHIPPING</span>
               <span>
-                $
-                {data.checkout.shippingPrice?.gross.amount.toFixed(2) || "0.00"}
+                ${data.checkout.shippingPrice?.gross.amount.toFixed(2) || "0.00"}
               </span>
             </div>
             <div className="flex text-xs justify-between">
@@ -249,7 +314,7 @@ function Checkout() {
             </div>
             <div className="flex text-xs justify-between font-medium pt-2">
               <span>TOTAL (TAX EXCL.)</span>
-              <span>${totalAmount || "0.00"}</span>
+              <span>${data.checkout.totalPrice.gross.amount.toFixed(2) || "0.00"}</span>
             </div>
           </div>
 

@@ -678,3 +678,31 @@ export const GET_CUSTOMER_ORDERS = gql`
     }
   }
 `;
+
+export const CHECKOUT_ADD_PROMO_CODE = gql`
+  mutation CheckoutAddPromoCode($checkoutId: ID!, $promoCode: String!) {
+    checkoutAddPromoCode(checkoutId: $checkoutId, promoCode: $promoCode) {
+      checkout {
+        id
+        discount {
+          amount
+          
+        }
+        subtotalPrice {
+          gross {
+            amount
+          }
+        }
+        totalPrice {
+          gross {
+            amount
+          }
+        }
+      }
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;

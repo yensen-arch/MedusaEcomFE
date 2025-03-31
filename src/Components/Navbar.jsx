@@ -179,16 +179,16 @@ const Navbar = ({
               to="/"
               className="absolute left-1/2 transform -translate-x-1/2"
             >
-              <img 
-                src={logoUrl} 
-                alt="Logo" 
-                className="h-32 image-rendering-crisp" 
-                style={{ 
-                  imageRendering: '-webkit-optimize-contrast',
-                  imageRendering: 'crisp-edges',
-                  backfaceVisibility: 'hidden',
-                  transform: 'translateZ(0)',
-                  WebkitFontSmoothing: 'none'
+              <img
+                src={logoUrl}
+                alt="Logo"
+                className="h-32  image-rendering-crisp"
+                style={{
+                  imageRendering: "-webkit-optimize-contrast",
+                  imageRendering: "crisp-edges",
+                  backfaceVisibility: "hidden",
+                  transform: "translateZ(0)",
+                  WebkitFontSmoothing: "none",
                 }}
               />
             </Link>
