@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { REFRESH_TOKEN_MUTATION, GET_CART_ITEMS, CHECKOUT_ADD_PROMO_CODE } from "../graphql/queries";
 import CheckoutPayment from "../Components/checkout/CheckoutPayment";
@@ -14,6 +14,13 @@ function Checkout() {
   const [voucherCode, setVoucherCode] = useState("");
   const [voucherError, setVoucherError] = useState("");
   const [isApplyingVoucher, setIsApplyingVoucher] = useState(false);
+  const [isVoucherApplied, setIsVoucherApplied] = useState(false);
+
+  // Reset voucher state when cart changes
+  const { data } = useQuery(GET_CART_ITEMS);
+  useEffect(() => {
+    setIsVoucherApplied(false);
+  }, [data?.checkout?.lines]);
 
   // Get user data
   const { loading: userLoading, data: userData } = useQuery(GET_USER_QUERY, {
@@ -41,7 +48,7 @@ function Checkout() {
 
   // Get cart items
   const {
-    data,
+    data: cartData,
     loading: cartLoading,
     error,
     refetch,
@@ -116,6 +123,7 @@ function Checkout() {
         // Refresh the cart data to show updated prices
         refetch();
         setVoucherError("");
+        setIsVoucherApplied(true);
       }
     } catch (error) {
       setVoucherError("Failed to apply voucher code");
@@ -160,8 +168,8 @@ function Checkout() {
   }
 
   // Calculate totals from data
-  const subtotalAmount = data?.checkout?.subtotalPrice?.gross.amount || 0;
-  const shippingAmount = data?.checkout?.shippingPrice?.gross.amount || 0;
+  const subtotalAmount = cartData?.checkout?.subtotalPrice?.gross.amount || 0;
+  const shippingAmount = cartData?.checkout?.shippingPrice?.gross.amount || 0;
   const totalAmount = (subtotalAmount + shippingAmount).toFixed(2);
 
   return (
@@ -248,23 +256,27 @@ function Checkout() {
                 placeholder="Enter voucher code"
                 value={voucherCode}
                 onChange={(e) => setVoucherCode(e.target.value)}
-                className="flex-1 border border-black p-2 text-xs"
+                disabled={isVoucherApplied}
+                className="flex-1 border border-black p-2 text-xs disabled:bg-gray-100 disabled:cursor-not-allowed"
               />
               <button
                 onClick={handleApplyVoucher}
-                disabled={isApplyingVoucher}
+                disabled={isApplyingVoucher || isVoucherApplied}
                 className="bg-black text-white px-4 py-2 text-xs hover:bg-black/90 disabled:bg-gray-300 disabled:cursor-not-allowed"
               >
-                {isApplyingVoucher ? "APPLYING..." : "APPLY"}
+                {isApplyingVoucher ? "APPLYING..." : isVoucherApplied ? "APPLIED" : "APPLY"}
               </button>
             </div>
             {voucherError && (
               <p className="text-xs text-red-600">{voucherError}</p>
             )}
+            {isVoucherApplied && (
+              <p className="text-xs text-green-600">Voucher code applied successfully!</p>
+            )}
           </div>
 
           <div className="space-y-4 border-b border-black pb-6">
-            {data?.checkout?.lines?.map((item) => (
+            {cartData?.checkout?.lines?.map((item) => (
               <div key={item.id} className="flex gap-4">
                 {item.variant.product.thumbnail?.url && (
                   <img
@@ -292,20 +304,27 @@ function Checkout() {
           <div className="space-y-2 border-b border-black pb-6">
             <div className="flex justify-between text-xs">
               <span>SUBTOTAL</span>
-              <span>
-                ${data.checkout.subtotalPrice.gross.amount.toFixed(2) || "0.00"}
-              </span>
+              <div className="flex flex-col items-end">
+                {cartData.checkout.discount?.amount && (
+                  <span className="text-gray-400 line-through">
+                    ${(cartData.checkout.subtotalPrice.gross.amount + cartData.checkout.discount.amount.amount).toFixed(2)}
+                  </span>
+                )}
+                <span>
+                  ${cartData.checkout.subtotalPrice.gross.amount.toFixed(2) || "0.00"}
+                </span>
+              </div>
             </div>
-            {data.checkout.discount?.amount && (
+            {cartData.checkout.discount?.amount && (
               <div className="flex justify-between text-xs text-green-600">
                 <span>DISCOUNT</span>
-                <span>-${data.checkout.discount.amount.amount.toFixed(2)}</span>
+                <span>-${cartData.checkout.discount.amount.amount.toFixed(2)}</span>
               </div>
             )}
             <div className="flex justify-between">
               <span>SHIPPING</span>
               <span>
-                ${data.checkout.shippingPrice?.gross.amount.toFixed(2) || "0.00"}
+                ${cartData.checkout.shippingPrice?.gross.amount.toFixed(2) || "0.00"}
               </span>
             </div>
             <div className="flex text-xs justify-between">
@@ -314,7 +333,7 @@ function Checkout() {
             </div>
             <div className="flex text-xs justify-between font-medium pt-2">
               <span>TOTAL (TAX EXCL.)</span>
-              <span>${data.checkout.totalPrice.gross.amount.toFixed(2) || "0.00"}</span>
+              <span>${cartData.checkout.totalPrice.gross.amount.toFixed(2) || "0.00"}</span>
             </div>
           </div>
 
