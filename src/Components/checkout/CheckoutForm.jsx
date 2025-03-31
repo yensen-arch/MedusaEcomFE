@@ -110,49 +110,108 @@ const CheckoutForm = ({
     return true;
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setError("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsProcessing(true);
+    setError(null);
 
-    const emailUpdated = await handleEmailUpdate();
-    if (!emailUpdated) {
-      setIsProcessing(false);
-      return;
-    }
+    try {
+      // Update email if not already set
+      if (userEmail && !paymentRequest?.data?.checkout?.email) {
+        await checkoutEmailUpdate({
+          variables: {
+            checkoutId,
+            email: userEmail,
+          },
+          context: {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          },
+        });
+      }
 
-    let paymentResult;
+      // Update billing address
+      await updateBillingAddress({
+        variables: {
+          checkoutId,
+          billingAddress: {
+            firstName: billingAddress.firstName,
+            lastName: billingAddress.lastName,
+            streetAddress1: billingAddress.streetAddress1,
+            streetAddress2: billingAddress.streetAddress2 || "",
+            city: billingAddress.city,
+            postalCode: billingAddress.postalCode,
+            country: billingAddress.country,
+            phone: billingAddress.phone || "",
+          },
+        },
+        context: {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        },
+      });
 
-    paymentResult = await handleCardPayment(
-      stripe,
-      elements,
-      userEmail,
-      billingAddress
-    );
-    if (paymentResult.error) {
-      setError(paymentResult.error);
-      setIsProcessing(false);
-      return;
-    }
+      // Create payment method
+      const cardElement = elements.getElement(CardElement);
+      const { error: paymentMethodError, paymentMethod } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+        billing_details: {
+          name: `${billingAddress.firstName} ${billingAddress.lastName}`,
+          email: userEmail,
+          phone: billingAddress.phone,
+          address: {
+            line1: billingAddress.streetAddress1,
+            line2: billingAddress.streetAddress2 || "",
+            city: billingAddress.city,
+            postal_code: billingAddress.postalCode,
+            country: billingAddress.country,
+          },
+        },
+      });
 
-    const processResult = await processPayment(
-      checkoutPaymentCreate,
-      checkoutComplete,
-      stripe,
-      checkoutId,
-      paymentResult.paymentToken,
-      amount,
-      token,
-      refreshToken,
-      refreshTokenMutation
-    );
+      if (paymentMethodError) {
+        setError(paymentMethodError.message);
+        setIsProcessing(false);
+        return;
+      }
 
-    if (processResult.success) {
-      localStorage.removeItem("checkoutId");
+      // Process payment
+      const result = await processPayment(
+        checkoutPaymentCreate,
+        checkoutComplete,
+        stripe,
+        checkoutId,
+        paymentMethod.id,
+        amount,
+        token,
+        refreshToken,
+        refreshTokenMutation
+      );
+
+      if (result.error) {
+        setError(result.error);
+        setIsProcessing(false);
+        return;
+      }
+
+      // Set the refetch flag if payment was successful
+      if (result.success) {
+        localStorage.setItem("shouldRefetchOrders", "true");
+      }
+
+      // Clear cart data from localStorage
       localStorage.removeItem("cartCount");
+      localStorage.removeItem("checkoutId");
+
+      // Call the success callback
       onSuccess();
-    } else {
-      setError(processResult.error);
+    } catch (err) {
+      console.error("Payment error:", err);
+      setError(err.message || "Payment failed. Please try again.");
+    } finally {
       setIsProcessing(false);
     }
   };

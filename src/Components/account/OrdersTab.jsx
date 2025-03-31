@@ -7,18 +7,55 @@ import jsPDF from "jspdf";
 
 const OrdersTab = () => {
   const [token, setToken] = useState(null);
+  const [shouldRefetch, setShouldRefetch] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
   }, []);
 
-  const { data, loading, error } = useQuery(GET_CUSTOMER_ORDERS, {
+  const { data, loading, error, refetch } = useQuery(GET_CUSTOMER_ORDERS, {
     context: {
-      headers: { Authorization: `JWT ${token}` },
+      headers: { Authorization: token ? `Bearer ${token}` : "" },
     },
     skip: !token,
+    fetchPolicy: "network-only",
+    onCompleted: (data) => {
+      console.log("Orders query completed:", data);
+      if (data?.me?.orders?.edges) {
+        console.log("Number of orders:", data.me.orders.edges.length);
+      }
+    },
+    onError: (error) => {
+      console.error("Orders query error:", error);
+    }
   });
+
+  // Check if we need to refetch orders
+  useEffect(() => {
+    const checkRefetch = () => {
+      const shouldRefetchOrders = localStorage.getItem("shouldRefetchOrders");
+      if (shouldRefetchOrders === "true") {
+        console.log("Refetching orders...");
+        localStorage.removeItem("shouldRefetchOrders");
+        refetch();
+      }
+    };
+
+    // Check immediately and set up an interval
+    checkRefetch();
+    const interval = setInterval(checkRefetch, 1000);
+
+    return () => clearInterval(interval);
+  }, [refetch]);
+
+  // Force refetch when component mounts
+  useEffect(() => {
+    if (token) {
+      console.log("Initial orders fetch...");
+      refetch();
+    }
+  }, [token, refetch]);
 
   if (loading)
     return (
@@ -29,6 +66,7 @@ const OrdersTab = () => {
   if (error) return <p>Error fetching orders.</p>;
 
   const orders = data?.me?.orders?.edges || [];
+  console.log("Orders array:", orders);
 
   const generatePDF = (order) => {
     const doc = new jsPDF();

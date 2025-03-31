@@ -16,132 +16,133 @@ const usePaymentRequest = (
   const [canMakePayment, setCanMakePayment] = useState(false);
 
   useEffect(() => {
-    if (stripe) {
-      const pr = stripe.paymentRequest({
-        country: "US",
-        currency: "usd",
-        total: {
-          label: "Order Total",
-          amount: parseFloat(amount) * 100, // Amount in cents
-        },
-        requestPayerName: true,
-        requestPayerEmail: true,
-        requestPayerPhone: true,
-        requestShipping: false,
-      });
+    if (!stripe) return;
 
-      pr.on("paymentmethod", async (event) => {
-        setIsProcessing(true);
+    // Convert amount to cents and ensure it's an integer
+    const amountInCents = Math.round(parseFloat(amount) * 100);
 
-        try {
-          const { data } = await checkoutEmailUpdate({
+    const pr = stripe.paymentRequest({
+      country: "US",
+      currency: "usd",
+      total: {
+        label: "Clothd",
+        amount: amountInCents,
+      },
+      requestPayerName: true,
+      requestPayerEmail: true,
+      requestPayerPhone: true,
+      requestPayerAddress: "billing",
+    });
+
+    // Check if the Payment Request is available
+    pr.canMakePayment().then((result) => {
+      if (result) {
+        setCanMakePayment(true);
+      }
+    });
+
+    pr.on("paymentmethod", async (e) => {
+      setIsProcessing(true);
+      setError(null);
+
+      try {
+        // Update email if not already set
+        if (userEmail) {
+          const { data: emailData } = await checkoutEmailUpdate({
             variables: {
               checkoutId,
               email: userEmail,
             },
           });
 
-          if (data?.checkoutEmailUpdate?.errors?.length) {
-            const errorMessage = data.checkoutEmailUpdate.errors
+          if (emailData?.checkoutEmailUpdate?.errors?.length) {
+            const errorMessage = emailData.checkoutEmailUpdate.errors
               .map((err) => err.message)
               .join(", ");
             setError(`Email Update Error: ${errorMessage}`);
-            event.complete("fail");
-            setIsProcessing(false);
+            e.complete("fail");
             return;
           }
-
-          const { data: createData } = await checkoutPaymentCreate({
-            variables: {
-              checkoutId,
-              input: {
-                gateway: "saleor.payments.stripe",
-                token: event.paymentMethod.id,
-                amount: parseFloat(amount) * 100, // Converting to cents for Saleor
-              },
-            },
-          });
-
-          if (createData?.checkoutPaymentCreate?.errors?.length) {
-            const errorMessage = createData.checkoutPaymentCreate.errors
-              .map((err) => err.message)
-              .join(", ");
-            setError(`Payment Creation Error: ${errorMessage}`);
-            event.complete("fail");
-            setIsProcessing(false);
-            return;
-          }
-
-          const { data: completeData } = await checkoutComplete({
-            variables: {
-              checkoutId,
-            },
-          });
-
-          if (completeData?.checkoutComplete?.confirmationNeeded) {
-            const confirmationData = JSON.parse(
-              completeData.checkoutComplete.confirmationData
-            );
-
-            const { error: confirmError, paymentIntent } =
-              await stripe.confirmCardPayment(
-                confirmationData.client_secret,
-                {
-                  payment_method: event.paymentMethod.id,
-                },
-                { handleActions: false }
-              );
-
-            if (confirmError) {
-              setError(`Payment confirmation failed: ${confirmError.message}`);
-              event.complete("fail");
-              setIsProcessing(false);
-              return;
-            }
-
-            if (paymentIntent.status === "requires_action") {
-              // Use the same mechanism as confirmCardPayment to handle 3D Secure authentication
-              const { error } = await stripe.confirmCardPayment(
-                confirmationData.client_secret
-              );
-              if (error) {
-                setError(`Payment authentication failed: ${error.message}`);
-                event.complete("fail");
-                setIsProcessing(false);
-                return;
-              }
-            }
-          }
-
-          if (completeData?.checkoutComplete?.errors?.length) {
-            const errorMessage = completeData.checkoutComplete.errors
-              .map((err) => err.message)
-              .join(", ");
-            setError(`Checkout Completion Error: ${errorMessage}`);
-            event.complete("fail");
-            setIsProcessing(false);
-            return;
-          }
-
-          event.complete("success");
-          localStorage.removeItem("checkoutId");
-          localStorage.removeItem("cartCount");
-          onSuccess();
-        } catch (err) {
-          setError(`Payment failed: ${err.message}`);
-          event.complete("fail");
-          setIsProcessing(false);
         }
-      });
 
-      pr.canMakePayment().then((result) => {
-        if (result) {
-          setCanMakePayment(result);
-          setPaymentRequest(pr);
+        // Create payment
+        const { data: paymentData } = await checkoutPaymentCreate({
+          variables: {
+            checkoutId,
+            input: {
+              gateway: "saleor.payments.stripe",
+              token: e.paymentMethod.id,
+              amount: parseFloat(amount),
+            },
+          },
+        });
+
+        if (paymentData?.checkoutPaymentCreate?.errors?.length) {
+          const errorMessage = paymentData.checkoutPaymentCreate.errors
+            .map((err) => err.message)
+            .join(", ");
+          setError(`Payment Creation Error: ${errorMessage}`);
+          e.complete("fail");
+          return;
         }
-      });
-    }
-  }, [stripe, amount, checkoutId, checkoutPaymentCreate, checkoutEmailUpdate, checkoutComplete, userEmail, setIsProcessing, setError, onSuccess]);
+
+        // Complete checkout
+        const { data: completeData } = await checkoutComplete({
+          variables: {
+            checkoutId,
+          },
+        });
+
+        if (completeData?.checkoutComplete?.errors?.length) {
+          const errorMessage = completeData.checkoutComplete.errors
+            .map((err) => err.message)
+            .join(", ");
+          setError(`Checkout Completion Error: ${errorMessage}`);
+          e.complete("fail");
+          return;
+        }
+
+        if (!completeData?.checkoutComplete?.order?.id) {
+          setError("Order creation failed - no order ID received");
+          e.complete("fail");
+          return;
+        }
+
+        // Clear cart data from localStorage
+        localStorage.removeItem("cartCount");
+        localStorage.removeItem("checkoutId");
+
+        // Call the success callback
+        onSuccess();
+        e.complete("success");
+      } catch (err) {
+        console.error("Payment error:", err);
+        setError(err.message || "Payment failed. Please try again.");
+        e.complete("fail");
+      } finally {
+        setIsProcessing(false);
+      }
+    });
+
+    setPaymentRequest(pr);
+
+    return () => {
+      if (pr) {
+        pr.removeAllListeners();
+      }
+    };
+  }, [
+    stripe,
+    amount,
+    checkoutId,
+    checkoutPaymentCreate,
+    checkoutEmailUpdate,
+    checkoutComplete,
+    userEmail,
+    setIsProcessing,
+    setError,
+    onSuccess,
+  ]);
 
   return { paymentRequest, canMakePayment };
 };
