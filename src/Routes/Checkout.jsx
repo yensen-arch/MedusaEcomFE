@@ -16,12 +16,6 @@ function Checkout() {
   const [isApplyingVoucher, setIsApplyingVoucher] = useState(false);
   const [isVoucherApplied, setIsVoucherApplied] = useState(false);
 
-  // Reset voucher state when cart changes
-  const { data } = useQuery(GET_CART_ITEMS);
-  useEffect(() => {
-    setIsVoucherApplied(false);
-  }, [data?.checkout?.lines]);
-
   // Get user data
   const { loading: userLoading, data: userData } = useQuery(GET_USER_QUERY, {
     context: {

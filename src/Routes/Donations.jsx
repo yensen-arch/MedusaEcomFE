@@ -68,11 +68,11 @@ export default function Donations() {
                 Impact Statistics
               </h2>
               <p className="text-xs uppercase leading-relaxed text-muted-foreground">
-                Total individuals helped: 12
+                Total individuals helped: incoming
                 <br />
-                Cities reached: 1
+                Cities reached: incoming
                 <br />
-                Active distribution centers: 1
+                Active distribution centers: incoming
               </p>
             </div>
           </div>
