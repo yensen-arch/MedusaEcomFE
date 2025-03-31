@@ -12,30 +12,33 @@ import OrdersTab from "../Components/account/OrdersTab";
 import AccountTab from "../Components/account/AccountTab";
 import CartTab from "../Components/account/CartTab";
 import TabNavigation from "../Components/account/TabNavigation";
+import { useAuth } from "../context/AuthContext";
 
 const Account = () => {
   const [activeTab, setActiveTab] = useState(
     () => new URLSearchParams(window.location.search).get("tab") || "orders"
   );
   const [userData, setUserData] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const accessToken = localStorage.getItem("token");
+  const { isAuth, token, setToken } = useAuth();
   const refreshToken = localStorage.getItem("refreshToken");
   const checkoutId =
     typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
   const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
+
   const { loading, error, data, refetch } = useQuery(GET_USER_QUERY, {
     context: {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: token ? `Bearer ${token}` : "",
       },
     },
     onCompleted: (data) => {
       if (data.me === null) {
-        setIsAuthenticated(false);
+        setToken(null);
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
         window.location.href = "/login";
+      } else {
+        setUserData(data.me);
       }
     },
     onError: async (error) => {
@@ -46,30 +49,30 @@ const Account = () => {
           });
 
           if (refreshData?.tokenRefresh?.token) {
-            localStorage.setItem("token", refreshData.tokenRefresh.token);
+            const newToken = refreshData.tokenRefresh.token;
+            setToken(newToken);
+            localStorage.setItem("token", newToken);
             refetch();
           } else {
-            setIsAuthenticated(false);
+            setToken(null);
             localStorage.removeItem("token");
             localStorage.removeItem("refreshToken");
             window.location.href = "/login";
           }
         } catch (refreshError) {
           console.error("Error refreshing token:", refreshError);
-          setIsAuthenticated(false);
+          setToken(null);
           localStorage.removeItem("token");
           localStorage.removeItem("refreshToken");
           window.location.href = "/login";
         }
       } else if (error.message.includes("Signature verification failed")) {
-        // Handle invalid token directly - refreshing won't help in this case
         console.error("Invalid token detected:", error.message);
-        setIsAuthenticated(false);
+        setToken(null);
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
         window.location.href = "/login";
       } else {
-        // Handle other errors
         console.error("GraphQL error:", error.message);
       }
     },
@@ -83,7 +86,7 @@ const Account = () => {
     variables: { checkoutId },
     context: {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: token ? `Bearer ${token}` : "",
       },
     },
     skip: !checkoutId,
@@ -91,20 +94,23 @@ const Account = () => {
   });
 
   useEffect(() => {
-    if (!accessToken || !refreshToken) {
-      console.log("No token found");
-      setIsAuthenticated(false);
+    if (!loading && !token) {
+      console.log("No token found, redirecting to login");
       window.location.href = "/login";
-      return;
     }
+  }, [loading, token]);
 
-    if (data?.me) {
-      setUserData(data.me);
-      setIsAuthenticated(true);
-    }
-  }, [data, accessToken, refreshToken]);
+  if (loading) {
+    return (
+      <div className="h-screen mt-4 flex flex-col items-center justify-center">
+        <CustomLoader />
+      </div>
+    );
+  }
 
-  if (!isAuthenticated) return null;
+  if (!isAuth) {
+    return null;
+  }
 
   return (
     <>
