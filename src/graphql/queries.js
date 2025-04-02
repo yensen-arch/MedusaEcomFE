@@ -614,7 +614,7 @@ export const GET_CUSTOMER_ORDERS = gql`
   query GetCustomerOrders {
     me {
       email
-      orders(first: 20) {
+      orders(first: 100) {
         edges {
           node {
             id
@@ -674,6 +674,11 @@ export const GET_CUSTOMER_ORDERS = gql`
             }
           }
         }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        totalCount
       }
     }
   }

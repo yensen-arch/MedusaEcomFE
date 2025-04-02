@@ -5,6 +5,7 @@ import CheckoutPayment from "../Components/checkout/CheckoutPayment";
 import CheckoutShipping from "../Components/CheckoutShipping";
 import CustomLoader from "../Components/CustomLoader";
 import { GET_USER_QUERY } from "../graphql/queries";
+
 function Checkout() {
   const [activeSection, setActiveSection] = useState("email");
   const [email, setEmail] = useState("");
@@ -15,6 +16,12 @@ function Checkout() {
   const [voucherError, setVoucherError] = useState("");
   const [isApplyingVoucher, setIsApplyingVoucher] = useState(false);
   const [isVoucherApplied, setIsVoucherApplied] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [originalPrices, setOriginalPrices] = useState({
+    subtotal: null,
+    total: null,
+    items: {}
+  });
 
   // Get user data
   const { loading: userLoading, data: userData } = useQuery(GET_USER_QUERY, {
@@ -100,6 +107,16 @@ function Checkout() {
       return;
     }
 
+    // Store original prices before applying voucher
+    setOriginalPrices({
+      subtotal: cartData.checkout.subtotalPrice.gross.amount,
+      total: cartData.checkout.totalPrice.gross.amount,
+      items: cartData.checkout.lines.reduce((acc, item) => ({
+        ...acc,
+        [item.id]: item.variant.pricing.price.gross.amount
+      }), {})
+    });
+
     setIsApplyingVoucher(true);
     setVoucherError("");
 
@@ -113,6 +130,12 @@ function Checkout() {
 
       if (data?.checkoutAddPromoCode?.errors?.length) {
         setVoucherError(data.checkoutAddPromoCode.errors[0].message);
+        // Reset original prices if voucher application failed
+        setOriginalPrices({
+          subtotal: null,
+          total: null,
+          items: {}
+        });
       } else {
         // Refresh the cart data to show updated prices
         refetch();
@@ -121,13 +144,26 @@ function Checkout() {
       }
     } catch (error) {
       setVoucherError("Failed to apply voucher code");
+      // Reset original prices if voucher application failed
+      setOriginalPrices({
+        subtotal: null,
+        total: null,
+        items: {}
+      });
     } finally {
       setIsApplyingVoucher(false);
     }
   };
 
+  // Set initialized state when all initial data is loaded
+  useEffect(() => {
+    if (!userLoading && !cartLoading && !isProcessing) {
+      setIsInitialized(true);
+    }
+  }, [userLoading, cartLoading, isProcessing]);
+
   // Check if any API is still loading
-  const isLoading = userLoading || cartLoading || isProcessing;
+  const isLoading = !isInitialized || userLoading || cartLoading || isProcessing;
 
   const handleContinue = (section) => {
     if (section === "email" && email) {
@@ -287,9 +323,10 @@ function Checkout() {
                   <p className="text-xs text-gray-600">
                     Quantity: {item.quantity}
                   </p>
-                  <p className="text-xs text-gray-600">
-                    Price: ${item.variant.pricing.price.gross.amount.toFixed(2)}
-                  </p>
+                  <div className="text-xs text-gray-600">
+                    Price: 
+                    <span>${item.variant.pricing.price.gross.amount.toFixed(2)}</span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -299,9 +336,9 @@ function Checkout() {
             <div className="flex justify-between text-xs">
               <span>SUBTOTAL</span>
               <div className="flex flex-col items-end">
-                {cartData.checkout.discount?.amount && (
+                {isVoucherApplied && originalPrices.subtotal && (
                   <span className="text-gray-400 line-through">
-                    ${(cartData.checkout.subtotalPrice.gross.amount + cartData.checkout.discount.amount.amount).toFixed(2)}
+                    ${originalPrices.subtotal.toFixed(2)}
                   </span>
                 )}
                 <span>
@@ -309,10 +346,10 @@ function Checkout() {
                 </span>
               </div>
             </div>
-            {cartData.checkout.discount?.amount && (
+            {isVoucherApplied && (
               <div className="flex justify-between text-xs text-green-600">
-                <span>DISCOUNT</span>
-                <span>-${cartData.checkout.discount.amount.amount.toFixed(2)}</span>
+                <span>AMBASSADOR DISCOUNT</span>
+                <span>-${(originalPrices.subtotal - cartData.checkout.subtotalPrice.gross.amount).toFixed(2)}</span>
               </div>
             )}
             <div className="flex justify-between">
@@ -327,7 +364,14 @@ function Checkout() {
             </div>
             <div className="flex text-xs justify-between font-medium pt-2">
               <span>TOTAL (TAX EXCL.)</span>
-              <span>${cartData.checkout.totalPrice.gross.amount.toFixed(2) || "0.00"}</span>
+              <div className="flex flex-col items-end">
+                {isVoucherApplied && originalPrices.total && (
+                  <span className="text-gray-400 line-through">
+                    ${originalPrices.total.toFixed(2)}
+                  </span>
+                )}
+                <span>${cartData.checkout.totalPrice.gross.amount.toFixed(2) || "0.00"}</span>
+              </div>
             </div>
           </div>
 

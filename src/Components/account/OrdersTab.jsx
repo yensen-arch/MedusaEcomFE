@@ -22,12 +22,21 @@ const OrdersTab = () => {
     fetchPolicy: "network-only",
     onCompleted: (data) => {
       console.log("Orders query completed:", data);
-      if (data?.me?.orders?.edges) {
-        console.log("Number of orders:", data.me.orders.edges.length);
+      if (data?.me?.orders) {
+        console.log("Total number of orders available:", data.me.orders.totalCount);
+        console.log("Number of orders fetched:", data.me.orders.edges.length);
+        console.log("Has more orders:", data.me.orders.pageInfo.hasNextPage);
+        console.log("Orders:", data.me.orders.edges.map(edge => ({
+          id: edge.node.id,
+          number: edge.node.number,
+          created: edge.node.created,
+          status: edge.node.status
+        })));
       }
     },
     onError: (error) => {
       console.error("Orders query error:", error);
+      console.error("Error details:", error.graphQLErrors);
     }
   });
 
