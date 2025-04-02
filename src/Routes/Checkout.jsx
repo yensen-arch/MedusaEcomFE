@@ -301,7 +301,7 @@ function Checkout() {
               <p className="text-xs text-red-600">{voucherError}</p>
             )}
             {isVoucherApplied && (
-              <p className="text-xs text-green-600">You've got an AMBASSADOR!</p>
+              <p className="text-xs text-green-600">AMBASSADOR CODE APPLIED</p>
             )}
           </div>
 
