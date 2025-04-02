@@ -25,7 +25,7 @@ const Account = () => {
     typeof window !== "undefined" ? localStorage.getItem("checkoutId") : null;
   const [refreshTokenMutation] = useMutation(REFRESH_TOKEN_MUTATION);
 
-  const { loading, error, data, refetch } = useQuery(GET_USER_QUERY, {
+  const { loading: userLoading, error: userError, data, refetch } = useQuery(GET_USER_QUERY, {
     context: {
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
@@ -94,13 +94,16 @@ const Account = () => {
   });
 
   useEffect(() => {
-    if (!loading && !token) {
+    if (!userLoading && !token) {
       console.log("No token found, redirecting to login");
       window.location.href = "/login";
     }
-  }, [loading, token]);
+  }, [userLoading, token]);
 
-  if (loading) {
+  // Show loader while any data is loading or while refreshing token
+  const isLoading = userLoading || cartLoading || !isAuth;
+
+  if (isLoading) {
     return (
       <div className="h-screen mt-4 flex flex-col items-center justify-center">
         <CustomLoader />
@@ -108,8 +111,15 @@ const Account = () => {
     );
   }
 
-  if (!isAuth) {
-    return null;
+  // Show error only if we have a non-token related error
+  const hasError = userError && !userError.message.includes("Signature has expired") && !userError.message.includes("Signature verification failed");
+
+  if (hasError) {
+    return (
+      <div className="h-screen mt-4 flex flex-col items-center justify-center">
+        <p className="text-xs text-red-500 uppercase">ERROR LOADING ACCOUNT</p>
+      </div>
+    );
   }
 
   return (
@@ -127,26 +137,14 @@ const Account = () => {
             </div>
           </div>
 
-          {loading ? (
-            <div className="flex justify-center items-center ">
-              <CustomLoader />
-            </div>
-          ) : error && !error.message.includes("Signature has expired") ? (
-            <div className="flex justify-center items-center h-80">
-              <p className="text-xs text-red-500 uppercase">ERROR</p>
-            </div>
-          ) : (
-            <>
-              {activeTab === "orders" && <OrdersTab />}
-              {activeTab === "account" && <AccountTab userData={userData} />}
-              {activeTab === "cart" && (
-                <CartTab
-                  cartData={cartData}
-                  cartLoading={cartLoading}
-                  cartError={cartError}
-                />
-              )}
-            </>
+          {activeTab === "orders" && <OrdersTab />}
+          {activeTab === "account" && <AccountTab userData={userData} />}
+          {activeTab === "cart" && (
+            <CartTab
+              cartData={cartData}
+              cartLoading={cartLoading}
+              cartError={cartError}
+            />
           )}
         </div>
       </div>
