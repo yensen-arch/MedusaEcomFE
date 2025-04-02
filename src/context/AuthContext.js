@@ -7,7 +7,6 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const [isInitialized, setIsInitialized] = useState(false);
 
   const { data, loading, error, refetch } = useQuery(ME_QUERY, {
     context: {
@@ -22,12 +21,10 @@ export const AuthProvider = ({ children }) => {
       } else {
         setIsAuth(false);
       }
-      setIsInitialized(true);
     },
     onError: (error) => {
       console.error("Auth query error:", error);
       setIsAuth(false);
-      setIsInitialized(true);
     }
   });
 
@@ -35,9 +32,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const handleStorageChange = (e) => {
       if (e.key === "token") {
-        const newToken = e.newValue;
-        setToken(newToken);
-        if (newToken) {
+        setToken(e.newValue);
+        if (e.newValue) {
           refetch();
         } else {
           setIsAuth(false);
@@ -55,18 +51,11 @@ export const AuthProvider = ({ children }) => {
     if (storedToken) {
       setToken(storedToken);
       refetch();
-    } else {
-      setIsInitialized(true);
     }
   }, [refetch]);
 
-  // Don't render children until we've checked the initial auth state
-  if (!isInitialized) {
-    return null;
-  }
-
   return (
-    <AuthContext.Provider value={{ isAuth, setIsAuth, token, setToken, isInitialized }}>
+    <AuthContext.Provider value={{ isAuth, setIsAuth, token, setToken }}>
       {children}
     </AuthContext.Provider>
   );

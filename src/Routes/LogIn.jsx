@@ -27,6 +27,7 @@ const LogIn = () => {
         localStorage.setItem("csrfToken", csrfToken);
         setIsAuth(true);
         navigate(path);
+        window.location.reload();
       }
     },
     onError: (error) => {
