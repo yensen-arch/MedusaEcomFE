@@ -31,7 +31,7 @@ const Navbar = ({
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [hovered, setHovered] = useState(null);
-  const disabledCategories = ["WOMEN", "MEN", "ARCHIVE"]; //for the 1st drop
+  const disabledCategories = ["ARCHIVE"]; //for the 1st drop
   const currentItem =
     categories?.[activeCategory]?.[swiperRef?.current?.swiper?.activeIndex];
   const logoUrl = currentItem?.video
@@ -146,7 +146,7 @@ const Navbar = ({
 
             {/* Desktop Categories */}
             <div className="hidden md:flex items-center space-x-6 text-xs">
-              {["V00", ...disabledCategories].map((category) => (
+              {["V00","WOMEN", "MEN", ...disabledCategories].map((category) => (
                 <div
                   className="relative"
                   key={category}

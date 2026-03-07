@@ -44,7 +44,8 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
     { Icon: RiInstagramLine, path: "https://www.instagram.com/clothd.co/" },
     { Icon: RiTiktokFill, path: "https://tiktok.com/@clothd" },
   ];
-  const disabledCategories = ["WOMAN", "MAN", "ARCHIVE"]; //for the 1st drop
+  const disabledCategories = ["ARCHIVE"]; // shows COMING SOON animation on hover
+  const disabledNoAnimation = ["WOMAN", "MAN"]; // disabled but no animation
 
   return (
     <div
@@ -90,39 +91,45 @@ export default function NavMenu({ activeCategory, isMenuOpen, onClose }) {
             ) : error ? (
               <p className="text-red-500 text-xs">ERROR: {error.message}</p>
             ) : (
-              categories.map((category) => (
-                <li
-                  key={category.id}
-                  className="px-2 hover:translate-x-2 hover:border-black hover:border-[1px] transition-transform"
-                  onMouseEnter={() => setHovered(category.id)}
-                  onMouseLeave={() => setHovered(null)}
-                >
-                  {disabledCategories.includes(category.name.toUpperCase()) ? (
-                    <div
-                      className="text-sm cursor-default"
-                      onClick={
-                        category.name.toUpperCase() === "V00"
-                          ? onClose
-                          : undefined
-                      }
-                    >
-                      {hovered === category.id ? (
-                        <MatrixText
-                          originalText={category.name.toUpperCase()}
-                          finalText="COMING SOON"
-                          isHovering={hovered === category.id}
-                        />
-                      ) : (
-                        category.name.toUpperCase()
-                      )}
-                    </div>
-                  ) : (
-                    <Link to={`/category/${category.id}`} className="text-sm">
-                      <div>{category.name.toUpperCase()}</div>
-                    </Link>
-                  )}
-                </li>
-              ))
+              categories.map((category) => {
+                const catUpper = category.name.toUpperCase();
+                const isDisabledWithAnimation = disabledCategories.includes(catUpper);
+                const isDisabledNoAnimation = disabledNoAnimation.includes(catUpper);
+
+                return (
+                  <li
+                    key={category.id}
+                    className="px-2 hover:translate-x-2 hover:border-black hover:border-[1px] transition-transform"
+                    onMouseEnter={() => setHovered(category.id)}
+                    onMouseLeave={() => setHovered(null)}
+                  >
+                    {isDisabledWithAnimation ? (
+                      <div
+                        className="text-sm cursor-default"
+                        onClick={catUpper === "V00" ? onClose : undefined}
+                      >
+                        {hovered === category.id ? (
+                          <MatrixText
+                            originalText={catUpper}
+                            finalText="COMING SOON"
+                            isHovering={hovered === category.id}
+                          />
+                        ) : (
+                          catUpper
+                        )}
+                      </div>
+                    ) : isDisabledNoAnimation ? (
+                      <div className="text-sm cursor-default">
+                        {catUpper}
+                      </div>
+                    ) : (
+                      <Link to={`/category/${category.id}`} className="text-sm">
+                        <div>{catUpper}</div>
+                      </Link>
+                    )}
+                  </li>
+                );
+              })
             )}
           </ul>
 
